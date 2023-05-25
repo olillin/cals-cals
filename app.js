@@ -30,7 +30,8 @@ app.get('/cal', (req, res) => {
             return;
         }
         response.text().then(text => {
-            let ics = modify_ics(text);
+            let include_location = !!(req.query["location"] ?? false)
+            let ics = modify_ics(text, include_location);
             if (!fs.existsSync('temp/')) {
                 fs.mkdirSync('temp/');
             }
@@ -46,9 +47,10 @@ app.listen(port, () => {
 
 /**
  * @param {string} text
+ * @param {boolean} include_location
  * @returns {string}
  */
-function modify_ics(text) {
+function modify_ics(text, include_location) {
     // Get calendar events
     let pointer = text.indexOf("BEGIN:VEVENT\r\n");
     while (pointer != -1) {
@@ -57,16 +59,18 @@ function modify_ics(text) {
         
         let event = text.substring(pointer, end);
         let length = event.length;
-        // Get event info
+        // Get summary
         let summaryMatch = event.match( /(?<=SUMMARY:).*?(?=\r\n[A-Z]+:)/s);
-        let locationMatch = event.match( /(?<=LOCATION:).*?(?=\r\n[A-Z]+:)/s);
         if (summaryMatch) {
             // Create new summary
             let summary = summaryMatch[0];
             summary = capitalize(summary.replace(/ *\([\wåäöÅÄÖ]+\/[\wåäöÅÄÖ]+(-[\wåäöÅÄÖ]+)?\).*$/m, ''));
             // Optional location suffix
-            if (locationMatch && locationMatch[0].match(/\d+(,\d+)*/)) {
-                summary += ' in ' + format_location(locationMatch[0]);
+            if (include_location) {
+                let locationMatch = event.match( /(?<=LOCATION:).*?(?=\r\n[A-Z]+:)/s);
+                if (locationMatch && locationMatch[0].match(/\d+(,\d+)*/)) {
+                    summary += ' in ' + format_location(locationMatch[0]);
+                }
             }
 
             // Insert new summary
