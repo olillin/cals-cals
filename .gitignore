@@ -1,6 +1,8 @@
 node_modules/
 temp/
 
+*.pem
+
 .env*
 .flaskenv*
 !.env.project

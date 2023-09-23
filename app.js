@@ -1,49 +1,47 @@
 const express = require('express');
 const fs = require('fs');
+const https = require('https');
 require('dotenv/config');
-const { URI, AUTH_TOKEN } = process.env;
-if (!URI || !AUTH_TOKEN) {
-    console.log("Missing required ENV variable.")
+const { CAL_URL, PORT } = process.env;
+if (!CAL_URL) {
+    console.log('No calendar URL has been provided.');
     process.exit();
 }
 
 const app = express();
-const port = 3000;
+const port = PORT || 443;
 
 app.get('/', (req, res) => {
-    res.send("Hello world");
+    res.send('Hello world');
 })
 
-app.get('/cal', (req, res) => {
-    if (req.query["token"] !== AUTH_TOKEN) {
-        res.status(401)
-           .send("Invalid or missing authorization.")
-           .destroy();
-        return;
-    }
-
-    fetch(new URL(URI)).then(response => {
-        if (response.status != 200) {
-            res.status(500)
-               .send('Failed to fetch calendar.')
-               .destroy();
-            return;
-        }
-        response.text().then(text => {
-            let include_location = !!(req.query["location"] ?? false)
-            let ics = modify_ics(text, include_location);
-            if (!fs.existsSync('temp/')) {
-                fs.mkdirSync('temp/');
+app.get('/vklass.ical', (req, res) => {
+    try {
+        fetch(new URL(CAL_URL)).then(response => {
+            if (response.status != 200) {
+                res.status(500)
+                    .send(`Failed to fetch calendar, code ${response.status}.`);
+                return;
             }
-            fs.writeFileSync('temp/cal.ics', ics)
-            res.status(200).download('temp/cal.ics');
+            response.text().then(text => {
+                let include_location = !!(req.query['location'] ?? false)
+                let ics = modify_ics(text, include_location);
+                res.socket.end(ics);
+            });
         });
-    });
+    } catch (ConnectTimeoutError) {
+        res.status(500)
+            .send('Failed to fetch calendar, timed out.');
+    }
 });
 
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-});
+https.createServer({
+        key: fs.readFileSync('./key.pem'),
+        cert: fs.readFileSync('./cert.pem'),
+    }, app )
+    .listen(port, () => {
+        console.log(`App listening on port ${port}`);
+    });
 
 /**
  * @param {string} text
