@@ -2,9 +2,9 @@ const express = require('express');
 const fs = require('fs');
 const https = require('https');
 require('dotenv/config');
-const { CAL_URL, PORT } = process.env;
-if (!CAL_URL) {
-    console.log('No calendar URL has been provided.');
+const { CAL_URL_BASE, PORT } = process.env;
+if (!CAL_URL_BASE) {
+    console.log('No base calendar URL has been provided.');
     process.exit();
 }
 
@@ -15,9 +15,10 @@ app.get('/', (req, res) => {
     res.send('Hello world');
 })
 
-app.get('/vklass.ical', (req, res) => {
+app.get('/calendar/:loc', (req, res) => {
     try {
-        fetch(new URL(CAL_URL)).then(response => {
+	const URL = CAL_URL_BASE + req.params.loc + '.ics'
+        fetch(URL).then(response => {
             if (response.status != 200) {
                 res.status(500)
                     .send(`Failed to fetch calendar, code ${response.status}.`);
@@ -26,7 +27,10 @@ app.get('/vklass.ical', (req, res) => {
             response.text().then(text => {
                 let include_location = !!(req.query['location'] ?? false)
                 let ics = modify_ics(text, include_location);
-                res.socket.end(ics);
+                res.set({
+                    'content-type': 'text/calendar; charset=utf-8',
+                    'content-disposition': `attachment; filename="${req.params.loc}.ics`,
+                }).send(ics);
             });
         });
     } catch (ConnectTimeoutError) {
