@@ -62,11 +62,10 @@ function modify_ics(text, include_location) {
         let event = text.substring(pointer, end);
         let length = event.length;
         // Get summary
-        let summaryMatch = event.match( /(?<=SUMMARY:).*?(?=\r\n[A-Z]+:)/s);
+        let summaryMatch = event.match( /(?<=SUMMARY:).*?(?=\r?\n[A-Z]+:)/s);
         if (summaryMatch) {
             // Create new summary
-            let summary = summaryMatch[0];
-            summary = capitalize(summary.replace(/ *\([\wåäöÅÄÖ]+\/[\wåäöÅÄÖ]+(-[\wåäöÅÄÖ]+)?\).*$/m, ''));
+            let summary = shortenSummary(summaryMatch[0]);
             // Optional location suffix
             if (include_location) {
                 let locationMatch = event.match( /(?<=LOCATION:).*?(?=\r\n[A-Z]+:)/s);
@@ -84,6 +83,10 @@ function modify_ics(text, include_location) {
         pointer = text.indexOf("BEGIN:VEVENT\r\n", end+event.length-length);
     }
     return text;
+}
+
+function shortenSummary(summary) {
+    return capitalize(summary.match(/^[\wåäöÅÄÖ -]+[\wåäöÅÄÖ]/ms)[0])
 }
 
 /**
