@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const https = require('https');
+const http = require('http');
 require('dotenv/config');
 const { CAL_URL_BASE, PORT } = process.env;
 if (!CAL_URL_BASE) {
@@ -39,13 +40,19 @@ app.get('/calendar/:loc', (req, res) => {
     }
 });
 
-https.createServer({
+var server
+if (fs.existsSync('./key.pem') && fs.existsSync('./cert.pem')) {
+    server = https.createServer({
         key: fs.readFileSync('./key.pem'),
         cert: fs.readFileSync('./cert.pem'),
-    }, app )
-    .listen(port, () => {
-        console.log(`App listening on port ${port}`);
-    });
+    }, app );
+} else {
+    server = http.createServer({}, app);
+}
+
+server.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+});
 
 /**
  * @param {string} text
