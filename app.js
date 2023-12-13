@@ -30,7 +30,7 @@ app.get('/calendar/:loc', (req, res) => {
                 let ics = modify_ics(text, include_location);
                 res.set({
                     'content-type': 'text/calendar; charset=utf-8',
-                    'content-disposition': `attachment; filename="${req.params.loc}.ics`,
+                    'content-disposition': `attachment; filename="${req.params.loc}.ics"`,
                 }).send(ics);
             });
         });
