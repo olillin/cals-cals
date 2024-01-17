@@ -2,6 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const https = require('https')
 const http = require('http')
+const ical2json = require('ical2json')
 require('dotenv/config')
 const { CAL_URL_BASE, PORT } = process.env
 if (!CAL_URL_BASE) {
@@ -17,29 +18,33 @@ app.get('/', (req, res) => {
 })
 
 app.get('/calendar/:loc', (req, res) => {
-    try {
-	const URL = CAL_URL_BASE + req.params.loc + '.ics'
-        fetch(URL).then(response => {
-            if (response.status != 200) {
-                res.status(500)
-                    .end(`Failed to fetch calendar, code ${response.status}.`)
-                return
-            }
-            response.text().then(text => {
-                let include_location = !!(req.query['location'] ?? false)
-                let ics = modify_ics(text, include_location)
-                res.set({
-                    'content-type': 'text/calendar charset=utf-8',
-                    'content-disposition': `attachment filename="${req.params.loc}.ics"`,
-                }).end(ics)
-            })
-        })
-    } catch (ConnectTimeoutError) {
-        res.status(500)
-            .end('Failed to fetch calendar, timed out.')
-    }
+    console.log(`Received request, loc: ${req.params.loc}, query: ${JSON.stringify(req.query)}`)
+    getCalendar(req.params.loc)
+    .then(calendar => {
+        let includeLocation = {'true':0,'yes':0,'1':0}.hasOwnProperty(req.query.location?.toLowerCase())
+        if (includeLocation) {
+            console.log('Location will be included in event summaries')
+        }
+        let newCalendar = modifyCalendar(calendar, includeLocation)
+        let text = ical2json.revert(newCalendar)
+        res.set({
+            'content-type': 'text/calendar charset=utf-8',
+            'content-disposition': `attachment filename="${req.params.loc}.ics"`,
+        }).end(text)
+    })
+    .catch(status => {
+        console.error("Failed to deliver calendar: " + status)
+        if (typeof status === 'number') {
+            res.status(status)
+        } else {
+            res.status(500)
+        }
+        res.end(`Failed to fetch calendar.`)
+        return
+    })
 })
 
+// Start server
 var server
 if (fs.existsSync('./key.pem') && fs.existsSync('./cert.pem')) {
     server = https.createServer({
@@ -54,44 +59,57 @@ server.listen(port, () => {
     console.log(`App listening on port ${port}`)
 })
 
+// Calendar functions
 /**
- * @param {string} text
- * @param {boolean} include_location
- * @returns {string}
+ * @param {string} loc
+ * @returns {Promise<object>}
  */
-function modify_ics(text, include_location) {
-    // Get calendar events
-    let pointer = text.indexOf("BEGIN:VEVENT\r\n")
-    while (pointer != -1) {
-        pointer += "BEGIN:VEVENT\r\n".length
-        let end = text.indexOf("\r\nEND:VEVENT", pointer)
-        
-        let event = text.substring(pointer, end)
-        let length = event.length
-        // Get summary
-        let summaryMatch = event.match( /(?<=SUMMARY:).*?(?=\r?\n[A-Z]+:)/s)
-        if (summaryMatch) {
-            // Create new summary
-            let summary = shortenSummary(summaryMatch[0])
-            // Optional location suffix
-            if (include_location) {
-                let locationMatch = event.match( /(?<=LOCATION:).*?(?=\r\n[A-Z]+:)/s)
-                if (locationMatch && locationMatch[0].match(/\d+(,\d+)*/)) {
-                    summary += ' in ' + format_location(locationMatch[0])
+function getCalendar(loc) {
+    return new Promise((resolve, reject) => {
+        const URL = CAL_URL_BASE + loc + '.ics'
+        try {
+            fetch(URL).then(response => {
+                if (response.status != 200) {
+                    reject(response.status)
                 }
-            }
-
-            // Insert new summary
-            event = event.substring(0, summaryMatch.index) + summary + event.substring(summaryMatch.index + summaryMatch[0].length)
-            text = text.substring(0, pointer) + event + text.substring(pointer+length)
+                response.text().then(text => {
+                    resolve(ical2json.convert(text))
+                })
+            })
+        } catch (ConnectTimeoutError) {
+            console.warn('Timed out when getting calendar')
+            reject(504)
         }
-        
-        // Find next event
-        pointer = text.indexOf("BEGIN:VEVENT\r\n", end+event.length-length)
-    }
-    return text
+    })
 }
 
+/**
+ * @param {object} calendar
+ * @param {boolean} includeLocation
+ * @returns {object}
+ */
+function modifyCalendar(calendar, includeLocation = false) {
+    // Loop through calendar events
+    const events = calendar.VCALENDAR[0]?.VEVENT
+    for (const [i, event] of Array.from(events ?? []).entries()) {
+        // Generate new summary
+        let summary = shortenSummary(event.SUMMARY ?? '')
+        // Include optional location
+        if (includeLocation && event.LOCATION) {
+            let location = formatLocation(event.LOCATION)
+            summary += ' in ' + location
+        }
+        // Replace old event
+        event.SUMMARY = summary
+        calendar.VCALENDAR[0].VEVENT[i] = event
+    }
+    return calendar
+}
+
+/**
+ * @param {string} summary 
+ * @returns {string}
+ */
 function shortenSummary(summary) {
     return capitalize(summary.match(/^[\wåäöÅÄÖ -]+[\wåäöÅÄÖ]/ms)[0])
 }
@@ -104,7 +122,7 @@ function capitalize(s) {
     return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase()
 }
 
-function format_location(location) {
+function formatLocation(location) {
     let locations = location.split('\\,')
     if (locations.length == 1) {
         return 'room ' + locations[0]
