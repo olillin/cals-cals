@@ -122,12 +122,8 @@ function modifyCalendar(calendar, includeLocation = false) {
  * @returns {object} The original calendar
  */
 function subtractCalendar(calendar, subtractCalendar, compare) {
-    fs.writeFileSync('cal.ical', ical2json.revert(calendar))
-    fs.writeFileSync('diff.ical', ical2json.revert(subtractCalendar))
     const calendarEvents = calendar.VCALENDAR[0].VEVENT
     const subtractCalendarEvents = subtractCalendar.VCALENDAR[0].VEVENT
-    fs.writeFileSync('cal2.txt', calendarEvents.map(e => JSON.stringify(filterEvent(e))).join('\n'))
-    fs.writeFileSync('diff2.txt', subtractCalendarEvents.map(e => JSON.stringify(filterEvent(e))).join('\n'))
 
     function filterEvent(event) {
         const filteredEvent = {}
@@ -157,7 +153,6 @@ function subtractCalendar(calendar, subtractCalendar, compare) {
         }
     }
     calendar.VCALENDAR[0].VEVENT = resultEvents
-    fs.writeFileSync('result.ical', ical2json.revert(calendar))
     return calendar
 }
 
