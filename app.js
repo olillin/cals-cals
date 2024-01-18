@@ -20,7 +20,14 @@ app.get('/', (req, res) => {
 app.get('/calendar/:loc', (req, res) => {
     console.log(`Received request, loc: ${req.params.loc}, query: ${JSON.stringify(req.query)}`)
     getCalendar(req.params.loc)
-    .then(calendar => {
+    .then(async calendar => {
+        if (req.query.diff) {
+            console.log('Subtracting calendars')
+            const diffLoc = req.query.diff.toString()
+            const diffCalendar = await getCalendar(diffLoc)
+            const compare = (req.query.compare ?? 'summary,description,location,dtstart,dtend').toUpperCase().split(',')
+            calendar = subtractCalendar(calendar, diffCalendar, compare)
+        }
         let includeLocation = {'true':0,'yes':0,'1':0}.hasOwnProperty(req.query.location?.toLowerCase())
         if (includeLocation) {
             console.log('Location will be included in event summaries')
@@ -33,10 +40,11 @@ app.get('/calendar/:loc', (req, res) => {
         }).end(text)
     })
     .catch(status => {
-        console.error("Failed to deliver calendar: " + status)
+        console.error("Failed to deliver calendar")
         if (typeof status === 'number') {
             res.status(status)
         } else {
+            console.error(status)
             res.status(500)
         }
         res.end(`Failed to fetch calendar.`)
@@ -107,7 +115,54 @@ function modifyCalendar(calendar, includeLocation = false) {
 }
 
 /**
- * @param {string} summary 
+ * Subtract the events of one calendar from the other. Any events that match will be removed
+ * @param {object} calendar
+ * @param {object} subtractCalendar
+ * @param {Array} compare List of properties to compare
+ * @returns {object} The original calendar
+ */
+function subtractCalendar(calendar, subtractCalendar, compare) {
+    fs.writeFileSync('cal.ical', ical2json.revert(calendar))
+    fs.writeFileSync('diff.ical', ical2json.revert(subtractCalendar))
+    const calendarEvents = calendar.VCALENDAR[0].VEVENT
+    const subtractCalendarEvents = subtractCalendar.VCALENDAR[0].VEVENT
+    fs.writeFileSync('cal2.txt', calendarEvents.map(e => JSON.stringify(filterEvent(e))).join('\n'))
+    fs.writeFileSync('diff2.txt', subtractCalendarEvents.map(e => JSON.stringify(filterEvent(e))).join('\n'))
+
+    function filterEvent(event) {
+        const filteredEvent = {}
+        for (let k of compare) {
+            if (event.hasOwnProperty(k)) {
+                filteredEvent[k] = event[k]
+            }
+        }
+        return filteredEvent
+    }
+
+    const resultEvents = Array.from(calendarEvents)
+    for (let event of calendarEvents) {
+        const cEvent = JSON.stringify(filterEvent(event))
+        for (let subtractEvent of subtractCalendarEvents) {
+            const cSubtractEvent = JSON.stringify(filterEvent(subtractEvent))
+            if (cEvent == cSubtractEvent) {
+                resultEvents.splice(resultEvents.indexOf(event), 1)
+                break
+            } else {
+                if (event.SUMMARY == 'Samhällskunskap 1b (TE21B/231SAMSAM01b)\nSAM_11 \nMAHO') {
+                    console.log('nomatch ' + cEvent + cSubtractEvent)
+                    console.log(event)
+                    console.log(subtractEvent)
+                }
+            }
+        }
+    }
+    calendar.VCALENDAR[0].VEVENT = resultEvents
+    fs.writeFileSync('result.ical', ical2json.revert(calendar))
+    return calendar
+}
+
+/**
+ * @param {string} summary
  * @returns {string}
  */
 function shortenSummary(summary) {
