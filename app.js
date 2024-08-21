@@ -3,7 +3,6 @@ const fs = require('fs')
 const https = require('https')
 const http = require('http')
 const ical2json = require('ical2json')
-require('dotenv/config')
 const { CAL_URL_BASE, PORT } = process.env
 if (!CAL_URL_BASE) {
     console.log('No base calendar URL has been provided.')
@@ -14,51 +13,54 @@ const app = express()
 const port = PORT || 443
 
 app.get('/', (req, res) => {
-    res.end("<p>WebCal Adapter is running</p>")
+    res.end('<p>WebCal Adapter is running</p>')
 })
 
 app.get('/calendar/:loc', (req, res) => {
     console.log(`Received request, loc: ${req.params.loc}, query: ${JSON.stringify(req.query)}`)
     getCalendar(req.params.loc)
-    .then(async calendar => {
-        if (req.query.diff) {
-            console.log('Subtracting calendars')
-            const diffLoc = req.query.diff.toString()
-            const diffCalendar = await getCalendar(diffLoc)
-            const compare = (req.query.compare ?? 'summary,description,location,dtstart,dtend').toUpperCase().split(',')
-            calendar = subtractCalendar(calendar, diffCalendar, compare)
-        }
-        let includeLocation = {'true':0,'yes':0,'1':0}.hasOwnProperty(req.query.location?.toLowerCase())
-        if (includeLocation) {
-            console.log('Location will be included in event summaries')
-        }
-        let newCalendar = modifyCalendar(calendar, includeLocation)
-        let text = ical2json.revert(newCalendar)
-        res.set({
-            'content-type': 'text/calendar charset=utf-8',
-            'content-disposition': `attachment filename="${req.params.loc}.ics"`,
-        }).end(text)
-    })
-    .catch(status => {
-        console.error("Failed to deliver calendar")
-        if (typeof status === 'number') {
-            res.status(status)
-        } else {
-            console.error(status)
-            res.status(500)
-        }
-        res.end(`Failed to fetch calendar.`)
-        return
-    })
+        .then(async calendar => {
+            if (req.query.diff) {
+                console.log('Subtracting calendars')
+                const diffLoc = req.query.diff.toString()
+                const diffCalendar = await getCalendar(diffLoc)
+                const compare = (req.query.compare ?? 'summary,description,location,dtstart,dtend').toUpperCase().split(',')
+                calendar = subtractCalendar(calendar, diffCalendar, compare)
+            }
+            let includeLocation = { true: 0, yes: 0, 1: 0 }.hasOwnProperty(req.query.location?.toLowerCase())
+            if (includeLocation) {
+                console.log('Location will be included in event summaries')
+            }
+            let newCalendar = modifyCalendar(calendar, includeLocation)
+            let text = ical2json.revert(newCalendar)
+            res.set({
+                'content-type': 'text/calendar charset=utf-8',
+                'content-disposition': `attachment filename="${req.params.loc}.ics"`,
+            }).end(text)
+        })
+        .catch(status => {
+            console.error('Failed to deliver calendar')
+            if (typeof status === 'number') {
+                res.status(status)
+            } else {
+                console.error(status)
+                res.status(500)
+            }
+            res.end(`Failed to fetch calendar.`)
+            return
+        })
 })
 
 // Start server
 var server
 if (fs.existsSync('./key.pem') && fs.existsSync('./cert.pem')) {
-    server = https.createServer({
-        key: fs.readFileSync('./key.pem'),
-        cert: fs.readFileSync('./cert.pem'),
-    }, app )
+    server = https.createServer(
+        {
+            key: fs.readFileSync('./key.pem'),
+            cert: fs.readFileSync('./cert.pem'),
+        },
+        app
+    )
 } else {
     server = http.createServer({}, app)
 }
