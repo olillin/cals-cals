@@ -1,0 +1,16 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-flow: row nowrap;
+    align-items: center;
+    background-color: #111;
+    color: #ffffff;
+    font-family: sans-serif;
+}
+
+main {
+    width: fit-content;
+    height: fit-content;
+}

@@ -12,10 +12,6 @@ const { PORT } = process.env as EnvironmentVariables
 
 const app = express()
 
-app.get('/', (req, res) => {
-    res.end('<p>WebCal Adapter is running</p>')
-})
-
 app.use('/vklass', new VklassAdapter().createRouter())
 if (fs.existsSync('public')) {
     app.use('/', express.static('public', {
