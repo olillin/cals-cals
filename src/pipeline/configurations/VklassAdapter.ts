@@ -1,15 +1,13 @@
-import Adapter from '../Adapter'
-import { Calendar, Event } from '../Calendar'
+import { Calendar, Event } from '../../Calendar'
 import { Router } from 'express'
 import * as ical2json from 'ical2json'
 import { IcalObject } from 'ical2json'
-import { capitalize } from '../Util'
+import { capitalize } from '../../Util'
 
-class VklassAdapter extends Adapter {
+class VklassAdapter {
     baseUrl: string
 
     constructor(baseUrl: string = 'http://cal.vklass.se/') {
-        super()
         this.baseUrl = baseUrl
     }
 
@@ -31,7 +29,7 @@ class VklassAdapter extends Adapter {
                         console.log('Location will be included in event summaries')
                     }
                     let newCalendar = this.modifyCalendar(calendar, includeLocation)
-                    let newIcal = {VCALENDAR: [newCalendar]} as unknown as IcalObject
+                    let newIcal = { VCALENDAR: [newCalendar] } as unknown as IcalObject
                     let text = ical2json.revert(newIcal)
                     res.set({
                         'content-type': 'text/calendar charset=utf-8',
@@ -152,12 +150,12 @@ class VklassAdapter extends Adapter {
      * @param {string} summary
      * @returns {string}
      */
-    static shortenSummary = function(summary: String) {
+    static shortenSummary = function (summary: String) {
         const match = summary.match(/^[\wåäöÅÄÖ -]+[\wåäöÅÄÖ]/ms) as RegExpMatchArray
         return capitalize(match[0])
     }
 
-    static formatLocation = function(location: String) {
+    static formatLocation = function (location: String) {
         let locations = location.split('\\,')
         if (locations.length == 1) {
             return 'room ' + locations[0]

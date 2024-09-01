@@ -1,4 +1,5 @@
 import { IcalObject } from 'ical2json'
+import { KeyOfType } from './Util'
 
 export interface Calendar {
     PRODID: ProductIdentifier
@@ -11,30 +12,33 @@ export interface Calendar {
     VEVENT: Array<Event>
 }
 
-export type ProductIdentifier = String
-export type Version = String
-export type CalendarScale = String
-export type Method = String
+export type ProductIdentifier = string
+export type Version = string
+export type CalendarScale = string
+export type Method = string
 
-export type WrCalendarName = String
-export type WrTimeZone = String
-export type WrCalendarDescription = String
+export type WrCalendarName = string
+export type WrTimeZone = string
+export type WrCalendarDescription = string
 
 export interface Event {
-    UID: String
+    UID: string
     DTSTAMP: DateTimeString
     DTSTART?: DateTimeString
     DTEND?: DateTimeString
-    DESCRIPTION?: String
+    DESCRIPTION?: string
     CREATED?: DateTimeString
     'LAST-MODIFIED'?: DateTimeString
-    LOCATION?: String
-    SEQUENCE?: String
-    STATUS?: String
-    SUMMARY?: String
+    LOCATION?: string
+    SEQUENCE?: string
+    STATUS?: string
+    SUMMARY?: string
 }
+export type EventField = keyof Event
+export type EventFieldOfType<T> = NonNullable<KeyOfType<Event, T>>
 
-export type DateTimeString = String
+export type Digit = '0'|'1'|'2'|'3'|'4'|'5'|'7'|'8'|'9'
+export type DateTimeString = `${number}T${number}Z`
 
 export function getMainCalendar(calendar: IcalObject): Calendar | undefined {
     if (!('VCALENDAR' in calendar) || (calendar['VCALENDAR'] as Array<any>).length == 0) {
