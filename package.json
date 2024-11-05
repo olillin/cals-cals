@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "clean": "rimraf ./dist",
-    "build": "npm run clean && tsc --outDir ./dist && npm run copyPublic",
+    "build": "npm run clean && tsc --outDir ./dist && npm run copyPublic && rimraf --glob ./dist/**/*.ts",
     "copyPublic": "node -e \"require('fs').cpSync('./src/public', './dist/public', {recursive: true});\"",
     "start": "cd dist && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
