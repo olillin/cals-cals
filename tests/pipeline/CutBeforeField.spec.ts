@@ -4,7 +4,7 @@ import { CutBeforeField } from '../../src/pipeline/FieldModifications'
 var event: Event
 beforeEach(function () {
     event = {
-        SUMMARY: 'abcdef',
+        SUMMARY: 'ab?def',
         UID: 'test-event123',
         DTSTAMP: '00000000T000000Z',
     }
@@ -12,15 +12,15 @@ beforeEach(function () {
 it('No regex', function() {
     let step = new CutBeforeField({
         field: 'SUMMARY',
-        query: 'c',
+        query: '?',
     })
     let processed = step.modify(event)
-    expect(processed.SUMMARY === 'cdef')
+    expect(processed.SUMMARY === '?def')
 })
 it('No regex, cut query', function() {
     let step = new CutBeforeField({
         field: 'SUMMARY',
-        query: 'c',
+        query: '?',
         cutQuery: true,
     })
     let processed = step.modify(event)
@@ -29,24 +29,34 @@ it('No regex, cut query', function() {
 it('Regex', function() {
     let step = new CutBeforeField({
         field: 'SUMMARY',
-        query: '[dc]',
-    })
-    let processed = step.modify(event)
-    expect(processed.SUMMARY === 'cdef')
-})
-it('Regex, cut query', function() {
-    let step = new CutBeforeField({
-        field: 'SUMMARY',
-        query: '[dc]',
-        cutQuery: true,
+        query: '[de]',
+        useRegex: true,
     })
     let processed = step.modify(event)
     expect(processed.SUMMARY === 'def')
 })
+it('Regex, cut query', function() {
+    let step = new CutBeforeField({
+        field: 'SUMMARY',
+        query: '[de]',
+        useRegex: true,
+        cutQuery: true,
+    })
+    let processed = step.modify(event)
+    expect(processed.SUMMARY === 'ef')
+})
+it('Query does not exist', function() {
+    let step = new CutBeforeField({
+        field: 'SUMMARY',
+        query: 'c',
+    })
+    let processed = step.modify(event)
+    expect(processed.SUMMARY === event.SUMMARY)
+})
 it('Field does not exist', function() {
     let step = new CutBeforeField({
         field: 'DESCRIPTION',
-        query: 'c',
+        query: '?',
     })
     let processed = step.modify(event)
     expect(processed.DESCRIPTION === undefined)

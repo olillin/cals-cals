@@ -1,29 +1,44 @@
 import { Calendar, Event, EventFieldOfType } from '../Calendar'
+import { toPercentCode } from '../PipelineRegistry';
 import { KeyOfType } from '../Util'
 
 export abstract class CalendarSource<P> {
-    abstract params: P
+    params: P
+    constructor(params: P) {
+        this.params = params
+    }
     abstract getCalendar(): Calendar
 }
 
 export abstract class AsyncCalendarSource<P> {
-    abstract params: P
+    params: P
+    constructor(params: P) {
+        this.params = params
+    }
     abstract getCalendar(): Promise<Calendar>
 }
 
+/** Defines a step in a `Pipeline`. */
 export abstract class PipelineStep<P> {
-    abstract params: P
-    // abstract serialize(): string
-    // abstract deserialize(string): PipelineStep<P>
+    params: P
+    constructor(params: P) {
+        this.params = params
+    }
 }
 
 export abstract class CalendarModification<P> {
-    abstract params: P
+    params: P
+    constructor(params: P) {
+        this.params = params
+    }
     abstract modify(calendar: Calendar): Calendar
 }
 
 export abstract class EventModification<P> {
-    abstract params: P
+    params: P
+    constructor(params: P) {
+        this.params = params
+    }
     abstract modify(event: Event): Event
 }
 
@@ -31,7 +46,6 @@ export interface FieldModificationParams<F> {
     field: EventFieldOfType<F | undefined>
 }
 export abstract class FieldModification<P extends FieldModificationParams<F>, F> extends EventModification<P> {
-    abstract params: P
     modify(event: Event): Event {
         const fieldText = event[this.params.field] as F
         const newEvent = Object.assign({}, event)
@@ -49,7 +63,7 @@ export abstract class EventFilter<P> {
 
 export type Pipeline = Array<PipelineStep<any>>
 
-function applyPipeline(calendar: Calendar, pipeline: Pipeline): Promise<Calendar> {
+export function applyPipeline(calendar: Calendar, pipeline: Pipeline): Promise<Calendar> {
     let cal: Calendar = Object.assign({}, calendar)
     return new Promise(async (resolve, reject) => {
         pipeline.forEach(step => {

@@ -7,11 +7,6 @@ export interface FieldCopyParams<T> {
 }
 
 export class SetFieldFrom<T> extends EventModification<FieldCopyParams<T>> {
-    params: FieldCopyParams<T>
-    constructor(params: FieldCopyParams<T>) {
-        super()
-        this.params = params
-    }
     modify(event: Event): Event {
         let newEvent = Object.assign({}, event)
         newEvent[this.params.toField] = newEvent[this.params.fromField]
@@ -20,11 +15,6 @@ export class SetFieldFrom<T> extends EventModification<FieldCopyParams<T>> {
 }
 
 export class AppendFieldFrom extends EventModification<FieldCopyParams<string>> {
-    params: FieldCopyParams<string>
-    constructor(params: FieldCopyParams<string>) {
-        super()
-        this.params = params
-    }
     modify(event: Event): Event {
         let newEvent = Object.assign({}, event)
         if (newEvent[this.params.toField] == undefined) {
@@ -37,11 +27,6 @@ export class AppendFieldFrom extends EventModification<FieldCopyParams<string>> 
 }
 
 export class PrependFieldFrom extends EventModification<FieldCopyParams<string>> {
-    params: FieldCopyParams<string>
-    constructor(params: FieldCopyParams<string>) {
-        super()
-        this.params = params
-    }
     modify(event: Event): Event {
         let newEvent = Object.assign({}, event)
         if (newEvent[this.params.toField] == undefined) {

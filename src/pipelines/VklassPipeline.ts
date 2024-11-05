@@ -1,7 +1,7 @@
 import { CapitalizeField, KeepField } from '../FieldModifications'
 import { Pipeline } from '../Pipeline'
 
-const VklassConfiguration: Pipeline = [
+const VklassPipeline: Pipeline = [
     new IncludeField({
         field: 'SUMMARY',
         query: '^[wåäöÅÄÖ -]+[wåäöÅÄÖ]',
@@ -11,4 +11,4 @@ const VklassConfiguration: Pipeline = [
         field: 'SUMMARY',
     }),
 ]
-export default VklassConfiguration
+export default VklassPipeline

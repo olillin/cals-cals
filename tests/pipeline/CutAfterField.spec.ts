@@ -4,7 +4,7 @@ import { CutAfterField } from '../../src/pipeline/FieldModifications'
 var event: Event
 beforeEach(function () {
     event = {
-        SUMMARY: 'abcdef',
+        SUMMARY: 'ab?def',
         UID: 'test-event123',
         DTSTAMP: '00000000T000000Z',
     }
@@ -12,15 +12,15 @@ beforeEach(function () {
 it('No regex', function() {
     let step = new CutAfterField({
         field: 'SUMMARY',
-        query: 'c',
+        query: '?',
     })
     let processed = step.modify(event)
-    expect(processed.SUMMARY === 'abc')
+    expect(processed.SUMMARY === 'ab?')
 })
 it('No regex, cut query', function() {
     let step = new CutAfterField({
         field: 'SUMMARY',
-        query: 'c',
+        query: '?',
         cutQuery: true,
     })
     let processed = step.modify(event)
@@ -29,24 +29,34 @@ it('No regex, cut query', function() {
 it('Regex', function() {
     let step = new CutAfterField({
         field: 'SUMMARY',
-        query: '[dc]',
+        query: '[de]',
+        useRegex: true,
     })
     let processed = step.modify(event)
-    expect(processed.SUMMARY === 'abc')
+    expect(processed.SUMMARY === 'abcd')
 })
 it('Regex, cut query', function() {
     let step = new CutAfterField({
         field: 'SUMMARY',
-        query: '[dc]',
+        query: '[de]',
+        useRegex: true,
         cutQuery: true,
     })
     let processed = step.modify(event)
-    expect(processed.SUMMARY === 'ab')
+    expect(processed.SUMMARY === 'abc')
+})
+it('Query does not exist', function() {
+    let step = new CutAfterField({
+        field: 'SUMMARY',
+        query: 'c',
+    })
+    let processed = step.modify(event)
+    expect(processed.SUMMARY === event.SUMMARY)
 })
 it('Field does not exist', function() {
     let step = new CutAfterField({
         field: 'DESCRIPTION',
-        query: 'c',
+        query: '?',
     })
     let processed = step.modify(event)
     expect(processed.DESCRIPTION === undefined)

@@ -14,13 +14,8 @@ export interface TextMatchAllParams extends FieldModificationParams<string> {
 export interface ReplaceFieldParams extends TextMatchAllParams {
     value: string
 }
-/** Remove the matched string from the field. */
+/** Replace the matched `query` in the `field`. */
 export class ReplaceField extends FieldModification<ReplaceFieldParams, string | undefined> {
-    params: ReplaceFieldParams
-    constructor(params: ReplaceFieldParams) {
-        super()
-        this.params = params
-    }
     modifyField(text: string | undefined): string | undefined {
         if (text === undefined) {
             return undefined
@@ -36,11 +31,6 @@ export class ReplaceField extends FieldModification<ReplaceFieldParams, string |
 
 /** Remove all but the matched string from the field. */
 export class KeepField extends FieldModification<TextMatchAllParams, string | undefined> {
-    params: TextMatchAllParams
-    constructor(params: TextMatchAllParams) {
-        super()
-        this.params = params
-    }
     modifyField(text: string | undefined): string | undefined {
         if (text === undefined) {
             return undefined
@@ -86,11 +76,6 @@ export class KeepField extends FieldModification<TextMatchAllParams, string | un
 
 /** Remove all but the matched string from the field. */
 export class CapitalizeField extends FieldModification<FieldModificationParams<string | undefined>, string | undefined> {
-    params: FieldModificationParams<string | undefined>
-    constructor(params: FieldModificationParams<string | undefined>) {
-        super()
-        this.params = params
-    }
     modifyField(text: string | undefined): string | undefined {
         if (text === undefined) {
             return undefined
@@ -103,34 +88,21 @@ export interface CutParams extends TextMatchParams {
     cutQuery?: boolean,
 }
 export class CutBeforeField extends FieldModification<CutParams, string | undefined> {
-    params: CutParams
-    constructor(params: CutParams) {
-        super()
-        this.params = params
-    }
     modifyField(text: string | undefined): string | undefined {
         if (text === undefined) {
             return undefined
         }
-        const query: RegExp | string = this.params.useRegex ? RegExp(this.params.query) : this.params.query
-        const index = text.search(query)
+        const index = this.params.useRegex ? text.search(this.params.query) : text.indexOf(this.params.query)
         return text.substring(0, index)
     }
 }
 
 export class CutAfterField extends FieldModification<CutParams, string | undefined> {
-    params: CutParams
-    constructor(params: CutParams) {
-        super()
-        this.params = params
-    }
-
     modifyField(text: string | undefined): string | undefined {
         if (text === undefined) {
             return undefined
         }
-        const query: RegExp | string = this.params.useRegex ? RegExp(this.params.query) : this.params.query
-        const index = text.search(query)
+        const index = this.params.useRegex ? text.search(this.params.query) : text.indexOf(this.params.query)
         return text.substring(index)
     }
 }
@@ -139,36 +111,18 @@ export interface ConstantValueFieldParams<T> extends FieldModificationParams<T> 
     value: T
 }
 export class SetField<T> extends FieldModification<ConstantValueFieldParams<T>, T> {
-    params: ConstantValueFieldParams<T>
-    constructor(params: ConstantValueFieldParams<T>) {
-        super()
-        this.params = params
-    }
-
     modifyField(text: T): T {
         return this.params.value
     }
 }
 
 export class AppendField extends FieldModification<ConstantValueFieldParams<string>, string> {
-    params: ConstantValueFieldParams<string>
-    constructor(params: ConstantValueFieldParams<string>) {
-        super()
-        this.params = params
-    }
-
     modifyField(text: string): string {
         return text + this.params.value
     }
 }
 
 export class PrependField extends FieldModification<ConstantValueFieldParams<string>, string> {
-    params: ConstantValueFieldParams<string>
-    constructor(params: ConstantValueFieldParams<string>) {
-        super()
-        this.params = params
-    }
-
     modifyField(text: string): string {
         return this.params.value + text
     }

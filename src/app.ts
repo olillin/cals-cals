@@ -2,7 +2,8 @@ import express from 'express'
 import fs from 'fs'
 import https from 'https'
 import http from 'http'
-import VklassAdapter from './adapters/VklassAdapter'
+import PipelineRegistry from './PipelineRegistry'
+import VklassPipeline from './pipelines/VklassPipeline'
 
 // Import ENV variables
 interface EnvironmentVariables {
