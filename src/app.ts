@@ -1,8 +1,11 @@
 import express, { Response } from 'express'
-import fs from 'fs'
+import fs, { readFile } from 'fs'
 import https from 'https'
 import http from 'http'
 import VklassAdapter from './adapters/VklassAdapter'
+import * as ical2json from 'ical2json'
+import { IcalObject } from 'ical2json'
+import { mergeCalendarsIcal } from './Calendar'
 
 // Environment variables
 interface EnvironmentVariables {
@@ -63,6 +66,66 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
         })
     )
 }
+
+// Merge calendars
+const INDEX_PATH = '../data/calendars/index'
+const calendarIndex = fs
+    .readFileSync(INDEX_PATH)
+    .toString()
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+console.log("Available calendars:", calendarIndex)
+
+function dec2bin(dec: number) {
+    return (dec >>> 0).toString(2)
+}
+
+app.get('/m/:calendars', async (req, res) => {
+    const appendOriginName = !!(req.query['origin'] ?? false)
+
+    const selectedCalendars = parseInt(req.params.calendars)
+    if (isNaN(selectedCalendars)) {
+        res.status(400).json({
+            error: {
+                message: 'Invalid calendars',
+            },
+        })
+        return
+    }
+    const selectedBits = dec2bin(selectedCalendars)
+
+    const calendarNames: string[] = calendarIndex.filter((_, i) => {
+        return (selectedBits.length > i) && (selectedBits.charAt(selectedBits.length - 1 - i) === '1')
+    })
+    if (calendarNames.length == 0) {
+        res.status(400).json({
+            error: {
+                message: 'No calendars selected',
+            },
+        })
+        return
+    }
+
+    const calendars = await Promise.all(
+        calendarNames.map(
+            name =>
+                new Promise<IcalObject>((resolve, reject) =>
+                    fs.readFile(CALENDAR_DIRECTORY + "/" + name, (err, data) => {
+                        if (err) {
+                            reject(err)
+                        } else {
+                            const ical = ical2json.convert(data.toString())
+                            resolve(ical)
+                        }
+                    })
+                )
+        )
+    )
+
+    const ical = ical2json.revert(mergeCalendarsIcal(calendars, appendOriginName))
+    res.status(200).end(ical)
+})
 
 // Start server
 var server

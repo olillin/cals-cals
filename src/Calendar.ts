@@ -42,3 +42,46 @@ export function getMainCalendar(calendar: IcalObject): Calendar | undefined {
     }
     return calendar.VCALENDAR[0] as unknown as Calendar
 }
+
+export function toIcalObject(calendar: Calendar): IcalObject {
+    return {
+        // @ts-ignore
+        VCALENDAR: [calendar],
+    }
+}
+
+function deepCopy<T extends object>(object: T): T {
+    return JSON.parse(JSON.stringify(object))
+}
+
+export function mergeCalendars(calendars: Calendar[], appendOriginName: boolean = false): Calendar {
+    const base: Calendar = deepCopy(calendars[0])
+    const names = [base['X-WR-CALNAME']]
+    if (appendOriginName) {
+        base.VEVENT.forEach(e => {
+            e.SUMMARY += ' - ' + base['X-WR-CALNAME']
+        })
+    }
+    for (const calendar of calendars.slice(1)) {
+        names.push(calendar['X-WR-CALNAME'])
+        base.VEVENT = base.VEVENT.concat(
+            calendar.VEVENT.map(e => {
+                const newEvent = deepCopy(e)
+                if (appendOriginName) {
+                    newEvent.SUMMARY += ' - ' + calendar['X-WR-CALNAME']
+                }
+                return newEvent
+            })
+        )
+    }
+    base['X-WR-CALNAME'] = names.join("+")
+    return base
+}
+
+export function mergeCalendarsIcal(calendars: IcalObject[], appendOriginName: boolean = false): IcalObject {
+    const calendar: Calendar = mergeCalendars(
+        calendars.map(c => getMainCalendar(c)).filter(c => c !== undefined),
+        appendOriginName
+    )
+    return toIcalObject(calendar)
+}
