@@ -23,6 +23,7 @@
     <meta name="twitter:image:alt" content="Cal's cals banner">
     <meta name="twitter:site" content="@olilllin">
     <meta name="twitter:creator" content="@olilllin">
+    <script src="/calendar-picker.js"></script>
 </head>
 <body>
     <main>
@@ -35,9 +36,17 @@
 
             <div class="calendar-grid" id="calendar-grid"></div>
 
-            <input type="text" id="calendar-url">
+            <span class="show-origin" id="show-origin-section">
+                <input type="checkbox" id="show-origin" checked="true" onchange="updateUrl()">
+                <label for="show-origin">Show calendar name in events</label>
+            </span>
 
-            <script src="/calendar-picker.js"></script>
+            <span class="calendar-url" id="calendar-url-section">
+                <input type="text" id="calendar-url" disabled aria-disabled="true">
+                <span id="copy-notice"><span class="no-select">Copied!</span></span>
+                <button id="copy-calendar-url" onclick="copyUrl()"></button>
+            </span>
+
         </section>
 
         <section>
