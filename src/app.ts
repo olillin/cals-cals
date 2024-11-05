@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Response } from 'express'
 import fs from 'fs'
 import https from 'https'
 import http from 'http'
@@ -26,21 +26,31 @@ const app = express()
 
 app.use('/vklass', new VklassAdapter().createRouter())
 
+function noStoreCals(res: Response, path: string) {
+    if (path.endsWith('.ics')) {
+        res.set('Cache-Control', 'no-store, max-age=0')
+    }
+}
+
 const PUBLIC_DIRECTORY = 'public'
 if (fs.existsSync(PUBLIC_DIRECTORY)) {
     app.use(
         '/',
-        // Don't cache
-        express.static(PUBLIC_DIRECTORY, {
-            setHeaders: function (res, path) {
-                if (path.endsWith('.ics')) {
-                    res.set('Cache-Control', 'no-store, max-age=0')
-                }
-            },
-        })
+        express.static(PUBLIC_DIRECTORY)
     )
 } else {
     console.warn('WARNING: No public directory')
+}
+
+const CALENDAR_DIRECTORY = '../data/calendars'
+if (fs.existsSync(CALENDAR_DIRECTORY)) {
+    app.use(
+        '/c',
+        express.static(CALENDAR_DIRECTORY, {
+            // Don't cache
+            setHeaders: noStoreCals,
+        })
+    )
 }
 
 // Start server
