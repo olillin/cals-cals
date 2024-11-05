@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "redirects": {
+      "type": "object",
+      "description": "Multiple redirects, where each key is the path to redirect from and the value the redirected path",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "redirects"
+  ]
+}

@@ -24,6 +24,20 @@ const { PORT } = ENVIRONMENT
 // Setup express app
 const app = express()
 
+// Redirects
+const REDIRECTS_PATH = '../data/redirects.json'
+interface Redirects {
+    [x: string]: string
+}
+const redirects: Redirects = JSON.parse(fs.readFileSync(REDIRECTS_PATH).toString()).redirects
+app.use((req, res, next) => {
+    if (req.url in redirects) {
+        const newUrl = redirects[req.url]
+        res.redirect(301, newUrl)
+    }
+    next()
+})
+
 app.use('/vklass', new VklassAdapter().createRouter())
 
 function noStoreCals(res: Response, path: string) {
@@ -34,10 +48,7 @@ function noStoreCals(res: Response, path: string) {
 
 const PUBLIC_DIRECTORY = 'public'
 if (fs.existsSync(PUBLIC_DIRECTORY)) {
-    app.use(
-        '/',
-        express.static(PUBLIC_DIRECTORY)
-    )
+    app.use('/', express.static(PUBLIC_DIRECTORY))
 } else {
     console.warn('WARNING: No public directory')
 }
