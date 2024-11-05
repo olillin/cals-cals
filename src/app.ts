@@ -5,7 +5,7 @@ import http from 'http'
 import VklassAdapter from './adapters/VklassAdapter'
 import * as ical2json from 'ical2json'
 import { IcalObject } from 'ical2json'
-import { mergeCalendarsIcal } from './Calendar'
+import { getMainCalendar, mergeCalendarsIcal } from './Calendar'
 
 // Environment variables
 interface EnvironmentVariables {
@@ -65,6 +65,23 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
             setHeaders: noStoreCals,
         })
     )
+    app.get('/c/name/:calendar', (req, res) => {
+        const calendarName = req.params.calendar
+        if (!/^[\w_-]+\.[\w_-]+$/.test(calendarName)) {
+            res.status(400).json({
+                error: {
+                    message: 'Illegal calendar specified',
+                },
+            })
+            return
+        }
+        const text = fs.readFileSync(CALENDAR_DIRECTORY + '/' + calendarName).toString()
+        const ical = ical2json.convert(text)
+        const calendar = getMainCalendar(ical)
+        res.status(200).json({
+            name: calendar?.['X-WR-CALNAME'],
+        })
+    })
 }
 
 // Merge calendars
@@ -75,7 +92,7 @@ const calendarIndex = fs
     .split('\n')
     .map(line => line.trim())
     .filter(line => line.length > 0)
-console.log("Available calendars:", calendarIndex)
+console.log('Available calendars:', calendarIndex)
 
 function dec2bin(dec: number) {
     return (dec >>> 0).toString(2)
@@ -96,7 +113,7 @@ app.get('/m/:calendars', async (req, res) => {
     const selectedBits = dec2bin(selectedCalendars)
 
     const calendarNames: string[] = calendarIndex.filter((_, i) => {
-        return (selectedBits.length > i) && (selectedBits.charAt(selectedBits.length - 1 - i) === '1')
+        return selectedBits.length > i && selectedBits.charAt(selectedBits.length - 1 - i) === '1'
     })
     if (calendarNames.length == 0) {
         res.status(400).json({
@@ -111,7 +128,7 @@ app.get('/m/:calendars', async (req, res) => {
         calendarNames.map(
             name =>
                 new Promise<IcalObject>((resolve, reject) =>
-                    fs.readFile(CALENDAR_DIRECTORY + "/" + name, (err, data) => {
+                    fs.readFile(CALENDAR_DIRECTORY + '/' + name, (err, data) => {
                         if (err) {
                             reject(err)
                         } else {

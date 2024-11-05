@@ -1,0 +1,3428 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:IT'24 Kalendern
+X-WR-TIMEZONE:Europe/Stockholm
+X-WR-CALDESC:Information och platser för IT 2024\, skicka DM till Cal på Sl
+ ack vid problem
+BEGIN:VTIMEZONE
+TZID:Europe/Stockholm
+X-LIC-LOCATION:Europe/Stockholm
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:GMT+2
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:GMT+1
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART:20240820T134500Z
+DTEND:20240820T220000Z
+DTSTAMP:20241105T091036Z
+UID:309rdl2cpjuir6iqkbov94den3@google.com
+CREATED:20240820T173438Z
+LAST-MODIFIED:20240820T173438Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Phaddermys
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240826T100000Z
+DTEND:20240826T160000Z
+DTSTAMP:20241105T091036Z
+UID:3fn0ias2fd7ss3v0j9cfkj2s71@google.com
+CREATED:20240820T204447Z
+LAST-MODIFIED:20240820T204447Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Bygget öppnar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240829T100000Z
+DTEND:20240829T160000Z
+DTSTAMP:20241105T091036Z
+UID:5rtfeeh19nsohcp6u35u839bav@google.com
+CREATED:20240820T204930Z
+LAST-MODIFIED:20240820T204930Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Bygget stänger
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240820T124000Z
+DTEND:20240820T132500Z
+DTSTAMP:20241105T091036Z
+UID:3m2mfmtc1k06lrefhbphvvqq7d@google.com
+CREATED:20240820T173403Z
+LAST-MODIFIED:20240820T212416Z
+LOCATION:RunAn
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:RunAn
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240821T070000Z
+DTEND:20240821T094500Z
+DTSTAMP:20241105T091036Z
+UID:0timl18c7uqcns4mtj94rbnlmf@google.com
+CREATED:20240820T173511Z
+LAST-MODIFIED:20240820T212437Z
+LOCATION:HC4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240821T111500Z
+DTEND:20240821T130000Z
+DTSTAMP:20241105T091036Z
+UID:2ukap7kpgbunfsfh3q6u555uo2@google.com
+CREATED:20240820T202944Z
+LAST-MODIFIED:20240820T213032Z
+LOCATION:RunAn
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Framtidskod - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240820T060000Z
+DTEND:20240820T074000Z
+DTSTAMP:20241105T091036Z
+UID:2p0f3am59c7f6eut75rk8ep5gr@google.com
+CREATED:20240820T173155Z
+DESCRIPTION:På första dagen kommer du attsamlas tillsammans med allaandra N
+ ollan (på hela Chalmers)på Götaplatsen. Där kommer dufå din Nollantröja och
+  få träffaP.R.I.T. och MK. Sen kommer nigemensamt vandra till campus.
+LAST-MODIFIED:20240820T213253Z
+LOCATION:Götaplatsen\, Göteborg\, Sweden
+SEQUENCE:2
+STATUS:CONFIRMED
+SUMMARY:Götaplatsen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240902T111500Z
+DTEND:20240902T130000Z
+DTSTAMP:20241105T091036Z
+UID:29b4tau3k852rf8v8bh1ehtn87@google.com
+CREATED:20240820T215358Z
+LAST-MODIFIED:20240820T215438Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240903T111500Z
+DTEND:20240903T130000Z
+DTSTAMP:20241105T091036Z
+UID:2k4krkg0apjujsldsts7s3s3c6@google.com
+CREATED:20240820T215427Z
+LAST-MODIFIED:20240820T215446Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240904T060000Z
+DTEND:20240904T074500Z
+DTSTAMP:20241105T091036Z
+UID:58pfkv103vj434dmv4dj48vg49@google.com
+CREATED:20240820T215514Z
+LAST-MODIFIED:20240820T215653Z
+LOCATION:EL41\, EL42\, EL43\, ES53\, SB-L208\, SB-L227
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240904T131500Z
+DTEND:20240904T150000Z
+DTSTAMP:20241105T091036Z
+UID:7ptama4d4jkop3no8ib0hae9o1@google.com
+CREATED:20240820T215747Z
+LAST-MODIFIED:20240820T215858Z
+LOCATION:ED2480\, ED5217\, ES61\, ES62\, ES63\, HB105\, HB110\, SB-D023\, S
+ B-D025
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T131500Z
+DTEND:20240905T150000Z
+DTSTAMP:20241105T091036Z
+UID:7jc1co2le7bfa7i4p3j5e036vv@google.com
+CREATED:20240820T215924Z
+LAST-MODIFIED:20240820T215933Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240906T060000Z
+DTEND:20240906T074500Z
+DTSTAMP:20241105T091036Z
+UID:1h505n06gltarktbv7vseu2i4m@google.com
+CREATED:20240820T215957Z
+LAST-MODIFIED:20240820T220021Z
+LOCATION:ES61\, ES62\, ES63\, SB-D020\, SB-D025\, SB-D040\, SB-D080
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240906T080000Z
+DTEND:20240906T094500Z
+DTSTAMP:20241105T091036Z
+UID:172k6v4773amn9kbla15tlfqse@google.com
+CREATED:20240820T220108Z
+LAST-MODIFIED:20240820T220108Z
+LOCATION:SB-L216\, SB-L227\, SB-L285\, SB-L408\, SB-L516\, SB-S215
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240906T131500Z
+DTEND:20240906T150000Z
+DTSTAMP:20241105T091036Z
+UID:48ld3kqgqm6g45a9840ad8gpcu@google.com
+CREATED:20240820T220125Z
+LAST-MODIFIED:20240820T220137Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240909T060000Z
+DTEND:20240909T074500Z
+DTSTAMP:20241105T091036Z
+UID:36i7lq48b661of8r2cjuclgnqb@google.com
+CREATED:20240820T220203Z
+LAST-MODIFIED:20240820T220230Z
+LOCATION:HB105\, HB110\, SB-D020\, SB-D023\, SB-D025\, SB-D040\, SB-D042\, 
+ SB-D080
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240909T111500Z
+DTEND:20240909T130000Z
+DTSTAMP:20241105T091036Z
+UID:5mhq1mc8kf39lu7sqf1qvhb4p7@google.com
+CREATED:20240820T220257Z
+LAST-MODIFIED:20240820T220306Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240909T131500Z
+DTEND:20240909T150000Z
+DTSTAMP:20241105T091036Z
+UID:1rftlrm4ot1dujin951an534k9@google.com
+CREATED:20240820T220343Z
+LAST-MODIFIED:20240820T220401Z
+LOCATION:SB-L216\, SB-L227\, SB-L300\, SB-L308\, SB-L408\, SB-L516
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240910T111500Z
+DTEND:20240910T130000Z
+DTSTAMP:20241105T091036Z
+UID:1sihqbivuii2otri94j3o32tvu@google.com
+CREATED:20240820T220431Z
+LAST-MODIFIED:20240820T220439Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240910T131500Z
+DTEND:20240910T150000Z
+DTSTAMP:20241105T091036Z
+UID:4j34q22j61o24b7cf3pclpimlk@google.com
+CREATED:20240820T220459Z
+LAST-MODIFIED:20240820T220515Z
+LOCATION:HA4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240911T111500Z
+DTEND:20240911T130000Z
+DTSTAMP:20241105T091036Z
+UID:42jqc1f77ccm4is4imdb1sorca@google.com
+CREATED:20240820T220549Z
+LAST-MODIFIED:20240820T220558Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240911T131500Z
+DTEND:20240911T150000Z
+DTSTAMP:20241105T091036Z
+UID:1q9b1fqv2vu2h03nko27mq6akk@google.com
+CREATED:20240820T220623Z
+LAST-MODIFIED:20240820T220659Z
+LOCATION:ED2480\, ED5217\, ES61\, ES62\, ES63\, HB105\, HB110
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240912T060000Z
+DTEND:20240912T074500Z
+DTSTAMP:20241105T091036Z
+UID:623er62901re0splotc5f1unr3@google.com
+CREATED:20240820T220723Z
+LAST-MODIFIED:20240820T220732Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240913T060000Z
+DTEND:20240913T074500Z
+DTSTAMP:20241105T091036Z
+UID:7eudvci6t7js3srhft8siljnlr@google.com
+CREATED:20240820T220805Z
+LAST-MODIFIED:20240820T220852Z
+LOCATION:ED2480\, ES61\, ES62\, ES63\, SB-D020\, SB-D042\, SB-D080
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Grundläggande programvaruutveckling - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240913T080000Z
+DTEND:20240913T094500Z
+DTSTAMP:20241105T091036Z
+UID:4v7q13dcf0ks7gmmhv00vvqi8l@google.com
+CREATED:20240820T221012Z
+LAST-MODIFIED:20240820T221012Z
+LOCATION:SB-L208\, SB-L216\, SB-L227\, SB-L285\, SB-L408\, SB-L516
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240828T111500Z
+DTEND:20240828T160000Z
+DTSTAMP:20241105T091036Z
+UID:6jlo266h38v07bfbrk0fhu59q6@google.com
+CREATED:20240820T204827Z
+DESCRIPTION:Massor av kommittéer och föreningar håller i aktiviteter på cam
+ pus!
+LAST-MODIFIED:20240820T222234Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:TivolIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240901T060000Z
+DTEND:20240901T200000Z
+DTSTAMP:20241105T091036Z
+UID:7hvje4916k2m5m0a2mgo27k5p8@google.com
+CREATED:20240820T205530Z
+DESCRIPTION:Den heliga ceremonin...\n\nDet finns en anrik tradition på Chal
+ mers att Nollan under mottagningen får ett Nolluppdrag att genomföra. Vad d
+ et innebär varierar från uppdrag till uppdrag\, det kan vara allt från att 
+ spela in en parodi på en känd musikvideo till att köra speciella former av 
+ yoga. En viktig del av uppdragen är att ens egna uppdrag är hemligt fram ti
+ lls Oscarssittningen som sker sista mottagningsveckan. Ofta dokumenteras en
+ s uppdrag i form av videor så att man har ett minne för framtiden\, men äve
+ n för att kunna visa upp för alla andra Nollan på redovisningen. Uppdragen 
+ genomförs i grupp och det är frivilligt\, dock är det något som vi i NollKI
+ T rekommenderar varmt att man gör då det är riktigt kul.
+LAST-MODIFIED:20240820T222700Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Nolluppdrag
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240907T053000Z
+DTEND:20240908T100000Z
+DTSTAMP:20241105T091036Z
+UID:7lcmc453dsl40l2nql5ts4u423@google.com
+CREATED:20240820T210346Z
+DESCRIPTION:Din barndomsdröm går i uppfyllelse! Du ska vara med i Wild Kids
+ ! Tillsammans med dina nya klasskamrater blir det enväldigt spännande helg 
+ fylld av tävlingar och äventyr! Övernattning gäller!
+LAST-MODIFIED:20240820T222903Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Wild kids
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240823T070000Z
+DTEND:20240823T084500Z
+DTSTAMP:20241105T091036Z
+UID:0q0gqdg4gnhin3o27emioeknmk@google.com
+CREATED:20240820T203123Z
+LAST-MODIFIED:20240821T112727Z
+LOCATION:EE\, EF
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240823T090000Z
+DTEND:20240823T094500Z
+DTSTAMP:20241105T091036Z
+UID:38rv2c9n1h6eb4dcekub94ci0a@google.com
+CREATED:20240820T203147Z
+LAST-MODIFIED:20240821T112826Z
+LOCATION:GD-salen\, Chalmers tvärgata 5\, 412 58 Göteborg\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Framtidskod - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240826T111500Z
+DTEND:20240826T130000Z
+DTSTAMP:20241105T091036Z
+UID:13ijhq7575f0ugms9askq06mv6@google.com
+CREATED:20240820T204511Z
+LAST-MODIFIED:20240821T113101Z
+LOCATION:EE\, EF
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240826T080000Z
+DTEND:20240826T094500Z
+DTSTAMP:20241105T091036Z
+UID:5trs6qdbg2b9l23krsasbolj3j@google.com
+CREATED:20240820T204420Z
+LAST-MODIFIED:20240821T113112Z
+LOCATION:HC4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240827T080000Z
+DTEND:20240827T094500Z
+DTSTAMP:20241105T091036Z
+UID:4h2j72ov3ghkbphsovusob2du9@google.com
+CREATED:20240820T204614Z
+LAST-MODIFIED:20240821T113119Z
+LOCATION:HC4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240827T111500Z
+DTEND:20240827T130000Z
+DTSTAMP:20241105T091036Z
+UID:7p250kk18ej9f4vu2q9f98j01b@google.com
+CREATED:20240820T204636Z
+LAST-MODIFIED:20240821T113130Z
+LOCATION:EE\, EF
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240828T080000Z
+DTEND:20240828T094500Z
+DTSTAMP:20241105T091036Z
+UID:2s6r0ppiu23g3b7akp38i9kpvu@google.com
+CREATED:20240820T204718Z
+LAST-MODIFIED:20240821T113141Z
+LOCATION:HC4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240820T110000Z
+DTEND:20240820T121500Z
+DTSTAMP:20241105T091036Z
+UID:0slnqtt4ln2c6tfdcmdbfmb3qj@google.com
+CREATED:20240820T173332Z
+LAST-MODIFIED:20240821T113317Z
+LOCATION:Sandlådan\, Rännvägen\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Sandlådan
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240826T131500Z
+DTEND:20240826T140000Z
+DTSTAMP:20241105T091036Z
+UID:4va6ifb1oo86giecfkansnaptl@google.com
+CREATED:20240820T204537Z
+LAST-MODIFIED:20240821T113434Z
+LOCATION:GD-salen\, Chalmers tvärgata 5\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Framtidskod - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240829T080000Z
+DTEND:20240829T094500Z
+DTSTAMP:20241105T091036Z
+UID:29i28cc0020u8l734n4lmjgp60@google.com
+CREATED:20240820T204902Z
+LAST-MODIFIED:20240821T113512Z
+LOCATION:EE\, EF
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Intromatte - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240829T100000Z
+DTEND:20240829T110000Z
+DTSTAMP:20241105T091036Z
+UID:0nrvj0a0i28qe64pv3mqebk33v@google.com
+CREATED:20240820T205004Z
+LAST-MODIFIED:20240821T113525Z
+LOCATION:HC4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:SI-Lunchföreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240829T111500Z
+DTEND:20240829T120000Z
+DTSTAMP:20241105T091036Z
+UID:6rd8p33nl64of5v25ff8f885mq@google.com
+CREATED:20240820T205027Z
+LAST-MODIFIED:20240821T113538Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Framtidskod - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240829T121500Z
+DTEND:20240829T140000Z
+DTSTAMP:20241105T091036Z
+UID:522po80kl2j2tcgfjcik7l3s3r@google.com
+CREATED:20240820T205058Z
+LAST-MODIFIED:20240821T113629Z
+LOCATION:ED5217\, ES61\, ES62\, ES63
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Programmering - Övning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240831T060000Z
+DTEND:20240831T111500Z
+DTSTAMP:20241105T091036Z
+UID:6ek64vhop9tgcn32lheiommkqi@google.com
+CREATED:20240820T205302Z
+DESCRIPTION:Du har möjlighet att skriva en tenta\, med syftet att se hur de
+ t går till\, utan att resultatet är dödsviktigt!
+LAST-MODIFIED:20240821T113744Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Övningstenta
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240904T111500Z
+DTEND:20240904T130000Z
+DTSTAMP:20241105T091036Z
+UID:5ttt1krc3439c7vbd2rvk6njr9@google.com
+CREATED:20240820T215720Z
+LAST-MODIFIED:20240821T113842Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Diskret matematik - Föreläsning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240825T160000Z
+DTEND:20240825T210000Z
+DTSTAMP:20241105T091036Z
+UID:4hordk8q9vaa8nh67ateu8kqbg@google.com
+CREATED:20240820T203933Z
+DESCRIPTION:En kväll fylld av spel\, musik\, gött häng\, tilltugg och kansk
+ e en vinst tillsammans med ArmIT.
+LAST-MODIFIED:20240821T185323Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Casinokväll
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240822T080000Z
+DTEND:20240822T094500Z
+DTSTAMP:20241105T091036Z
+UID:3gc5lj6tev5nn32et019fvpndr@google.com
+CREATED:20240820T203418Z
+LAST-MODIFIED:20240821T185343Z
+LOCATION:HB2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Programinformation
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240826T060000Z
+DTEND:20240826T080000Z
+DTSTAMP:20241105T091036Z
+UID:2r005cnv3ommfbunapdpl8qsei@google.com
+CREATED:20240820T204402Z
+DESCRIPTION:snIT håller i pluggfrukost där det finns möjlighet att plugga i
+ nför lördagens testtenta.
+LAST-MODIFIED:20240821T191241Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Pluggfrukost
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240822T100000Z
+DTEND:20240822T103000Z
+DTSTAMP:20241105T091036Z
+UID:0a877j6h1imj1qd9p3pqjs51i1@google.com
+CREATED:20240822T054023Z
+LAST-MODIFIED:20240822T054023Z
+LOCATION:Utanför E-studion
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Gasquesittning biljettförsäljning för de med plats
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240823T123100Z
+DTEND:20240823T151500Z
+DTSTAMP:20241105T091036Z
+UID:1sbb3m32lb7hvh9mgsr260tf72@google.com
+CREATED:20240820T203230Z
+DESCRIPTION:Utforska Göteborg på djupet\, men det gäller att vara snabb för
+  att vinna!
+LAST-MODIFIED:20240823T080324Z
+LOCATION:Samling utanför Hubben
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Upptäck Göteborg
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240821T131600Z
+DTEND:20240821T170000Z
+DTSTAMP:20241105T091036Z
+UID:3q4p653m18261dt9vuauhc4d4c@google.com
+CREATED:20240820T203021Z
+DESCRIPTION:Du och din phaddergrupptävlar mot dem andra phaddergrupperna i 
+ roliga utmaningar.
+LAST-MODIFIED:20240823T080350Z
+LOCATION:Teknologgården
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Phadderkamp
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240822T111600Z
+DTEND:20240822T180000Z
+DTSTAMP:20241105T091036Z
+UID:0timporsluvshh35j5cjn289r3@google.com
+CREATED:20240820T203552Z
+DESCRIPTION:Tredje dagen gör du ditt nya och viktigaste klädesplagg\, nollb
+ rickan!
+LAST-MODIFIED:20240823T080432Z
+LOCATION:Samling utanför Hubben
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Bricktillverkning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240822T180100Z
+DTEND:20240822T220000Z
+DTSTAMP:20241105T091036Z
+UID:077926in7caiji71knaseb5d4h@google.com
+CREATED:20240820T204130Z
+DESCRIPTION:Detta blir din första sittning! Du kommer lära dig vad en sittn
+ ing är\, hur den går till och att det inte finns några dåliga gückel i säll
+ skap med din phaddergrupp.
+LAST-MODIFIED:20240823T080457Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Phaddersittning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240823T160100Z
+DTEND:20240824T010000Z
+DTSTAMP:20241105T091036Z
+UID:1doaimhfctrvenep70p1h9bvkm@google.com
+CREATED:20240820T203643Z
+DESCRIPTION:Vårt älskade sexmästeri håller i en fenomenal sittning och ett 
+ underbart eftersläpp i Gasquen.
+LAST-MODIFIED:20240823T080523Z
+LOCATION:Gasquen\, Teknologgatan 6\, 412 58 Göteborg\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:sexIT gasque
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240825T152100Z
+DTEND:20240825T170000Z
+DTSTAMP:20241105T091036Z
+UID:4n3gbt8seq769sl8kkrajmu5v1@google.com
+CREATED:20240820T203908Z
+LAST-MODIFIED:20240823T080558Z
+LOCATION:Sandlådan\, Rännvägen\, 412 58 Göteborg\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Matförsäljning i sandlådan
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240828T160100Z
+DTEND:20240828T190000Z
+DTSTAMP:20241105T091036Z
+UID:5lhrah7qq3alg4ui4ns1sal4h0@google.com
+CREATED:20240820T204844Z
+DESCRIPTION:En sittning tillsammans med nya Data-Nollan som du sent kommer 
+ att glömma!
+LAST-MODIFIED:20240823T080707Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:DIT-sittningen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240831T170100Z
+DTEND:20240831T220000Z
+DTSTAMP:20241105T091036Z
+UID:7r0h41h0rbvtvcrpfrpvq7e3t8@google.com
+CREATED:20240820T205333Z
+DESCRIPTION:Förfest i Hubben 2.2 innan ni ska vidare på kalas!
+LAST-MODIFIED:20240823T080815Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:FörFestU
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240903T163100Z
+DTEND:20240903T200000Z
+DTSTAMP:20241105T091036Z
+UID:5helejmdpms7s77diuicf000bj@google.com
+CREATED:20240820T210117Z
+DESCRIPTION:Ta med dig din pirathatt och krok till en kväll ombord hos Träd
+ gårsmästerIT och HookIT.
+LAST-MODIFIED:20240823T080910Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Piratsittning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240824T150100Z
+DTEND:20240824T190000Z
+DTSTAMP:20241105T091036Z
+UID:7aldcka0eftfg2fa0obft853te@google.com
+CREATED:20240820T203719Z
+DESCRIPTION:ITs PR & Rustmästeri P.R.I.T. och idrottskommitté frITid har et
+ t gemensamt (halt?) arr vid den fina Geniknölen.
+LAST-MODIFIED:20240824T005311Z
+LOCATION:Samling utanför Hubben. Olofshöjdsplanen
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:SåpIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240824T080100Z
+DTEND:20240824T083000Z
+DTSTAMP:20241105T091036Z
+UID:c8pjce3171h3eb9n60qj2b9k65h38bb16ks64bb6c9ijid9l6oq6ap3568@google.com
+CREATED:20240824T112929Z
+DESCRIPTION:Här kan man göra klart sin Nollbricka om man inte hann med det 
+ under bricktillverkningen. Gör det så snart som möjligt då Nollbrickan är d
+ et viktigaste plagget under mottagningen!  \nOm Nollans bricka skulle gå sö
+ nder har Nollan möjlighet att göra en ny i bricktillverkningsrummet. Rummet
+  kommer vara tillgängligt under resterande del av mottagningen. För att få 
+ tillgång till bricktillverkningsrummet måste Nollan först knacka på vårt ru
+ m\, EG-3211 (rummet bredvid). Om ingen är där ska Nollan ringa NollKITs Jou
+ r\, så kommer någon av oss och öppnar bricktillverkningsrummet åt er! Om No
+ llan lämnade sin bricka på bordet efter brickstillverkningen så kan Nollan 
+ hämta ut brickan av oss när vi öppnar bricktillverkningsrummet.
+LAST-MODIFIED:20240824T112929Z
+LOCATION:EG-3209
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Brickstillverkningsrummet öppnar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240824T080100Z
+DTEND:20240824T083000Z
+DTSTAMP:20241105T091036Z
+UID:cosm4p1gcgojib9l6crj4b9k65j34b9o6srm2bb1cgrj0dplc5j68chn68@google.com
+CREATED:20240824T005419Z
+LAST-MODIFIED:20240824T113027Z
+LOCATION:https://forms.gle/pBBybDxKdAwYejWb7
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Anmälning till sITning öppnar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240826T160100Z
+DTEND:20240826T190000Z
+DTSTAMP:20241105T091036Z
+UID:7qh1gfbl65s0npqjlrffl89c3c@google.com
+CREATED:20240820T204554Z
+DESCRIPTION:Se till att ni har ätit er första frukost\, för på måndag är de
+ t dags för sittning i Mordor.\n\nKvällen bjuder på storslagna berättelser\,
+  mäktiga allianser och en måltid som ekar av Midgårds djupaste legender. Ta
+  på dig din starkaste rustning och förbered dig på en natt i Mordor som ing
+ en hobbit vågar drömma om!
+LAST-MODIFIED:20240824T113252Z
+LOCATION:Kalle Glader
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:sITningen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240825T104500Z
+DTEND:20240825T152000Z
+DTSTAMP:20241105T091036Z
+UID:3k7c9jao8i6cjftmmovismr8ve@google.com
+CREATED:20240820T203800Z
+DESCRIPTION:Du och din phaddergrupp får en bättre överblick av sektionen oc
+ h får träffa massor av kommittéer och föreningar.
+LAST-MODIFIED:20240824T134612Z
+LOCATION:Samling med phaddergrupp på teknologgården
+SEQUENCE:2
+STATUS:CONFIRMED
+SUMMARY:IT-rundvandring
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240827T100000Z
+DTEND:20240827T110000Z
+DTSTAMP:20241105T091036Z
+UID:68p6cpj66coj2b9i68oj6b9k70p3ibb268p34b9i69i6cphiclj6cp9kc4@google.com
+CREATED:20240825T071201Z
+LAST-MODIFIED:20240825T071440Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:FestU biljettsläpp
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240831T190000Z
+DTEND:20240901T010000Z
+DTSTAMP:20241105T091036Z
+UID:1d3lkedgipb7v7ubn2b02dkm9k@google.com
+CREATED:20240820T205508Z
+DESCRIPTION:Är Nollan redo för sitt första stora kalas? Den 31/8 slår FestU
+  upp kårhusets dörrar till NOLLKALASET! Med 6 barer\, 3 dansgolv\, en gigan
+ tisk hoppborg\, karaoke och pingis – här finns allt du behöver för en episk
+  kväll!\n\nPris: 135 kr för Chalmerister\, 160 kr för Icke-Chalmerister\nOB
+ S: Inga väskor är tillåtna på kalaset!
+LAST-MODIFIED:20240825T071602Z
+LOCATION:Chalmers Kårhus\, Chalmersplatsen\, 412 58 Göteborg\, Sweden
+SEQUENCE:2
+STATUS:CONFIRMED
+SUMMARY:FestU - Nollkalaset
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240827T131600Z
+DTEND:20240827T154000Z
+DTSTAMP:20241105T091036Z
+UID:7dfhpp2lbe04q2469dc3h75sr6@google.com
+CREATED:20240820T204650Z
+DESCRIPTION:Navigera genom mörka labyrinter\, ducka för laserstrålar och tä
+ vla om högsta poäng.<br><br>Följ med NollKIT in i mörkret där endast din li
+ st och stridsvilja spelar roll. Imorgon kommer vi att åka <b>15:16</b> till
+ sammans från <b>Chalmers</b>\, om man istället vill möta oss framme vid <b>
+ Laserdome</b> så behöver man vara där senast 16:30. Tänk på att komma i oöm
+ ma kläder.
+LAST-MODIFIED:20240826T072351Z
+LOCATION:Samling vid Chalmersplatsen. Laserdome Gothenburg\, Bangårdsvägen 
+ 37\, 428 36 Kållered\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Laserdome
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240827T100000Z
+DTEND:20240827T110000Z
+DTSTAMP:20241105T091036Z
+UID:cpgj0p1mc9ijeb9h6hh3eb9kcph66b9o6co3cb9pckpj4dr6ccq34e9pcc@google.com
+CREATED:20240826T100602Z
+DESCRIPTION:Imorgon anordnar ArmIT tillsammans med Centiro en lunchföreläsn
+ ing\, vilket innebär gratis lunch och spännande samtal. ArmIT och Centiro b
+ juder på pizza\, så ta er till HC1 12.00 imorgon!\n\nMeddelande från Centir
+ o:\nLUNCH SEMINAR WITH CENTIRO\nJoin us to hear from our CEO\, Niklas\, and
+  Software Developer\, Jonathan\, as they uncover why Centiro is the perfect
+  platform for ambitious individuals like you. Explore exciting opportunitie
+ s and gain invaluable insights directly from dedicated experts at the foref
+ ront of the industry.
+LAST-MODIFIED:20240826T213902Z
+LOCATION:HC1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Lunchföreläsning med ArmIT & Centiro
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240829T150100Z
+DTEND:20240829T200000Z
+DTSTAMP:20241105T091036Z
+UID:4c25c49qepfv64lpondj3qoecb@google.com
+CREATED:20240820T205141Z
+DESCRIPTION:IT’s fotoförening FlashIT håller i en pub med milkshakes och to
+ ast.
+LAST-MODIFIED:20240828T100500Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:3
+STATUS:CONFIRMED
+SUMMARY:Milkshakepub
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240829T121600Z
+DTEND:20240829T143100Z
+DTSTAMP:20241105T091036Z
+UID:6kre9obqf66plj9gbkpve7um2t@google.com
+CREATED:20240820T205125Z
+DESCRIPTION:Ett svettigt arr med massvis av roliga fysiska aktiviteter och 
+ ett svalkande avslut.
+LAST-MODIFIED:20240828T100531Z
+LOCATION:Samling i sandlådan
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:svettIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240830T160100Z
+DTEND:20240830T190000Z
+DTSTAMP:20241105T091036Z
+UID:6206439544821pcc3nmkdt77lb@google.com
+CREATED:20240820T205232Z
+DESCRIPTION:Samla kartbitar i olika tävlingar för att hitta och vinna skatt
+ en!\n\nNi kommer att gå runt i era phaddergrupper och lösa olika gåtor och 
+ uppgifter för att försöka nå skatten innan någon annan tar den först.\nVi d
+ rar igång 18:01 och kommer hålla på i cirka 3 timmar. Se till att äta innan
+ !
+LAST-MODIFIED:20240829T090740Z
+LOCATION:Samling enligt följande:\nGitbull: A-dammen\nCommit-ment issues: B
+ etonggården\nLinkedIn park: Deltaparken\nDjungel macbooken: Hubben 2.2\nKod
+ ra kai: Vid Zaloonen\nGuns N’ Routers: Kemigården\nPostgres malone: IT-märk
+ et
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Den årliga skattjakten
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240830T103100Z
+DTEND:20240830T140100Z
+DTSTAMP:20241105T091036Z
+UID:47ik4ebqjlqkuqtbqah35ksnh2@google.com
+CREATED:20240820T205204Z
+DESCRIPTION:Första deltävlingen i Mottagningskampen! Här tävlar vi mot andr
+ a sektioner i vår alldeles egenbyggda båt som ni byggt under denna vecka.\n
+ \nVilken sektion tar sig längst? Alla sektioner bygger under andraveckan av
+  Mottagningen en båt som de sedan tävlar med genomatt snabbast ro en sträck
+ a i vatten. Här har Nollan en chans attplocka fram sina ingenjörskompetense
+ r och sätta dem på test.\n\nImorgon skickar vi ut IT-Nollans snabbaste padd
+ lare på mottagningskampens första etapp\; Kappseglingen! Vi möts vid byggpl
+ atsen (Kemigården) 12:31 för att bära vår båt till tävlingsplatsen där race
+ t sedan drar igång kl 14:00. Se till att dyka upp för att bevittna vilken s
+ ektion som dyker ner och vilken som kronas till havets härskare!
+LAST-MODIFIED:20240829T090809Z
+LOCATION:Samling vid byggplatsen på Kemigården
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Kappsegling
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240831T170100Z
+DTEND:20240831T210000Z
+DTSTAMP:20241105T091036Z
+UID:017tol44fijn56g7m9l2p0b48h@google.com
+CREATED:20240820T205448Z
+LAST-MODIFIED:20240830T200251Z
+LOCATION:F-51\, F-52
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Myskväll med F
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240902T160100Z
+DTEND:20240902T200000Z
+DTSTAMP:20241105T091036Z
+UID:2vjpsk6hd3dj3b1spmqelv3dsa@google.com
+CREATED:20240820T210104Z
+DESCRIPTION:digIT håller i en workshop för alla (oavsätt erfarenhet) där du
+  kan testa på att programmera.\n\ndigIT\, vår egna digitala kommitté som se
+ r till att IT-sektionens och Hubbens digitala system fungerar och utvecklas
+  kommer hålla i några utmaningar för att visa vilka digitala tjänster som f
+ inns på IT. Utforska IT’s wiki\, ändra färgen på Hubbens lampor och mycket 
+ mer är bara några få saker som ni kommer få utforska tillsammans med digIT 
+ på deras kväll. Det finns många datorer i E-studion så inget problem om man
+  inte har en.
+LAST-MODIFIED:20240901T162653Z
+LOCATION:E-studion\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:digIT workshop
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240902T100000Z
+DTEND:20240902T110000Z
+DTSTAMP:20241105T091036Z
+UID:142fojd12v82koo8d25884e7o7@google.com
+CREATED:20240901T170852Z
+DESCRIPTION:Pris 50kr
+LAST-MODIFIED:20240901T170852Z
+LOCATION:Utanför E-studion
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Biljettförsäljning piratsittning för de som fått plats
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T153100Z
+DTEND:20240906T000000Z
+DTSTAMP:20241105T091036Z
+UID:6krjidj16cp64bb6c4oj2b9kclgj6b9p6cp64b9i6op3icr46cqjecr16k@google.com
+CREATED:20240902T173036Z
+DESCRIPTION:Välkommen ombord på våran rymdfarkost!\nVi har planerat för en 
+ spännande resa och laddat upp med utsökt mat\, goda drinkar och dessutom hä
+ rlig underhållning i form av karaoke! Ni kanske har hört om en främmande li
+ vsform som rör sig runt på skeppet\, men var inte oroliga\, vi har snart ti
+ llfångatagit den för vidare observation.\n\nPåstigning startar från 17.31 i
+  Hubben 2.2\, vi kommer också erbjuda inträde i vår hemliga bas i Sandlådan
+ . Glöm inte ID och Mecenat App ID\, det krävs för inträde. Hoppas vi ses!
+LAST-MODIFIED:20240903T084636Z
+LOCATION:Hubben 2.2\, Sandlådan
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Alien pub
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240904T150100Z
+DTEND:20240904T200000Z
+DTSTAMP:20241105T091036Z
+UID:4tnpsd6kl84lardhal51rimh58@google.com
+CREATED:20240820T210132Z
+DESCRIPTION:IT:s brädspelsförening anordnar en mysig spelkväll! De bjuder ä
+ ven på billig mat och snacks.\n\nImorgon är det dags för er att spela bräds
+ pel med IT-sektionens egna spelförening\, DrawIT! Det kommer finnas mat att
+  köpa för en billig peng och även mängder av dricka och snacks. Så gör dig 
+ redo för en chill kväll där du får möjlighet att spela spel med andra IT-te
+ knologer och visa vad du går för!
+LAST-MODIFIED:20240903T125101Z
+LOCATION:ML11\, ML13
+SEQUENCE:3
+STATUS:CONFIRMED
+SUMMARY:DrawIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T100000Z
+DTEND:20240905T110000Z
+DTSTAMP:20241105T091036Z
+UID:2g2lsi8pm141oglqb2sad1pnpb@google.com
+CREATED:20240820T210204Z
+LAST-MODIFIED:20240904T080804Z
+LOCATION:Vasa A
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Sektionsmöte 0
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240906T153100Z
+DTEND:20240906T190100Z
+DTSTAMP:20241105T091036Z
+UID:4u97b2tkbbo5il7uddlgslh3kh@google.com
+CREATED:20240820T210327Z
+DESCRIPTION:Under denna mysiga kväll kommer du få träffa Nollan från Global
+ a System och tävla i olika game shows från din barndom.\n\nEtt arr där dina
+  favorit-gameshows från barndomen väcks till liv! Spänningen kommer att var
+ a på topp och tävlingsandan starkare än någonsin. Gör er redo för att tävla
+  tillsammans med Nollan från Globala system!
+LAST-MODIFIED:20240904T120546Z
+SEQUENCE:2
+STATUS:CONFIRMED
+SUMMARY:GØSIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240904T163100Z
+DTEND:20240904T170000Z
+DTSTAMP:20241105T091036Z
+UID:1ctapc02khjgn85unrtu18758t@google.com
+CREATED:20240904T120620Z
+LAST-MODIFIED:20240904T120651Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Anmälan GØSIT öppnar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T151600Z
+DTEND:20240905T170100Z
+DTSTAMP:20241105T091036Z
+UID:1qs8ec42c9mramq7sn1q5kilv0@google.com
+CREATED:20240820T210223Z
+DESCRIPTION:Värm upp inför pubrundan med Data- och Z-Nollan. En bra start f
+ ör den som aldrig har varit på pubrunda innan.\n\nUnder pubvärmningen komme
+ r det finnas olika lekar och underhållning\, samt ett bingo man kan ta med 
+ sig och utföra under pubrundan! Man kan även träffa på ett gött gäng att hä
+ nga med under kvällen. Till pubvärmningen är det okej att ta med sig max 2 
+ enheter då man inte får ta med sig dem under självaste pubrundan. Det komme
+ r även finnas läsk och snacks att köpa på plats! Ses där!
+LAST-MODIFIED:20240904T160218Z
+LOCATION:Vasaparken
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Pubvärmning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T150000Z
+DTEND:20240906T010000Z
+DTSTAMP:20241105T091036Z
+UID:34bjbdlg1vu6gl6ch3ukr45o7k@google.com
+CREATED:20240820T210238Z
+DESCRIPTION:Varje torsdag första läsveckan i varje läsperiod anordnas en pu
+ brunda på Chalmers. Hela 20 pubar är öppna på både Campus Johanneberg & Cam
+ pus Lindholmen.
+LAST-MODIFIED:20240904T160302Z
+LOCATION:Campus Johanneberg\, Campus Lindholmen
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Pubrunda
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T060100Z
+DTEND:20240905T063000Z
+DTSTAMP:20241105T091036Z
+UID:ccrj4chncdgjab9kcdhjgb9k70r36bb174pm8bb56cpm2d9jcos3ie9n74@google.com
+CREATED:20240904T175011Z
+LAST-MODIFIED:20240904T175031Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Anmälan Wild kids öppnar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T053000Z
+DTEND:20240905T083000Z
+DTSTAMP:20241105T091036Z
+UID:37as2mul71uggcuhdt36v8ohda@google.com
+CREATED:20240904T120428Z
+DESCRIPTION:Imorgon kommer Arla bjuda på gratis frukost och mellanmål mella
+ n 7:30-16:00 vid kårhuset! Så om ni går förbi Teknologgården\, håll ett öga
+  efter Arla-vagnen!
+LAST-MODIFIED:20240905T064520Z
+LOCATION:Teknologgården\, Teknologgatan 4\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Gratis Arla frukostbuffé
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240905T083000Z
+DTEND:20240905T140000Z
+DTSTAMP:20241105T091036Z
+UID:6os64dho68smab9ocgo38b9k6sqjgbb1ccs3ab9l6sqjedr568pj6ob4co@google.com
+CREATED:20240905T064625Z
+DESCRIPTION:Imorgon kommer Arla bjuda på gratis frukost och mellanmål mella
+ n 7:30-16:00 vid kårhuset! Så om ni går förbi Teknologgården\, håll ett öga
+  efter Arla-vagnen!
+LAST-MODIFIED:20240905T064711Z
+LOCATION:Teknologgården\, Teknologgatan 4\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Gratis Arla mellanmål
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240918T100000Z
+DTEND:20240918T110000Z
+DTSTAMP:20241105T091036Z
+UID:cko66opicoqm2b9j6dhjab9kclijcb9pccq3ab9k6sp3idho6co32opi6o@google.com
+CREATED:20240905T232027Z
+DESCRIPTION:Hej IT-studenter i årskurs 1\, 2 och 3!\n\nNi är välkomna att m
+ öta oss i programledningen under en lunch med olika teman för de olika klas
+ serna (OBS\, omvänd ordning på klasserna):\n\nIT3: Måndag 9:e september kl 
+ 12.00-13.00 i HA4: Tema kandidatarbetsval och poänggränser i årskurs 3\n\nI
+ T2: Fredag 13:e september kl 12.00-13.00 i HC3: Tema kursval inför lp2 (och
+  framtida kursval)\n\nIT1: Onsdag 18 september kl 12.00-13.00 i HA1: Tema s
+ tudiestart. Hur har det gått hittills?\n\nIT-programmet bjuder samtliga del
+ tagare på en lunchmacka (mozarella/tomat). Vänligen ta med egen dryck om ni
+  så önskar.\n\nVeganska\, glutenfria och lökfria alternativ finns. Hör av e
+ r till elke.mangelsen@chalmers.se om ni har ytterligare önskemål om special
+ kost. Ange i så fall vilken lunchträff det gäller.\n\nSamtliga lunchträffar
+  finns även schemalagda i TimeEdit. Ni hittar de om ni letar upp klass-sche
+ mat (välj "klass"\, skriv TKITE-1 för åk1)\n\nDu som har en individuell stu
+ dieplan i årskurs 1 och behöver därför göra ett kursval redan inför årskurs
+  2 är välkommen att delta i mötet för årskurs 2! \n\nVar vänligt och priori
+ tera lunchträffarna då det underlättar för oss i programledningen om vi kan
+  ge samlad information till respektive klass.\n\nVälkomna!\n\nProgramlednin
+ gen IT\n\nStaffan Björk\, programansvarig\nRebecca\, studievägledare\,\nElk
+ e\, utbildningssekreterare
+LAST-MODIFIED:20240905T232027Z
+LOCATION:HA1
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Lunchträff med programledningen åk 1
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240914T190000Z
+DTEND:20240915T010000Z
+DTSTAMP:20241105T091036Z
+UID:4c7uod9637r0r38te9rfl1calo@google.com
+CREATED:20240820T211705Z
+DESCRIPTION:Neonljus\, laser och öronbedövande musik dånar ut ur kårhuset ä
+ nnu en gång när FestU arrar sitt andra kalas under mottagningen!<br><br>Mis
+ sade du förra veckans FestU eller vill du bara gå igen? Den 14/9 smäller de
+ t – NOLLFINALEN är här! 8 barer\, 5 dansgolv\, liveband\, en gigantisk hopp
+ borg\, bungee run och en enorm rutschkana väntar på er. Ett riktigt pang-av
+ slut på mottagningen – kom och upplev det på FestU kalaset! Det blir en kvä
+ ll ni sent kommer glömma.<br><br><b>OBS:</b> Inga väskor får tas med in på 
+ kalaset. Om väskor tas med till släppet\, kommer inte inträde att beviljas.
+  18 års gräns gäller. Kalasen är rökfria\, alla cigaretter\, vapes och likn
+ ande kommer konfiskeras."
+LAST-MODIFIED:20240906T092316Z
+LOCATION:Chalmers Kårhus\, Chalmersplatsen\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:FestU - Nollfinalen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240906T100000Z
+DTEND:20240906T110000Z
+DTSTAMP:20241105T091036Z
+UID:4stlnm5g3h4k82pb98cblpgash@google.com
+CREATED:20240906T092540Z
+LAST-MODIFIED:20240906T092540Z
+LOCATION:Utanför E-studion
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NollKIT Nollfinalen biljettförsäljning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240909T100000Z
+DTEND:20240909T110000Z
+DTSTAMP:20241105T091036Z
+UID:3uf1cjqr42ima18k3fol1i6kg0@google.com
+CREATED:20240906T092342Z
+LAST-MODIFIED:20240906T092554Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:FestU Nollfinalen biljettsläpp
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240909T103700Z
+DTEND:20240909T113700Z
+DTSTAMP:20241105T091036Z
+UID:0iuevp5mmincs20qh89mulqqgc@google.com
+CREATED:20240905T142735Z
+DESCRIPTION:Endast Nollan som har betalat mottagningsavgiften får anmäla si
+ g och ni har även platsgaranti!<br><br><a href="https://forms.gle/1XXWByEBs
+ 6DmWJr79" target="_blank"><u>https://forms.gle/1XXWByEBs6DmWJr79</u></a>
+LAST-MODIFIED:20240906T120455Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Anmälan Finsittningen stängs
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240907T080000Z
+DTEND:20240907T110000Z
+DTSTAMP:20241105T091036Z
+UID:0cedb24iog7cj2fbae2bvrqvq8@google.com
+CREATED:20240820T210509Z
+DESCRIPTION:ITs jämställdhetskommitté EquallIT håller i en fantastisk brunc
+ h där du får sjunga karaoke i Hubben.\n\nHär kommer det finnas brunch\, kar
+ aoke och gött häng. Sväng förbi för en bänger start på helgen!
+LAST-MODIFIED:20240906T200036Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:2
+STATUS:CONFIRMED
+SUMMARY:Karaoke brunch
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240907T160100Z
+DTEND:20240907T200000Z
+DTSTAMP:20241105T091036Z
+UID:0r14eaartllugtn5dvur5bb2en@google.com
+CREATED:20240820T210528Z
+DESCRIPTION:8-bit håller i en spelkväll där du kan få testa massor av olika
+  spel på diverse olika konsoler.\n\nPå kvällen kommer 8-bIT hålla i en spel
+ kväll där det kommer att finnas mängder av olika spel. Allt från Wii Sports
+  till Guilty Gear. Det kommer även att finnas mat att köpa\, så man behöver
+  inte gibba på tom mage!
+LAST-MODIFIED:20240906T200105Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:8-bIT spelkväll
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240912T130100Z
+DTEND:20240912T170000Z
+DTSTAMP:20241105T091036Z
+UID:5l2tenue5hqkhpo8hqmlnotuh4@google.com
+CREATED:20240820T211556Z
+DESCRIPTION:Mottagningskampen fortsätter med Cheeret och avslutas därefter 
+ med en stor final ute på Campus Lindholmen!<br><br>Mottagningskampen avslut
+ as med de två sista grenarna\, Finalen &amp\; Cheeret. Cheeret är en tävlin
+ g där Nollan framför sitt bästa cheer för att heja på sitt sektionslag i Fi
+ nalen. Finalen består sedan av tre spännande grenar som avgör hela Mottagni
+ ngskampen.<br><br>Nu börjar mottagningen nå slutspurten och med den även mo
+ ttagningskampens sista gren\, finalen! Detta är en trekamp där Nollan från 
+ alla samtliga sektioner tävlar mot varandra som tar plats <b>torsdag</b> de
+ n <b>12/9 kl 15:00</b> på Lindholmen. Trekampens deltävlingar består av Kom
+ bisäck\, skidstafett och avgörandet. Därför behöver vi 8st tappra Nollan so
+ m vill representera IT och ta hem segern!<br><b>För er som är intresserade 
+ kan ni anmäla er här:</b><br><b><a target="_blank" href="https://forms.gle/
+ akct2TC4TMFBGkXbA"><u>https://forms.gle/akct2TC4TMFBGkXbA</u></a></b>
+LAST-MODIFIED:20240906T203507Z
+LOCATION:Campus Lindholmen
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Cheeret & Finalen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240907T103100Z
+DTEND:20240907T110000Z
+DTSTAMP:20241105T091036Z
+UID:1ik11ne2998b2ca59b9qp6v4u8@google.com
+CREATED:20240906T203552Z
+LAST-MODIFIED:20240906T203552Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Anmälan till bastun släpps
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240909T131600Z
+DTEND:20240909T210000Z
+DTSTAMP:20241105T091036Z
+UID:6a2gifplkkl1ahn4vgmv9rlkp1@google.com
+CREATED:20240820T211446Z
+DESCRIPTION:En helkväll ute i Härryda vid Chalmers egna bastu. Här blir det
+  inte bara en sittning likt ingen annan utan också lekar\, bad och givetvis
+  en chans att basta. Glöm därför inte <b>badkläder och handduk</b>. Vi saml
+ as <b>kl 15:16</b> vid <b>Biblioteksbacken</b> där en buss kör oss till Cha
+ lmersbastun i Härryda med <b>ankomst kl ~16:00</b>. Se till att vara i tid!
+ <b> </b>På sittningen gäller <b>BYOB</b> (Ej starksprit\, <b>max 14%</b> oc
+ h <b>INGA GLASFLASKOR</b>).Vi tillåter ingen förtäring av alkohol på bussen
+  och om ni dyker upp onyktra till bussen blir ni <b>INTE </b>påsläppta. Det
+  är dessutom viktigt att ni tar med er <b>långbyxor</b>.
+LAST-MODIFIED:20240907T121315Z
+LOCATION:Samling vid Biblioteksbacken\, C.S.-bastun i Härryda
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Bastun
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240908T150100Z
+DTEND:20240908T210000Z
+DTSTAMP:20241105T091036Z
+UID:1hhjirs6vpb3ddkhfh2818qntu@google.com
+CREATED:20240820T210543Z
+DESCRIPTION:Nästa del av mottagningskampen är här och ett gäng Nollan från 
+ varje sektion får visa vem som är mest grooooovy!\n\nEn kväll då hela Chalm
+ ers blir rockstjärnor. I denna musiktävling bildar Nollan ett band som fram
+ träder framför de andra studenterna. Man tävlar inte bara i vem som har bäs
+ t uppträdande utan även vilka som får mest engagemang från publiken.
+LAST-MODIFIED:20240907T160407Z
+LOCATION:Kårrestaurangen
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Rocken
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240908T173000Z
+DTEND:20240908T174500Z
+DTSTAMP:20241105T091036Z
+UID:coojed1o69j62b9kc5ijgb9k65ijib9occsm2bb66kq62or5c9gj4pj4ck@google.com
+CREATED:20240907T160456Z
+LAST-MODIFIED:20240907T160456Z
+LOCATION:Kårrestaurangen
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Prel. tid IT Rocken
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240908T130100Z
+DTEND:20240908T140100Z
+DTSTAMP:20241105T091036Z
+UID:6oo3ge9g75gjebb669i66b9k61gjgbb1cgp6ab9p6orjcoj1c4r38dpk64@google.com
+CREATED:20240907T160333Z
+LAST-MODIFIED:20240907T160518Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:ZpookIT anmälan öppnar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240910T070000Z
+DTEND:20240910T130000Z
+DTSTAMP:20241105T091036Z
+UID:ccrm8e1h64p30b9l71gj8b9k74qm6b9p64o68b9jc9i3cp9h60o6adj66o@google.com
+CREATED:20240906T102118Z
+DESCRIPTION:Mecenat Touchdown är här! Under september kommer vi på Mecenat 
+ besöka 10 campus runt om i Sverige. Med oss på turnén har vi några av våra 
+ fantastiska partners som bjussar på finfina giveaways och roliga aktivitete
+ r på plats. Dessutom kommer du hitta mängder av exklusiva digitala rabatter
+  – allt för att förgylla terminsstarten. Häng med\, för det här vill du int
+ e missa!
+LAST-MODIFIED:20240908T090456Z
+LOCATION:Teknologgården\, Teknologgatan 4\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Mecenat Touchdown
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240910T151600Z
+DTEND:20240910T210000Z
+DTSTAMP:20241105T091036Z
+UID:4ntm1p9fm6o7qq420u4tear5v0@google.com
+CREATED:20240820T211506Z
+DESCRIPTION:Välkommen till en kväll fylld av spänning och mystik. Tillsamma
+ ns med Z-Nollan får du kliva in i mörkret och sätta ditt mod på prov.\n\nÄr
+  du redo för mottagningens läzkigaste arr tillsammans med Z sektionen?!? Kl
+  17:16 på tisdag så möts vi vid sandlådan för att sätta stämningen och mätt
+ a magarna (Mat går att köpa). Därefter kommer vi öppna M huset för en fazan
+ zfullt rolig kväll. OBS akta er för Zpökena!
+LAST-MODIFIED:20240908T140507Z
+LOCATION:Sandlådan
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:ZpookIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240909T130700Z
+DTEND:20240909T140700Z
+DTSTAMP:20241105T091036Z
+UID:74r38c1g6tgj6b9k64o6ab9k6ti3cbb16cs3ib9m70s68d32c4rj0e1n60@google.com
+CREATED:20240908T140555Z
+LAST-MODIFIED:20240908T140555Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Anmälan Oscarsittningen öppnas
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240911T160100Z
+DTEND:20240911T190000Z
+DTSTAMP:20241105T091036Z
+UID:7m7vc5mb9b0bumolt4dct6iar5@google.com
+CREATED:20240820T211522Z
+DESCRIPTION:En lite finare sittning med Oscarsgala-tema! Som sig bör så bli
+ r det filmvisning. Något du verkligen inte vill missa.\n\nDet kommer bli en
+  glamorös kväll full av glitter och guld så sätt på er era finaste kläder p
+ assande för en prisceremoni ni sent kommer glömma. Det här är en sittning N
+ ollan absolut inte vill missa om de någon gång undrat vad de andra har haft
+  för hemliga nolluppdrag. Det kommer serveras vin under sittningen och därf
+ ör är det inte BYOB. Notera att om du har fullföljt ditt nolluppdrag så har
+  du garantiplats på sittningen.
+LAST-MODIFIED:20240909T131636Z
+LOCATION:Kalle Glader
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Oscarsittning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240912T111600Z
+DTEND:20240912T121600Z
+DTSTAMP:20241105T091036Z
+UID:69j3ac9p69i30bb275h6cb9k6go6cb9pcosm2b9h68p66opg6pgjed1p6k@google.com
+CREATED:20240910T152258Z
+DESCRIPTION:På torsdag den 12/9 är det ett av de viktigaste momenten under 
+ hela mottagningen\; Nollan-bilden! Vi möts tillsammans i sandlådan utanför 
+ Hubben klockan 13.16! Det är superviktigt att man på bilden har på sig sin 
+ Nollan-tisha med en hel och fin Nollbricka! Om du inte har en hel och fin N
+ ollbricka så kan du lösa det idag och imorgon!
+LAST-MODIFIED:20240910T152308Z
+LOCATION:Sandlådan
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Nollan-bilden
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240919T200000Z
+DTEND:20240919T230000Z
+DTSTAMP:20241105T091036Z
+UID:6cq6adpk64s3ibb36srjgb9k6lij6b9p71hm2bb26th68e9o6pim4pb2co@google.com
+CREATED:20240911T140814Z
+DESCRIPTION:Den 19 september är det äntligen dags för EDIT att samlas igen 
+ för att hålla i en otrolig karaoke-gasque. Vi hoppas att du är redo för en 
+ kväll fylld av sång\, dans och goda drinkar. Karaoke kommer finnas hela kvä
+ llen!\nVi ses på Gasquen!\n\nPris? 35/45 kr (Chalmerist/icke-Chalmerist)
+LAST-MODIFIED:20240911T140826Z
+LOCATION:Gasquen
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Karaoke Gasque
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240913T160100Z
+DTEND:20240913T213000Z
+DTSTAMP:20241105T091036Z
+UID:5dm5cq4lcv0ltt0ollgcd36eil@google.com
+CREATED:20240820T211619Z
+DESCRIPTION:Mottagningen börjar lida mot sitt slut och denna uråldriga ritu
+ al visar sig i form av en finsittning utan dess like! Ta fram dina finaste 
+ kläder till denna magiska kväll!\n\nDetta kommer att bli en oförglömlig kvä
+ ll fylld med god mat\, dryck och underhållning i en elegant och festlig atm
+ osfär. Endast Nollan som har betalat mottagningsavgiften får anmäla sig och
+  ni har även platsgaranti!\n\nExtremt viktigt att ha med sig sin Nollbricka
+  på sittningen\nKlädkod på sittningen är finkläder\nMan får inte ha med sig
+  alkohol på sittningen\, inte ens i väskan\nAlla möts utanför Svenska mässa
+ n klockan 18:01 för fotografering och mingel\nFanbärerIT kommer sälja IT-pi
+ ns och frackband under fördrinken så håll utskick efter dem!
+LAST-MODIFIED:20240913T123709Z
+LOCATION:En hemlig plats\, samling utanför Svenska mässans huvudentré
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Finsittningen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240914T160100Z
+DTEND:20240914T215900Z
+DTSTAMP:20241105T091036Z
+UID:1irh7nc1asiji8el9os9ipuj88@google.com
+CREATED:20240820T211635Z
+DESCRIPTION:⚠️🚨 YO YO YO NOLLAN! 🚨⚠️\nDet är dags att skaKa om tid och ru
+ m för på LÖRDAG smäller det!🔥💥 Vi snackar inte om nån vanlig kväll utan e
+ n R E J Ä L #BLASTFROMTHEPAST🚀 med DJ Kvick 💿 – hela vägen från M-I-A-M-I
+ ! (Ja\, det är THE Miami🦩🌴\, ba så ni vet).\n\nVi kör ALLT: \n- Tung bas 
+ som får marken att gunga\n- Vibes som e beyond lit\n- Kubb (ja du hörde rät
+ t)\n- Snacks som får dig att grina av lycka\n- Blandbös som du inte ens vis
+ ste att du behövde\n- Beerpong men på next level – like\, alla former du ka
+ n tänka dig!\n\nOch om du trodde det var slut där – oh no! Vi drar fram gri
+ llen och slänger på GOAT-burgarna som kommer förändra ditt liv. Det här är 
+ förfesten som ALLA snackar om inför FestU🪩\, och vi kommer kötta på ända t
+ ill 23:59 för ett maxat avslut på mottagningen.
+LAST-MODIFIED:20240913T151154Z
+LOCATION:EDIT Innergården
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:NollQIT FörFestU
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240917T153100Z
+DTEND:20240917T173000Z
+DTSTAMP:20241105T091036Z
+UID:chhj4opl61imcb9h6kqj8b9kc8pj6b9p64p3gbb260pm8e1p60q3id1h6s@google.com
+CREATED:20240914T103753Z
+DESCRIPTION:Här kan ni få mer info kring inval\, aspning\, kommittéer\, för
+ eningar\, sektionsorgan och mer.\n\nVill ni bli mer sektionsaktiv eller vil
+ l ni bara prata med folk som sitter? Sväng förbi GD på tisdag för bra sälls
+ kap\, info och även god mat!\n\nOm du är intresserad av någon verksamhet på
+  IT eller vill bli engagerad i studentlivet borde du komma på KomKon! Här k
+ an du prata med kommitéerna och få svar på alla dina brinnande frågor.\n\nV
+ ilka är där?\n- 8-bIT\n- Cloudlords\n- digIT\n- DrawIT\n- EqualIT\n- Fanbär
+ erIT\n- FikIT\n- FlashIT\n- frITid\n- MötespresidIT\n- MrKIT\n- NollKIT\n- 
+ P.R.I.T.\n- sexIT\n- snIT\n- styrIT\n- ValleB
+LAST-MODIFIED:20240914T103753Z
+LOCATION:GD-foajén
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:IT:s Kommitékonvent (KomKon)
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240920T133100Z
+DTEND:20240920T153000Z
+DTSTAMP:20241105T091036Z
+UID:cgo68ophcoom8b9ocpj66b9k6so3ibb175i38bb26gq3ed1j70p68cr66c@google.com
+CREATED:20240914T124248Z
+DESCRIPTION:Arr efter mottagningen? Ja\, det är klart när frITid arrar badm
+ inton. Så häng med när vi slår fjädrar som det inte var någon dag imorgon.\
+ n\nAnmälan:\nhttps://forms.gle/MPnkydoL7YaFw7BS6\n\nKom ihåg: Det kommer bl
+ i kul\, men framförallt roligt!
+LAST-MODIFIED:20240914T124344Z
+LOCATION:Fjäderborgen\, Södra Viktoriagatan 44
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Badminton med frITid
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240916T153100Z
+DTEND:20240916T170000Z
+DTSTAMP:20241105T091036Z
+UID:6cqjedph6kpjabb6ccpj8b9kclh38b9p6cqj0b9i6gom4opg6cr62eb66o@google.com
+CREATED:20240915T085303Z
+DESCRIPTION:På måndag 16/9 är det dags för aspningskickoff för Trädgårdsmäs
+ terIT!\nDet börjar från 17.31 i Hubben.\n\nVi kommer presentera vad det är 
+ vi gör samt visa schemat för resten av aspningen.\nGå med i #trädgårdsmäste
+ rit-aspning24\, där kommer vi skicka ut information angående aspningen!
+LAST-MODIFIED:20240915T085303Z
+LOCATION:Hubben 2.2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspningskickoff TrädgårdsmästerIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240925T141500Z
+DTEND:20240925T161500Z
+DTSTAMP:20241105T091036Z
+UID:2i1jj611tkv4qd73qia9honl5b@google.com
+CREATED:20240918T233924Z
+DESCRIPTION:Hej! Är du intresserad av att sitta i den coolaste kommittén nå
+ gonsin? Gillar du kakor och kaffe eller har ett brinnande intresse för inre
+ dning? Oavsett vilket har Cloudlords nu aspning som du kan komma på för att
+  lära dig mer om oss Cloudlords\, ta reda på hur du gör för att söka till k
+ ommitén eller baraför att hänga med oss cloudlords och träffa andra aspar.\
+ n\nOm du inte vet vad Cloudlords är så är vi den kommitté som ansvarar för 
+ underhållet av The Cloud\, vår sektionslokal på Lindholmen. Vi ser till att
+  The Cloud är  ett mysigt ställe att hänga på och håller då och då event ut
+ e på Lindholmen. Så om du är intresserad av att vara mer engagerad i IT-sek
+ tionen\, vill ha coola byxor eller bara ha det trevligt tillsammans med din
+ a andra framtida sittande så är du varmt välkommen att komma\n\nVårt första
+  event kommer att hållas nästa onsdag den 25/9 kl 16.15 i The Cloud där vi 
+ kommer ha en liten introduktion\, bygga lego och äta pizza.
+LAST-MODIFIED:20240918T233924Z
+LOCATION:The Cloud\, Forskningsgången\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Cloudlords Aspiration intro
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241002T141500Z
+DTEND:20241002T161500Z
+DTSTAMP:20241105T091036Z
+UID:0p3jf02op2gq0u5b2sn2ujldlo@google.com
+CREATED:20240918T234036Z
+DESCRIPTION:Det andra evenemanget kommer att hållas onsdagen efter\, den 2:
+ a oktober kl 16.15 och vi kommer att ha lite roliga aktiviteter där du får 
+ prata mer med oss sittande ​​och få veta mer om vad vi gör.
+LAST-MODIFIED:20240918T234036Z
+LOCATION:The Cloud\, Forskningsgången\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Cloudlords Gott och blandat
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240928T153100Z
+DTEND:20240928T190000Z
+DTSTAMP:20241105T091036Z
+UID:2dag3ld1a73tm6pvvu5gepp8qp@google.com
+CREATED:20240918T234704Z
+DESCRIPTION:<p>Kan du också sakna grundskolans fina dagar\, när fruktstund\
+ , vilostund och mellis var inlagt i schemat? När dina största problem var n
+ är fotbollen råkade fastna på taket\, när det var fiskgratäng på menyn elle
+ r när kungen-rutan var upptagen på rasten. Då bör du komma på sexIT och GSe
+ x gemensamma Gasquesittning\, Back to School!</p><p>På fredag den 20:e sept
+ ember 12.01 på Facebook och här på chalmers.it släpps biljetterna för att a
+ nmäla sig till sittningen. Biljettförsäljningen kommer sedan hållas utanför
+  E-studion den 25:e september\, mer info kommer!</p><p>Pris: 100kr/125kr (a
+ lkoholfritt/alkohol)<br>Dresscode: Det du hade på dig i trean!</p>
+LAST-MODIFIED:20240918T234704Z
+LOCATION:Gasquen
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Back to School-gasque
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240928T200000Z
+DTEND:20240929T010000Z
+DTSTAMP:20241105T091036Z
+UID:0723cf3dmr7jjs38vunibl37b4@google.com
+CREATED:20240918T234754Z
+DESCRIPTION:Pris: 35kr/45kr (chalmerist/icke-chalmerist)
+LAST-MODIFIED:20240918T234754Z
+LOCATION:Gasquen
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Eftersläpp på Gasquen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240920T100100Z
+DTEND:20240920T110000Z
+DTSTAMP:20241105T091036Z
+UID:0ogatg9sd1vc74qkjju7othe8b@google.com
+CREATED:20240918T235112Z
+DESCRIPTION:<p>Kan du också sakna grundskolans fina dagar\, när fruktstund\
+ , vilostund och mellis var inlagt i schemat? När dina största problem var n
+ är fotbollen råkade fastna på taket\, när det var fiskgratäng på menyn elle
+ r när kungen-rutan var upptagen på rasten. Då bör du komma på sexIT och GSe
+ x gemensamma Gasquesittning\, Back to School!</p><p>På fredag den 20:e sept
+ ember 12.01 på Facebook och på chalmers.it släpps biljetterna för att anmäl
+ a sig till sittningen. Biljettförsäljningen kommer sedan hållas utanför E-s
+ tudion den 25:e september\, mer info kommer!</p><br>Pris: 100kr/125kr (alko
+ holfritt/alkohol)
+LAST-MODIFIED:20240918T235112Z
+LOCATION:https://facebook.com/sexITChalmers och https://chalmers.it
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Anmälan till Back to School-gasque öppnar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240925
+DTEND;VALUE=DATE:20240926
+DTSTAMP:20241105T091036Z
+UID:0auurgfcsbc1vtuh7f4j6v28g8@google.com
+CREATED:20240918T235218Z
+DESCRIPTION:<p>Pris: 100kr/125kr (alkoholfritt/alkohol)<br></p><p>Mer info 
+ kommer!<br></p>
+LAST-MODIFIED:20240918T235234Z
+LOCATION:Utanför E-studion
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Biljettförsäljning Back to School-gasque
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240923T160000Z
+DTEND:20240923T213000Z
+DTSTAMP:20241105T091036Z
+UID:1plltemb9h9686fn3v91bojude@google.com
+CREATED:20240918T234435Z
+DESCRIPTION:Kom och spela TV-spel\, ät lite toast och turnera med oss i 8-b
+ it! Det blir ännu en spelkväll den 23/9\, alltså nästa måndag i Hubben 2.2.
+ \n\nÄr du sugen på Smash turnering eller vill du bara spela TV-spel? Kom fö
+ rbi och spela med oss i 8-bit!
+LAST-MODIFIED:20240918T235307Z
+LOCATION:Hubben 2.2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Spelkväll med 8-bit!
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240927T153100Z
+DTEND:20240927T180000Z
+DTSTAMP:20241105T091036Z
+UID:75gm2pb66cp32b9g6cp36b9kc9ij6b9o70s3cb9hccojacb56krm8p1g6c@google.com
+CREATED:20240920T204304Z
+DESCRIPTION:Kokar verkligen digIT en kod & vin precis efter Vin-Volley?\nYe
+ s sir de gör vi. Vi snipeade den här tiden för 2 månader sen efter att vi b
+ lev brända till aska av ohmsittser förra LPn. Ett arr där man kan både krök
+ a (om man vill) OCH vara produktiv? De ain't no way. Men som vanligt löser 
+ digIT. Det är drop in drop out\, så man kan när som helst droppa ut och dra
+  till Gasquen :D. Hubben kommer vara fullproppade med digIT gamlingar som b
+ ara längtar till att få vara relevanta igen. Så om du är fast på nånting kl
+ urigt är det bara att fråga dom (eller oss!!!). Här kommer några exempel på
+  vad man kan göra:\n\n- Få hjälp med sin kod\n- Hjälpa andra med deras kod\
+ n- Bara ha en trevlig stund och trevligt häng med gött folk :)\n- Ta med nå
+ got gott att dricka och \n\nHur?\nNå Ballmer's Peak och skriva incomprehens
+ ible kod sen force mergea in i main\n\nOBS: Det är BYOW
+LAST-MODIFIED:20240920T204527Z
+LOCATION:Hubben 2.2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Kod & Vin
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20240927T133100Z
+DTEND:20240927T150000Z
+DTSTAMP:20241105T091036Z
+UID:cph36dr675ijebb4cph3cb9k6gp34b9p75h66b9g68qmccr470pmcd9lco@google.com
+CREATED:20240920T204746Z
+DESCRIPTION:Tjena tjena!!!!\nMyten om berömda sporten Vinvolley\, ska nu bl
+ i verklighet\, när frITid arrar det i motionshallen. Den perfekta uppladdni
+ ng för en lyckad helg!\n\nVad?\nSpela volleyboll och dricka vin (eller anna
+ n dryck)\n\nVarför?\nDetta är en canon core arr på IT\, ett måste att gå på
+  innan man exar\n\nMaterial?\nTräningskläder och BYOB (inga glasflaskor ell
+ er starksprit)\n\nViktigt:\nTA INTE MED ALKOHOL PÅ FÖRSTA VÅNINGEN I KÅRHUS
+ ET\, BIG NONO!!!!\nVi i frITid kommer gå ifrån Hubben 15:15 så om du inte v
+ et hur man går in genom bakvägen häng med eller fråga oss!\n\nKom ihåg: Det
+  kommer bli kul\, men framförallt roligt!
+LAST-MODIFIED:20240920T204746Z
+LOCATION:Motionshallen i Kårhuset\, Samling utanför Hubben
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Vin-volley med frITid
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241004T160100Z
+DTEND:20241004T180000Z
+DTSTAMP:20241105T091036Z
+UID:68o3ccr1c4sm8b9hclgm2b9k6gs68bb1c4sm8b9o75i62ohl6op3gp1n70@google.com
+CREATED:20241001T073932Z
+DESCRIPTION:Tror du att du är the American Sniper\, blev utesluten av NollK
+ IT under mottagningen eller bara allmän trött på dina sektionskamrater. Hän
+ g då med frITid när vi ska köra laserdome.\n\nAnmälan:\nhttps://forms.gle/J
+ yd2yVDjqZYYc8Z89
+LAST-MODIFIED:20241001T073932Z
+LOCATION:Laserdome Hisingen\, Gustaf Dalénsgatan 36\, 417 24 Göteborg\, Swe
+ den
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Laserdome med frITid
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241002T111500Z
+DTEND:20241002T124500Z
+DTSTAMP:20241105T091036Z
+UID:39f13iivi2oal4iulpg6h4v24s@google.com
+CREATED:20240930T160500Z
+DESCRIPTION:<p>Kursen innehåller en dugga\, som kan ge högst 4 bonuspoäng t
+ ill tentan. Dessa bonuspoäng gäller på tentan samt omtentorna det här läsår
+ et\, men inte kommande läsår.</p><p><em><i>Inga hjälpmedel är tillåtna på d
+ uggan.</i></em></p><p>Var på plats 30 minuter innan duggan börjar. Ni behöv
+ er ha med er legitimation och kårkort. För att få skriva duggan måste du va
+ ra registrerad på kursen.</p><p>För er med förlängd tid (som har mejlat om 
+ det) är skrivtiden 13.15-15.30.<strong><b><br></b></strong></p><p><strong><
+ b>Format för duggan:</b></strong><strong><b> </b></strong>Duggan kommer att
+  ha 5 uppgifter som vardera kan ge 4p\, så man kan maximalt få 20p på dugga
+ n. Varje 4p man får ger en bonuspoäng till tentan\, för maximalt 4 bonuspoä
+ ng. D.v.s.:</p><p>0-3p: Inga bonuspoäng<br>4-7p: 1 bonuspoäng<br>8-11p: 2 b
+ onuspoäng<br>12-15p: 3 bonuspoäng<br>16-20p: 4 bonuspoäng</p>
+LAST-MODIFIED:20241001T131426Z
+LOCATION:SB-H1\, SB-H3\, SB-H8\, SB Multisal
+SEQUENCE:2
+STATUS:CONFIRMED
+SUMMARY:Dugga TMV200
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241004T100000Z
+DTEND:20241004T110000Z
+DTSTAMP:20241105T091036Z
+UID:5iktbuqbh3ss2pqlo6hkth4dnk@google.com
+CREATED:20241001T164551Z
+DESCRIPTION:<p>Lystring alla fikaälskare!</p><p>Nu på fredag är är det äntl
+ igen dags för årets bästa dag. Ja\, ni hörde mig rätt. Årets bästa dag! Vi 
+ säger bara sanningen\, ingen bull.</p><p>Vi må vara sämre på kretsarna än g
+ rannarna på andra sidan väggen\, men vi kanelbullar. Det är nämligen dags f
+ ör FikIT att rulla ihop degen\, och ut den röda mattan\, för att välkomna e
+ r alla till ett helt maxat firande av kanelbullens dag! Ta gärna en sväng f
+ örbi Hubben 2.2 under lunchen\, där vi trots att det är tre veckor tidigt s
+ tår som kungar i baren och delar ut bullar till ALLA IT Teknologer (eller s
+ å långt lagret räcker).</p><p>Vad väntar ni på? Kom och hämta eran bulle re
+ dan idag (fredag 4/10 12:00\, förmodligen inte idag).</p>
+LAST-MODIFIED:20241001T164551Z
+LOCATION:Hubben 2.2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:FikIT bjuder på kanelbullar
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241004T100000Z
+DTEND:20241004T110000Z
+DTSTAMP:20241105T091036Z
+UID:1b2e3rbr30q4a728fgj5eenq1v@google.com
+CREATED:20241001T165028Z
+DESCRIPTION:<p>Lystring alla fikaälskare!</p><p>Nu på fredag är är det äntl
+ igen dags för årets bästa dag. Ja\, ni hörde mig rätt. Årets bästa dag! Vi 
+ säger bara sanningen\, ingen bull.<br>Och vet ni vad? Vi är överallt! På fr
+ edag kommer vi nämligen att servera rykande färska kanelbullar i The Cloud 
+ över lunch.</p><p>Vad väntar ni på? Besök Lindholmen redan idag (kanelbulla
+ rna kommer först på fredag).</p>
+LAST-MODIFIED:20241001T165028Z
+LOCATION:The Cloud\, Forskningsgången\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Kanelbullens Dag i The Cloud
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241014T153000Z
+DTEND:20241014T163000Z
+DTSTAMP:20241105T091036Z
+UID:6jiotgr2rlatogampireus5gt4@google.com
+CREATED:20241003T074518Z
+DESCRIPTION:<p>Hej gänget!<br>På måndag den 14:e Oktober klockan 17:30 håll
+ er digIT och snIT en git-workshop i E-studion!</p><p>Detta är ett perfekt t
+ illfälle att lära sig mer om ett av det viktigaste verktygen för er restera
+ nde utbildning så kom gärna 😀</p><p>Fyll gärna i formuläret så vi har någo
+ rlunda koll på hur mycket mat som behövs: <a href="https://forms.gle/wJV6C6
+ w3Fg7R2TnQA">FORMULÄR</a></p>
+LAST-MODIFIED:20241003T115306Z
+LOCATION:E-studion
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:git-workshop
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241014
+DTEND;VALUE=DATE:20241015
+DTSTAMP:20241105T091036Z
+UID:2dhr2b4t0s155skkl750nrqkdk@google.com
+CREATED:20241003T132038Z
+DESCRIPTION:<a href="https://www.student.ladok.se">https://www.student.lado
+ k.se</a>
+LAST-MODIFIED:20241003T132050Z
+LOCATION:Ladok
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Kursregistrering LP2 öppnar
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241112
+DTEND;VALUE=DATE:20241113
+DTSTAMP:20241105T091036Z
+UID:7p73vc5q5vc4ji053aq4o7bk57@google.com
+CREATED:20241003T132133Z
+LAST-MODIFIED:20241003T132200Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Kursregistrering LP2 stänger
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241009T153000Z
+DTEND:20241009T170000Z
+DTSTAMP:20241105T091036Z
+UID:cgsj6ob6cos68bb368qm2b9kc9hmab9ocdh3abb575j3gpb26csj2c9hck@google.com
+CREATED:20241004T163940Z
+DESCRIPTION:Kom till skott\, aspa Pyrot\n\nEller maila aspa@pyrot.se senast
+  27/10\n\nVi bjuder på fika!
+LAST-MODIFIED:20241004T163940Z
+LOCATION:Scaniasalen\, Chalmersplatsen 1\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Pyrot Aspinfomöte
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241014T153000Z
+DTEND:20241014T163000Z
+DTSTAMP:20241105T091036Z
+UID:c5h38db2c5gm4b9ichi3gb9kcopjabb16lhmcb9pchh38cj5c8r6ap9nc8@google.com
+CREATED:20241007T154427Z
+DESCRIPTION:Vill du hjälpa ungdomar i Sydafrika med datorkunskap? Sök till 
+ CESA och besök Sydafrika sommaren 2025 för att se elever och lärare dansa a
+ v glädje när ni ger dem datorer och undervisning om hur de kan användas!\n\
+ nVill du höra mer är du mycket välkommen till infomöte för att träffa oss s
+ om reste i somras!\nVi finns i Hubben måndag 14 oktober klockan 17:30.\nDet
+  finns fika!\n\nSe ännu mer på https://cesaproject.com/news/ och https://ww
+ w.youtube.com/watch?v=TFaJeOJrzxQ.\n\nVi ser fram emot din intresseanmälan 
+ på https://forms.gle/f9S3nMWyH5ycZXx66 senast 20 oktober.\n\nHör gärna av d
+ ig om du undrar något\nNadia Farias\, nadiaf@student.chalmers.se\, IT-stude
+ nt\nAnnelie Hansson\, annelieh@student.chalmers.se\, IT-student\nThomas Mat
+ hiassen\, thomath@student.chalmers.se\, IT-student\nSamuel Bengmark samuel@
+ chalmers.se\, tidigare PA för IT
+LAST-MODIFIED:20241008T101131Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:CESA 2025 Infokväll
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241010T153100Z
+DTEND:20241011T020000Z
+DTSTAMP:20241105T091036Z
+UID:23buhdh7it4lvfg4qrpp0b30s0@google.com
+CREATED:20240927T121440Z
+DESCRIPTION:Sektionsmötet är sektionens högsta beslutande organ. Här bestäm
+ s vilka regler som gäller på sektionen\, vilken budget och verksamhet olika
+  kommitteer ska ha\, och vilka som ska sitta. Vi i mötespresidiet rekommend
+ erar starkt att närvara.<br><br>Du som sektionsmedlem kan få gratis mat gen
+ om att matanmäla dig\, <strong>Matanmälan kommer senare</strong><br><h3>Möt
+ ets innehåll</h3><p>Läs mer på <a href="https://chalmers.it/post/2350" targ
+ et="_blank">https://chalmers.it/post/2350</a></p><p>Ta även en titt i <a hr
+ ef="https://cthit.slack.com/archives/C04122TVAN8" target="_blank">#motioner
+ </a> på Slack för att se vilka motioner som kommer tas upp på mötet.</p>
+LAST-MODIFIED:20241008T101255Z
+LOCATION:HC4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Sektionsmöte LP1
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241014T150000Z
+DTEND:20241014T210000Z
+DTSTAMP:20241105T091036Z
+UID:2krivblopprmco51245bmeg7b9@google.com
+CREATED:20241008T172813Z
+DESCRIPTION:<p>Hej bästa IT-sektionen!</p><p>På måndag den 14:e kommer Equa
+ lIT\, jämviKt\, och JämZ hålla knappverkstad i ML11. Kom och gör pronomenpi
+ ns\, namnbrickor eller bara shitposts. Perfekt tillfälle att lära känna fol
+ k från K och Z! Det kommer även att finnas möjlighet att pärla armband och 
+ göra annat pyssel\, och kommittéaktiva välkomnas att sy märken. Du får ta m
+ ed eget pyssel hemifrån om du vill!<br>Arret börjar 17:00 och kommer pågå t
+ ill sent. Till denna tillställning kommer snacks serveras och toasts säljas
+  för inköpspris.</p><p><strong>TLDR</strong><br><strong>Vad?</strong> Knapp
+ -arr<br><strong>När?</strong> Måndag 14:e oktober\, 17:00-sent<br><strong>V
+ ar?</strong> ML11<br><strong>Hur?</strong> Mysigt pyssel!!!!!</p><p>Puss oc
+ h kram (om du vill)! / Kram! / Kom å Myz!<br>// EqualIT\, jämviKt\, JämZ</p
+ >
+LAST-MODIFIED:20241008T172813Z
+LOCATION:ML11
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Knapp-arr
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241013
+DTEND;VALUE=DATE:20241014
+DTSTAMP:20241105T091036Z
+UID:1b2cjp0bo65iddrtqmmlftogjf@google.com
+CREATED:20241009T140518Z
+DESCRIPTION:<a href="https://www.student.ladok.se" target="_blank"><u>https
+ ://www.student.ladok.se</u></a>
+LAST-MODIFIED:20241009T140532Z
+LOCATION:Ladok
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Tentaanmälan LP1 stänger
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241011T133100Z
+DTEND:20241011T150000Z
+DTSTAMP:20241105T091036Z
+UID:3cmotts84rf55t27vksej7i260@google.com
+CREATED:20241009T164623Z
+DESCRIPTION:Är du intresserad av att kombinera fotboll\, innebandy och mer 
+ sport och spela på en gång? Eller vill du bara ha ett uppehåll i dina studi
+ er? Då ska du vara med i frITid när vi arrangerar Multiboll
+LAST-MODIFIED:20241009T164623Z
+LOCATION:Motionshallen i Kårhuset
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Multiboll med frITid
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241018T153000Z
+DTEND:20241018T163000Z
+DTSTAMP:20241105T091036Z
+UID:32vqoahjd85he37hbummdbtl9t@google.com
+CREATED:20241009T165327Z
+DESCRIPTION:<p>A forgotten place calls to you\, strange whispers and fragme
+ nts of an eerie past.</p><p>Get ready to craft eerie\, spine-chilling\, and
+  hauntingly creative games that capture the essence of the spooky season! W
+ hether you’re here to terrify or simply explore the mysterious\, everyone’s
+  welcome. Let’s make something that haunts the night—happy jamming! 🕸️</p>
+ <p>Läs mer och anmäl dig på:</p><p><a href="https://itch.io/jam/spooky-jam-
+ 2024">https://itch.io/jam/spooky-jam-2024</a><br></p>
+LAST-MODIFIED:20241009T165327Z
+LOCATION:Forskningsgången 2c\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Spooky Game Jam 2024
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241020T160000Z
+DTSTAMP:20241105T091036Z
+UID:29e5ei9mqovak50ovgoct4q2t6@google.com
+CREATED:20241009T165406Z
+DESCRIPTION:<p>Läs mer och anmäl dig på:</p><p><a href="https://itch.io/jam
+ /spooky-jam-2024"><u>https://itch.io/jam/spooky-jam-2024</u></a></p>
+LAST-MODIFIED:20241009T165701Z
+LOCATION:Forskningsgången 2c\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Spooky Jam Submission Deadline
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241020T180000Z
+DTEND:20241020T190000Z
+DTSTAMP:20241105T091036Z
+UID:6sguqcq1tkcne8md6rq715a4iv@google.com
+CREATED:20241009T165743Z
+DESCRIPTION:<p>Läs mer och anmäl dig på:</p><p><a href="https://itch.io/jam
+ /spooky-jam-2024"><u>https://itch.io/jam/spooky-jam-2024</u></a></p>
+LAST-MODIFIED:20241009T165743Z
+LOCATION:Forskningsgången 2c\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Spooky Jam Closing Ceremony
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241020T161000Z
+DTEND:20241020T173000Z
+DTSTAMP:20241105T091036Z
+UID:703mj9jojmj0a97o11ik80spj9@google.com
+CREATED:20241009T165648Z
+DESCRIPTION:<p>Läs mer och anmäl dig på:</p><p><a href="https://itch.io/jam
+ /spooky-jam-2024"><u>https://itch.io/jam/spooky-jam-2024</u></a></p>
+LAST-MODIFIED:20241009T165750Z
+LOCATION:Forskningsgången 2c\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Spooky Jam — Let's play with the Judges!
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241016
+DTEND;VALUE=DATE:20241017
+DTSTAMP:20241105T091036Z
+UID:cgr36opk6gq3ib9gchij2b9k65im2bb2ccqj0b9hchij8or5copj6oj370@google.com
+CREATED:20241010T152000Z
+DESCRIPTION:Gå med i "MK Aspgrupp 2024" på Facebook för mer info
+LAST-MODIFIED:20241010T152000Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:MK Aspstart
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241016T153100Z
+DTEND:20241016T180000Z
+DTSTAMP:20241105T091036Z
+UID:6j7sju8mpe22oeannk0kll48ep@google.com
+CREATED:20241009T164820Z
+DESCRIPTION:Som ni vet har vi gått in i den rosa månaden oktober och våra v
+ änner i JÄMKFKB & KFIK arr:ar Spring mot Bröstcancer.\nSå vill du vara med 
+ och göra skillnad? Oavsett om ditt bidrag är stort eller litet\, har det st
+ or betydelse! Häng då med JämKfKb och KfIK för att springa mot bröstcancer 
+ – och varför inte unna dig en våffla samtidigt? Loppet är cirka 3 km och st
+ artar vid häksträdgården. Alla insamlade medel från evenemanget går oavkort
+ at till Bröstcancerfonden.\nVill du inte springa? Ingen fara! Du är varmt v
+ älkommen att komma förbi\, köpa en våffla och donera. Dom har också startat
+  en digital insamlingsbössa som är länkad i deras Facebook-evenemang samt p
+ å JämKfKb och KfIK.24 Instagram-profiler. Där kan du swisha valfri summa\, 
+ även om du inte kan vara med på plats. Kom ihåg\, varje bidrag gör skillnad
+ !\nLåt oss tillsammans kämpa för de som kämpar\, och springa för de som int
+ e längre kan!\nPuss och kram (om du vill)! / Kom ihåg: Det kommmer bli kul\
+ , men framförallt roligt!\n// EqualIT\, frITid\n\nLänk till insamling:\nhtt
+ ps://egeninsamling.brostcancerforbundet.se/team/kfkb-mot-brostcancer
+LAST-MODIFIED:20241011T122642Z
+LOCATION:Häkträdgården
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Spring mot Bröstcancer med KFIK & JÄMKFKB
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241018T133100Z
+DTEND:20241018T150000Z
+DTSTAMP:20241105T091036Z
+UID:6hi66cpi6so3abb56ss3ib9k70oj4b9oc8sjab9mc4o3idpi64p38phhc8@google.com
+CREATED:20241011T165421Z
+DESCRIPTION:Want a break from the pluggande? Eller har du känt att du skull
+ e vilja gå på vinvolley utan vin? Kanske inte orkar springa runt på volleyb
+ ollplanen. Då bör du testa volleybolls systersport roundnet. För frITid har
+  nämligen varit i kontakt med Roundnet Göteborg som ska visa oss hur man få
+ r till dom perfekta smasharna och bli beachens konung på roundnet nästa som
+ mar.\n\nKom ihåg! Det ska bli kul\, men framförallt roligt!
+LAST-MODIFIED:20241011T165421Z
+LOCATION:Motionshallen i Kårhuset
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Roundnet med frITid
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241019T160100Z
+DTEND:20241019T220000Z
+DTSTAMP:20241105T091036Z
+UID:37v0hifvig4p4tbhc13n63vm72@google.com
+CREATED:20241013T134702Z
+DESCRIPTION:<p>Det är oktober och vi alla vet vad det betyder\, P.R.I.T.:s 
+ legendariska oktobersittning! Årets tema är Scooby-Doo så sätt på er forska
+ rhatten\, borsta av det där gamla förstoringsglaset och gör er redo för ett
+  storslaget mysterium ni sent kommer glömma!</p><p>Det är BYOB och biljettp
+ riset är 100kr per person. Anmälningsformuläret kommer släppas 12:00 på mån
+ dag den 14:de oktober och det är först till kvarn så se till att du inte mi
+ ssar det! Hoppas vi ses där! Scooby dooby dooooo!</p><p>Dansband och techno
+ <br>P.R.I.T.</p>
+LAST-MODIFIED:20241013T134702Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:P.R.I.T. Scooby-Doo sittning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241014T100000Z
+DTEND:20241014T110000Z
+DTSTAMP:20241105T091036Z
+UID:7elru50shcr37k2erghl275hqr@google.com
+CREATED:20241013T134738Z
+DESCRIPTION:<p>Det är oktober och vi alla vet vad det betyder\, P.R.I.T.:s 
+ legendariska oktobersittning! Årets tema är Scooby-Doo så sätt på er forska
+ rhatten\, borsta av det där gamla förstoringsglaset och gör er redo för ett
+  storslaget mysterium ni sent kommer glömma!</p><p>Det är BYOB och biljettp
+ riset är 100kr per person. Anmälningsformuläret kommer släppas 12:00 på mån
+ dag den 14:de oktober och det är först till kvarn så se till att du inte mi
+ ssar det! Hoppas vi ses där! Scooby dooby dooooo!</p><p>Dansband och techno
+ <br>P.R.I.T.</p><p>Här kommer anmälningsformuläret till oktobersittningen. 
+ Ni kommer att få ett mail om ni fått plats och isåfall kommer ni kunna köpa
+  biljetter utanför e-studion 12-13 på onsdag den 16/10. <a href="https://fo
+ rms.gle/WbqWmakSpym7KL1b9">https://forms.gle/WbqWmakSpym7KL1b9</a><br></p>
+LAST-MODIFIED:20241014T143600Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Biljettsläpp Scooby-Doo sittning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241020
+DTEND;VALUE=DATE:20241021
+DTSTAMP:20241105T091036Z
+UID:6grm6pj3c8rmcb9m6sqjeb9k60qm8bb1cco3cbb561h30e1p6spm8o9p6k@google.com
+CREATED:20241007T154535Z
+DESCRIPTION:Ansökan: https://forms.gle/f9S3nMWyH5ycZXx66\n\nOm du vill veta
+  mer om CESA\, kolla på våra tidigare utskick\, https://cesaproject.com ell
+ er maila en nuvarande medlem (nadiaf@student.chalmers.se) för mer info
+LAST-MODIFIED:20241015T232757Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Anmälan CESA 2025 stänger
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241030T130000Z
+DTEND:20241030T170000Z
+DTSTAMP:20241105T091036Z
+UID:3noml6v7m8rhanv6dbj9rkrf8t@google.com
+CREATED:20241016T124427Z
+LAST-MODIFIED:20241016T124454Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:TDA548 Tentamen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241018T100000Z
+DTEND:20241018T110000Z
+DTSTAMP:20241105T091036Z
+UID:6o7f6rkqplvfht2vkr3jeqlu42@google.com
+CREATED:20241016T160556Z
+DESCRIPTION:<p>Är du sugen på fika?<br>Nu på fredag är nämligen dags att fi
+ ra ännu en fikadag. Denna gång firar vi chokladmuffins dagen! Hur gott är i
+ nte det?<br>För er som inte listat ut det kommer FikIT att stå i Hubben och
+  The Cloud under lunchen och bjuda på muffins till alla fikasugna IT-Teknol
+ oger!<br>Snälla kom</p><p>Var? Hubben 2.2 och The Cloud<br>När? 18/10 12:00
+  (lunch)<br>Vad? Gratis chockladmuffins!</p>
+LAST-MODIFIED:20241016T160556Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Chokladmuffins Dagen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241018T100000Z
+DTEND:20241018T110000Z
+DTSTAMP:20241105T091036Z
+UID:0oploi5ed333f6a2jsu7r5geb6@google.com
+CREATED:20241016T160614Z
+DESCRIPTION:<p>Är du sugen på fika?<br>Nu på fredag är nämligen dags att fi
+ ra ännu en fikadag. Denna gång firar vi chokladmuffins dagen! Hur gott är i
+ nte det?<br>För er som inte listat ut det kommer FikIT att stå i Hubben och
+  The Cloud under lunchen och bjuda på muffins till alla fikasugna IT-Teknol
+ oger!<br>Snälla kom</p><p>Var? Hubben 2.2 och The Cloud<br>När? 18/10 12:00
+  (lunch)<br>Vad? Gratis chockladmuffins!</p>
+LAST-MODIFIED:20241016T160614Z
+LOCATION:The Cloud\, Forskningsgången\, 417 56 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Chokladmuffins Dagen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241021T150100Z
+DTEND:20241021T190000Z
+DTSTAMP:20241105T091036Z
+UID:2ufgsr4ultfgmjm5s376d10dqt@google.com
+CREATED:20241016T160730Z
+DESCRIPTION:<p>Hello garnälskare out there!</p><p>På måndag är det virk- oc
+ h stickkväll i Hubben 🤍<br>Har du ett pågående projekt\, behöver inspirati
+ on för ett nytt projekt eller vill bara ha gott sällskap och en mysig kväll
+  så borde du komma.<br>Men även om du inte har virkat eller stickat innan o
+ ch är sugen på att testa på och lära dig något nytt så borde du komma! Det 
+ kommer finnas virknålar\, instruktioner och även lite garn\, men också fler
+ a som hjälper gärna till.</p><p><strong>TLDR</strong><br><strong>Vad:</stro
+ ng> Virka och sticka 🧶<br><strong>När:</strong> Måndag 21/10\, kl.17:01<br
+ ><strong>Var:</strong> Hubben<br><strong>Hur:</strong> BYOG</p>
+LAST-MODIFIED:20241016T160730Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Virk- och stickkväll
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241022T153100Z
+DTEND:20241022T213000Z
+DTSTAMP:20241105T091036Z
+UID:2f131b5jensc0ohf2fughqv63k@google.com
+CREATED:20241016T160345Z
+DESCRIPTION:Psst... Pssssstttttt...\n\nHar ni hört att P.R.I.T. känner sig 
+ lite busiga och börjar aspningen lite tidigare med en Smygaspning?\n\nDen 2
+ 2/10 17:31 så kommer vi påbörja planeringen inför nästa pubrunda och om du 
+ är intresserad av att veta hur det går till är du varmt välkommen att närva
+ ra! Då kommer du med de andra asparna få välja tema och spåna dekor\, mat o
+ ch dryck. Utöver detta kommer du att få en djupare inblick i hur vi i P.R.I
+ .T. jobbar vilket är superbra om du är intresserad av att söka! Dessutom se
+ rveras det dundergod mat!\n\nTagga aspning!
+LAST-MODIFIED:20241016T161420Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:P.R.I.T. Smygaspning
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241125T090000Z
+DTEND:20241125T160000Z
+DTSTAMP:20241105T091036Z
+UID:40pejhutam0s3ajijjso6rnh6e@google.com
+CREATED:20241014T143751Z
+DESCRIPTION:Den 25:e november slår vi upp dörrarna till vår årliga arbetsma
+ rknadsmässa DatE-IT. För er som inte vet är DatE-IT en mässa för Data-\, IT
+ -\, Elektro- och Medicinteknik där ca 80 olika företag kommer och presenter
+ ar sig (och erbjuder jobb\, sommarjobb\, exjobb osv.). Är detta något du är
+  sugen på hoppas jag vi ses på mässan! <strong>Skriv upp dig på eventet på 
+ Facebook: <a href="https://fb.me/e/2q1mA6ZAw">https://fb.me/e/2q1mA6ZAw</a>
+ !</strong>
+LAST-MODIFIED:20241016T193939Z
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:DatE-IT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241024T153000Z
+DTEND:20241025T020000Z
+DTSTAMP:20241105T091036Z
+UID:6hgj6pj36ss6ab9k74rm8b9kcco3ib9pc8s62bb66th34c366os32c1kcg@google.com
+CREATED:20241011T123429Z
+DESCRIPTION:Sektionsmötet LP1 varade 10 timmar och vi kom inte ens till mot
+ ionerna så det här mötet är för de och invalen förutom inval till RevisIT s
+ om gjordes på föregående möte.\n\nDäremot kan nya motioner även skickas in.
+ \n\nLäs mer:\nhttps://chalmers.it/post/2375\nhttps://chalmers.it/post/2385
+LAST-MODIFIED:20241017T105127Z
+LOCATION:HC4\, Hörsalsvägen 14\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Extrainsatt sektionsmöte LP1
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241017
+DTEND;VALUE=DATE:20241025
+DTSTAMP:20241105T091036Z
+UID:3e9kraofkov17kngefnb9ko3po@google.com
+CREATED:20241017T234858Z
+DESCRIPTION:<p>Idag startar Genderfluid Visibility Week! Detta kommer Equal
+ IT uppmärksamma med att sätta ut infoblad i Hubben och dela ut pins. Så kom
+ \, ta en pin och lär dig om gender fluidity!</p><p><strong>Vad?</strong> Ge
+ nderfluid Visibility Week<br><strong>När?</strong> 17/10 - 24/10<br><strong
+ >Var?</strong> Hubben 2.2<br><strong>Hur?</strong> Infoblad och Pins!!!</p>
+LAST-MODIFIED:20241017T234858Z
+LOCATION:Hubben 2.2\, Hörsalsvägen 9\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Genderfluid Visibility Week
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241022T100000Z
+DTEND:20241022T110000Z
+DTSTAMP:20241105T091036Z
+UID:mc83tr15oggrakcpsnf9lnuknc@google.com
+CREATED:20241018T090529Z
+DESCRIPTION:Vill du ha gratis mat?\nÄr du intresserad av att bestämma it se
+ ktionens framtid?\nDå ska du komma på vår asplunch och se om du kan vara ka
+ ndidat för att sitta som ordförande eller ledamot i valleB\n\nNär? 12 22/10
+ \nVar? JA Pripps\nHur? Borgir
+LAST-MODIFIED:20241018T090621Z
+LOCATION:JA Pripps
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:ValleB Asplunch
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241022T100000Z
+DTEND:20241022T110000Z
+DTSTAMP:20241105T091036Z
+UID:0es387a65h83m4pbtofe4qp0g8@google.com
+CREATED:20241020T162604Z
+DESCRIPTION:Missade du att komma på Cloudlords aspevents? Tur för dig för v
+ i kommer ha ett extra asptillfälle där du är välkommen att ställa alla dina
+  frågor om vad det innebär att vara en i Cloudlords\, hur man ansöker\, hur
+  mycket kaffe vi köper\, den bästa glassmaken\, eller bara kommer och hänga
+  och ha trevligt med oss.\nVi träffas på Tisdag 22/10 i Jupiter123 under lu
+ nch (12-13).\n\nTLDR\nVad: Clourdlords extra asplunch\nNär: Tisdag 22/10\, 
+ 12-13\nVar: Jupiter123
+LAST-MODIFIED:20241020T162604Z
+LOCATION:Jupiter123
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Cloudlords Asplunch
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241106T170000Z
+DTEND:20241106T225900Z
+DTSTAMP:20241105T091036Z
+UID:ckojachg74om4b9pcgpj2b9k6ssmabb274rj0bb571im2or5c8pm6oho64@google.com
+CREATED:20241023T090840Z
+DESCRIPTION:Chalmers robotförening bjuder in till en workshop inom Internet
+  of Things (IoT). Du som är eller blir medlem i föreningen (kostar 100kr) f
+ år ett smarthögtalarkit utan extra kostnad\, som byggs ihop gemensamt under
+  kvällen. Anmälan via länk:\n\nhttps://gantrack.com/t/l/8662715/0_NDExODgyN
+ jgyMDQ3Mg==\n\nVälkommen!
+LAST-MODIFIED:20241023T090840Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:IoT workshop
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241129
+DTEND;VALUE=DATE:20241130
+DTSTAMP:20241105T091036Z
+UID:6opj8o9oc4r6cb9icco3ib9k68sjeb9ocph32b9pcko34p31cco6cdhk6c@google.com
+CREATED:20241023T091041Z
+DESCRIPTION:Välkommen till Jämlikhetskommitten\, JämK queerpub i Café Bulte
+ n\, fredagen den 29:e november. Det bjuds på livemusik\, pubquiz och en tre
+ vlig atmosfär. En trygg plats för alla teknologer där var och en känner sig
+  välkommen. Mecenat och ID krävs.\n\nVi ses där!
+LAST-MODIFIED:20241023T091041Z
+LOCATION:Cafe Bulten\, Hörsalsvägen 7\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Space Queerpub
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241113T114500Z
+DTEND:20241113T120000Z
+DTSTAMP:20241105T091036Z
+UID:68q68ohh6dgjcb9h71gm2b9k6gom2b9o60rjib9icdij6o9jc5i34phk6g@google.com
+CREATED:20241023T091333Z
+DESCRIPTION:Som en del av Chalmers Studentkårs 120års jubileum bjuder vi på
+  ett musikaliskt framträdande där du lär känna Chalmers Sångkör!🎶\n\nÄr du
+  nyfiken på hur Chalmers Sångkör låter när den är som bäst: på fest! Luta d
+ ig tillbaka och njut av studentikosa sånger\, svenska kör-klassiker och vår
+ a personliga favoriter på fest. Du kommer även få ett litet smakprov av åre
+ ts julrepertoar!🎶🥳\n\n 🎶TID: 12.45 - 13.00\n🎶PLATS: Kyrkan\, Chalmers k
+ århus\n🎶Det är gratis att gå på eventet!\n\nVi ses!🎶🥳
+LAST-MODIFIED:20241023T091333Z
+LOCATION:Kyrkan
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Vi är Chalmers Sångkör!
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241113T161500Z
+DTEND:20241113T190000Z
+DTSTAMP:20241105T091036Z
+UID:ccr3cdb1cli6abb26dhj8b9k6cs6ab9pc5hmcb9k6ssmcd9oc8q36ob3co@google.com
+CREATED:20241023T104100Z
+DESCRIPTION:Vill du vara med och arra årets viktigaste event? Eller undrar 
+ du vad Valnämnden gör? Kom till J.A. Pripps och käka pizza med oss den 13:e
+  november 17:15! Anmäl ditt intresse i formuläret nedan!\n\nhttps://gantrac
+ k.com/t/l/8662711/0_NDExODgyNjgyMDQ3Mg==
+LAST-MODIFIED:20241023T104116Z
+LOCATION:J.A. Pripps
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Valnämnden – Valinfo och Pizza
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241116T140000Z
+DTEND:20241116T225900Z
+DTSTAMP:20241105T091036Z
+UID:69j36phlcoq3eb9k74q34b9kcoq30b9pcgr3gb9j64om2c1l6pi38dpo6o@google.com
+CREATED:20241023T104518Z
+DESCRIPTION:Den 16 november är det dags för maskeradbal! Detta är Chalmers 
+ Studentkårs årliga höstbal som i år även är en del av Chalmers Studentkårs 
+ 120-årsjubileum. Biljettförsäljningen äger rum den 25:e oktober.\n\nLäs mer
+ : https://gantrack.com/t/l/8662712/0_NDExODgyNjgyMDQ3Mg==/
+LAST-MODIFIED:20241023T104518Z
+LOCATION:Chalmers student union\, Teknologgatan 2\, 412 58 Göteborg\, Swede
+ n
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Chalmers Studentkårs maskeradbal
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241025T100000Z
+DTEND:20241025T110000Z
+DTSTAMP:20241105T091036Z
+UID:6gqm6phn6pi68b9g6spjib9k6kqjeb9p71gj4b9j60qjee9p6cq30o9p6c@google.com
+CREATED:20241023T104942Z
+DESCRIPTION:Biljettpris:\nChalmerist: 625/595 kr (alkohol/alkoholfritt)\nIc
+ ke-Chalmerist: 725/695 kr (alkohol/alkoholfritt)\n\nBiljettförsäljningen äg
+ er rum den 25:e oktober i Scaniasalen\, Campus Johanneberg och vid kårservi
+ ce\, Campus Lindholmen. Vi kommer lägga ut en länk till ett svarsformulär k
+ l 08:00 här i eventet\, på facebook story och instagram story som man fylle
+ r i (du får endast fylla i en gång). Där kommer du bland annat behöva fylla
+  i vilket campus du tänkt köpa din biljett på samt om du planerar att ta me
+ d en +1. Ditt svar i formuläret agerar som din köplats inför själva försälj
+ ningen som sker kl 12:00 då vi kommer ropa upp namnen från formuläret. Varj
+ e köande gäst får max köpa två biljetter och du behöver då uppvisa leg och 
+ kårkort för både dig och den du köper åt om denne också är Chalmerist (det 
+ går bra med en bild). Notera att det inte måste vara din baldejt som du köp
+ er åt. Eventuell baldejt anges vid biljettköpet. Om ni är många som planera
+ t att gå tillsammans\, se till att hitta på ett namn för ert sällskap som n
+ i sedan anger vid biljettköpet. \nOBSERVERA att om du inte är närvarande nä
+ r ditt namn ropas upp kommer du hamna sist i kön igen. Glöm inte leg och kå
+ rkort.\n\nLäs mer: https://gantrack.com/t/l/8662712/0_NDExODgyNjgyMDQ3Mg==/
+LAST-MODIFIED:20241023T104942Z
+LOCATION:Scaniasalen Johanneberg\, Kårservice Lindholmen
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Biljettförsäljning Studentkårens Maskeradbal
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241025T060000Z
+DTEND:20241025T070000Z
+DTSTAMP:20241105T091036Z
+UID:60rm6e34c8s32b9pc4p30b9k69h62bb171gm6bb46oq64dpp74s36cr4cc@google.com
+CREATED:20241023T105101Z
+DESCRIPTION:Biljettpris:\nChalmerist: 625/595 kr (alkohol/alkoholfritt)\nIc
+ ke-Chalmerist: 725/695 kr (alkohol/alkoholfritt)\n\nBiljettförsäljningen äg
+ er rum den 25:e oktober i Scaniasalen\, Campus Johanneberg och vid kårservi
+ ce\, Campus Lindholmen. Vi kommer lägga ut en länk till ett svarsformulär k
+ l 08:00 här i eventet\, på facebook story och instagram story som man fylle
+ r i (du får endast fylla i en gång). Där kommer du bland annat behöva fylla
+  i vilket campus du tänkt köpa din biljett på samt om du planerar att ta me
+ d en +1. Ditt svar i formuläret agerar som din köplats inför själva försälj
+ ningen som sker kl 12:00 då vi kommer ropa upp namnen från formuläret. Varj
+ e köande gäst får max köpa två biljetter och du behöver då uppvisa leg och 
+ kårkort för både dig och den du köper åt om denne också är Chalmerist (det 
+ går bra med en bild). Notera att det inte måste vara din baldejt som du köp
+ er åt. Eventuell baldejt anges vid biljettköpet. Om ni är många som planera
+ t att gå tillsammans\, se till att hitta på ett namn för ert sällskap som n
+ i sedan anger vid biljettköpet. \nOBSERVERA att om du inte är närvarande nä
+ r ditt namn ropas upp kommer du hamna sist i kön igen. Glöm inte leg och kå
+ rkort.\n\nLäs mer: https://gantrack.com/t/l/8662712/0_NDExODgyNjgyMDQ3Mg==/
+LAST-MODIFIED:20241023T105101Z
+LOCATION:Facebook\, se länk nedan
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Anmälan till Studentkårens Maskeradbal släpps
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241109T200000Z
+DTEND:20241110T020000Z
+DTSTAMP:20241105T091036Z
+UID:7v8ho3cqvf631qmoc7or6b6aqc@google.com
+CREATED:20241020T163538Z
+DESCRIPTION:Håll i hatten (eller häxhatten 😈) för den 9 november smäller d
+ et när Kårhuset förvandlas till den ultimata skräckfesten när portarna slås
+  upp till HALLOWEENKALASET!!\n👻💀 Tänk dig ett LASERDOME i Gasquen och ett
+  BOILER ROOM i Kårhuset!! Detta vill du absolut INTE missa!! Flera dansgolv
+ \, dunkande beats\, iskalla drinkar i våra barer\, en hoppborg och mycket m
+ er… Så gräv fram din läskigaste outfit\, sprid ordet och kom redo för en kv
+ äll full av skräckblandad förtjusning! 💀👻\n\nDag: Lördag 9/11\nTid: 21:00
+ -03:00\nPlats: Chalmers Kårhus\, Johanneberg\nPriser:175 kr för Chalmeriste
+ r\, 205kr för Icke-Chalmerister\nBiljettsläpp (Teknologgården Johanneberg &
+  Kårhuset Lindholmen):\n- Måndag 4/11 kl 12:00-13:00\n- Tisdag 5/11 kl 12:0
+ 0-13:00\n\nDu som köper biljetter måste vara Chalmerist med giltigt kårleg 
+ men du kan köpa båda biljettyperna\, max 3 icke-Chalmerist per Chalmerist. 
+ I biljettpriset ingår garderob. Max 8 biljetter totalt\nInga väskor får tas
+  med in på kalaset. Om väskor tas med till släppet\, kommer inte inträde at
+ t beviljas. Kalasen är rökfria\, alla cigaretter\, vapes och liknande komme
+ r konfiskeras.\nVi reserverar oss för eventuella ändringar\, 18-års gräns g
+ äller. Vid hög efterfrågan kan biljetterna sälja slut på måndag. Frågor kan
+  mailas till festu@festu.se\n\nLäs mer: https://www.festu.se
+LAST-MODIFIED:20241025T085338Z
+LOCATION:Kårhuset
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Halloweenkalaset
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241104T110000Z
+DTEND:20241104T120000Z
+DTSTAMP:20241105T091036Z
+UID:6sr66cph65h30b9i60sm4b9k70s3gbb1ccrjab9lcorj8dj4cgqj6dr274@google.com
+CREATED:20241025T085819Z
+DESCRIPTION:Priser:175 kr för Chalmerister\, 205kr för Icke-Chalmerister\nB
+ iljettsläpp (Teknologgården Johanneberg & Kårhuset Lindholmen):\n- Måndag 4
+ /11 kl 12:00-13:00\n- Tisdag 5/11 kl 12:00-13:00\nDu som köper biljetter må
+ ste vara Chalmerist med giltigt kårleg men du kan köpa båda biljettyperna\,
+  max 3 icke-Chalmerist per Chalmerist. I biljettpriset ingår garderob. Max 
+ 8 biljetter totalt\nInga väskor får tas med in på kalaset. \nVi reserverar 
+ oss för eventuella ändringar\, 18-års gräns gäller. Vid hög efterfrågan kan
+  biljetterna sälja slut på måndag. Frågor kan mailas till festu@festu.se\n\
+ nLäs mer: https://www.festu.se
+LAST-MODIFIED:20241025T085819Z
+LOCATION:Teknologgården\, Teknologgatan 4\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Biljettförsäljning Halloweenkalaset
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241105T110000Z
+DTEND:20241105T120000Z
+DTSTAMP:20241105T091036Z
+UID:clj3cob670p36b9lcop34b9k6sp32bb1cks6ab9l68o32dj2ccq34e326k@google.com
+CREATED:20241025T085905Z
+DESCRIPTION:Priser:175 kr för Chalmerister\, 205kr för Icke-Chalmerister\nB
+ iljettsläpp (Teknologgården Johanneberg & Kårhuset Lindholmen):\n- Måndag 4
+ /11 kl 12:00-13:00\n- Tisdag 5/11 kl 12:00-13:00\nDu som köper biljetter må
+ ste vara Chalmerist med giltigt kårleg men du kan köpa båda biljettyperna\,
+  max 3 icke-Chalmerist per Chalmerist. I biljettpriset ingår garderob. Max 
+ 8 biljetter totalt\nInga väskor får tas med in på kalaset. \nVi reserverar 
+ oss för eventuella ändringar\, 18-års gräns gäller. Vid hög efterfrågan kan
+  biljetterna sälja slut på måndag. Frågor kan mailas till festu@festu.se\n\
+ nLäs mer: https://www.festu.se
+LAST-MODIFIED:20241025T085905Z
+LOCATION:Kårhuset Lindholmen
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Biljettförsäljning Halloweenkalaset
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241105T143000Z
+DTEND:20241105T170000Z
+DTSTAMP:20241105T091036Z
+UID:c8r38d1p60rj8b9o68qjgb9k6tijgbb170smcbb66spj0e1n6oq3idpi68@google.com
+CREATED:20241025T091110Z
+DESCRIPTION:Den 5 november hålls Chalmers första årshögtid – en ny traditio
+ n för att fira högskolan. Studenter\, anställda och Chalmersvänner är alla 
+ välkomna att fira högtiden. På programmet står bland annat tal från rektor\
+ , musikunderhållning och utdelning av flera priser\n\n\nLiksom flera andra 
+ lärosäten får nu också Chalmers en årshögtid. Den ska fira högskolan och bl
+ i en årligen återkommande ceremoni som ligger i paritet med doktorspromotio
+ nen och professorsinstallationen. Årshögtiden ska hållas i anslutning till 
+ den 5 november som var den dag då Chalmers slöjdskola invigdes 1829\, och p
+ remiärtillfället sker på just det datumet.\n\nPriser som delas ut i år:\n\n
+ Pedagogiska priset\nStyrkeområdenas pris\nChalmers pris för genomslag i sam
+ hället\nChalmers Equality Award\n\nVarmt välkommen! Anmälan är öppen till d
+ en 1 november via länken under "Biljetter". \n\nDörrarna öppnar kl. 15.30 i
+ n till hörsalen och gäster intar sina platser kl. 15.50. Ceremonin startar 
+ kl. 16.00\, efter ceremonin serveras förfriskningar i Volvofoajén.\n\nLäs m
+ er: https://facebook.com/events/s/chalmers-arshogtid/1335306901213567/
+LAST-MODIFIED:20241025T091110Z
+LOCATION:RunAn\, Chalmersplatsen 1\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Chalmers Årshögtid
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241026T120000Z
+DTEND:20241026T160000Z
+DTSTAMP:20241105T091036Z
+UID:6vfi3s93sikolvlihf8v42dug3@google.com
+CREATED:20241014T095907Z
+DESCRIPTION:Tentamen på chalmers.se: <a href="https://www.chalmers.se/utbil
+ dning/dina-studier/hitta-kurs-och-programplaner/kursplaner/TMV200/">https:/
+ /www.chalmers.se/utbildning/dina-studier/hitta-kurs-och-programplaner/kursp
+ laner/TMV200/</a><br>Tentamen infotråd på Canvas: <a href="https://chalmers
+ .instructure.com/courses/31068/discussion_topics/182647">https://chalmers.i
+ nstructure.com/courses/31068/discussion_topics/182647</a>
+LAST-MODIFIED:20241026T101151Z
+LOCATION:HA1\, HA2\, HA3\, HA4\, HB4
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:TMV200 Tentamen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241102T170100Z
+DTEND:20241102T230000Z
+DTSTAMP:20241105T091036Z
+UID:kobe3fgt34orep91f2113kqnr4@google.com
+CREATED:20241025T113041Z
+DESCRIPTION:Nu är det snart dags för ET-Raj och det finns ju inget bättre ä
+ n att raja efter tentorna. Därför bjuder NollKIT in till fest i Hubben 2.2!
+ \n\nVar? Hubben 2.2\nNär? 2/11 18.01\nHur? BYOB\nVarför? För att fira!\n\nN
+ ollKIT - Din dröm efter tentorna\n\n
+LAST-MODIFIED:20241026T101248Z
+LOCATION:Hubben 2.2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NollKIT ET-RAJ
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241102T150000Z
+DTEND:20241102T190000Z
+DTSTAMP:20241105T091036Z
+UID:hkmb4plubc6q1igq8bcjruf2d8@google.com
+CREATED:20241027T192105Z
+DESCRIPTION:Vad kan vara bättre än att kolla på Worlds 24? Att kolla på det
+  tillsammans med LaggIT såklart! Kom till E-studion för en watchalong med o
+ ss i LaggIT. Vi sätter igång vid 16:00!\n\nOBS: arrangemanget är alkoholfri
+ tt\n\nVad? Watchalong\nVar? E-studion\nNär? Lördag 2/11 16:00\n\n
+LAST-MODIFIED:20241027T192311Z
+LOCATION:E-studion
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Worlds Watchalong 😀
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241029
+DTEND;VALUE=DATE:20241030
+DTSTAMP:20241105T091036Z
+UID:6pgm6d9h6kq62bb46srj6b9k64oj8bb170r3gb9j65j3id33c5j3edj364@google.com
+CREATED:20241027T192529Z
+DESCRIPTION:Join us for a Mingle with Ericsson at our Lindholmen Office! Co
+ me check out our office\, chat with some of our colleagues\, and learn more
+  about the opportunities we have for students! If you're curious about mast
+ er thesis projects\, internships\, or future roles\, this is your chance to
+  get all the info you need.\n\nDate: November 5\nLocation: Ericsson Lindhol
+ men Office\nTime: 18:00\nGrab some food and drinks on us!\nRegister here: h
+ ttps://forms.gle/RkZi6LjWkUicqsRR6\n\nWe can’t wait to see you here!\nThe E
+ ricsson Team
+LAST-MODIFIED:20241027T192529Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Anmälan Ericsson mingel stänger
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241105T170000Z
+DTEND:20241105T190000Z
+DTSTAMP:20241105T091036Z
+UID:uj36234bc2qlnmbk3n6fdit60o@google.com
+CREATED:20241027T192834Z
+DESCRIPTION:Join us for a Mingle with Ericsson at our Lindholmen Office! Co
+ me check out our office\, chat with some of our colleagues\, and learn more
+  about the opportunities we have for students! If you're curious about mast
+ er thesis projects\, internships\, or future roles\, this is your chance to
+  get all the info you need.\n\nDate: November 5\nLocation: Ericsson Lindhol
+ men Office\nTime: 18:00\nGrab some food and drinks on us!\nRegister\n\nWe c
+ an’t wait to see you here!\nThe Ericsson Team\n\n
+LAST-MODIFIED:20241027T192919Z
+LOCATION:Ericsson AB\, Lindholmspiren 11\, 417 56 Göteborg\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Master thesis and more Mingle at Ericsson!
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;TZID=Europe/Stockholm:20240925T170000
+DTEND;TZID=Europe/Stockholm:20240925T210000
+RRULE:FREQ=WEEKLY;WKST=TU
+EXDATE;TZID=Europe/Stockholm:20241030T170000
+DTSTAMP:20241105T091036Z
+UID:74o36e9l64qj0b9pcgpmab9kckp3ab9p6cq34bb174pmcor16li38e3268@google.com
+CREATED:20240919T102622Z
+LAST-MODIFIED:20241030T112551Z
+LOCATION:Hubben 2.2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:DrawIT spelkväll
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;TZID=Europe/Stockholm:20241016T170000
+DTEND;TZID=Europe/Stockholm:20241016T210000
+DTSTAMP:20241105T091036Z
+UID:74o36e9l64qj0b9pcgpmab9kckp3ab9p6cq34bb174pmcor16li38e3268@google.com
+RECURRENCE-ID;TZID=Europe/Stockholm:20241016T170000
+CREATED:20240919T102622Z
+DESCRIPTION:Onsdagen den 16:e oktober arrangerar DrawIT en brädspelskväll i
+  Hubben 2.2\, men se upp\, vi har hört rykten om att en bevingad best lurar
+  i skuggorna\, så trampa försiktigt.
+LAST-MODIFIED:20241030T112551Z
+LOCATION:Hubben 2.2
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:DrawIT Spök(el)kväll
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241122T170100Z
+DTEND:20241123T000000Z
+DTSTAMP:20241105T091036Z
+UID:cko3co9k6lgjcb9lcdhjab9kclim4b9p6th3gb9ocli3iohg61h32dpj6g@google.com
+CREATED:20241023T105717Z
+DESCRIPTION:Saknar du våren\, Cortègen och öltältet? Kom då till Taberaset!
+  CCC och aspar öppnar upp kårresturangen och tar oss tillbaka med öl\, mat 
+ och livemusik.\n\nHabba Habba byggare!\n\nMed nästan exakt ett halvår sedan
+  Cortègen kan man inte annat än att längta tillbaka. För att er längtan int
+ e ska bli allt för olidlig har ni nu för en kväll möjlighet att återigen up
+ pleva Öltältets magiska stämning. Rensa era scheman den 22e November för då
+  går årets TABERAS av stapeln.\nInträdet till detta arrangemang är GRATIS s
+ å ta med alla dina vänner och ha en fantastisk kväll!\n\nEn kväll för alla 
+ som älskar Cortège\, är nyfikna på Cortège eller bara vill ha en fantastisk
+  kväll med svalkande dryck\, god mat\, live musik och en inomhus balkong\, 
+ hur fett?\n\nBilder från tidigare år: https://cffc.se/bilder/2023/taberaset
+ /\n\nLäs mer: https://gantrack.com/t/l/8662713/0_NDExODgyNjgyMDQ3Mg==/
+LAST-MODIFIED:20241031T134400Z
+LOCATION:Chalmers Studentkårs Restaurang AB (Kårrestaurangen)\, Sven Hultin
+ s gata 4\, 412 58 Göteborg\, Sweden
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Taberaset 2024
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20250430T161500Z
+DTEND:20250430T171500Z
+DTSTAMP:20241105T091036Z
+UID:64qjcchi6gsjib9i6sqjib9k6th34b9p6sojab9g64qm2db1c9gjce3160@google.com
+CREATED:20241031T134459Z
+LAST-MODIFIED:20241031T134459Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Cortègen
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241118T160000Z
+DTEND:20241118T180000Z
+DTSTAMP:20241105T091036Z
+UID:6gs3ec33c9i68b9n60rjgb9k60pj4b9pc4rjabb668qjgcj560r34p9j6k@google.com
+CREATED:20241101T120104Z
+DESCRIPTION:Vi på Studentstöd och Universitetskyrkan vill bjuda in er till 
+ Måndagsfika. Det blir en mötesplats där du kan träffa andra och prata om li
+ vet i stort och smått.\n\nDu får möjlighet att träffa nya människor och oav
+ sett intressen vill vi skapa möjligheter för prat och fika på ett avslappna
+ t och kravlöst sätt. Du kommer möta studenter från alla program och kanske 
+ hittar du nya vänner också.\n\nVi som arrangerar detta är kuratorer och stu
+ dievägledare på Chalmers tillsammans med Universitetskyrkan.\n\nVarmt välko
+ mna!\n\nDatum: måndagar 18/11\, 2/12 och 16/12\n\nTid: 17:00 – 19:00\n\nPla
+ ts: Fuse lokaler i SB3-huset\, våning 1\, Sven Hultins gata 8
+LAST-MODIFIED:20241101T120104Z
+LOCATION:Fuse lokaler i SB3-huset\, våning 1\, Sven Hultins gata 8
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Måndagsfika
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241202T160000Z
+DTEND:20241202T180000Z
+DTSTAMP:20241105T091036Z
+UID:cgom2opm6oq6cb9j6tij4b9kcks68b9o6sq62b9h60o64dr6ccrm2phick@google.com
+CREATED:20241101T120127Z
+DESCRIPTION:Vi på Studentstöd och Universitetskyrkan vill bjuda in er till 
+ Måndagsfika. Det blir en mötesplats där du kan träffa andra och prata om li
+ vet i stort och smått.\n\nDu får möjlighet att träffa nya människor och oav
+ sett intressen vill vi skapa möjligheter för prat och fika på ett avslappna
+ t och kravlöst sätt. Du kommer möta studenter från alla program och kanske 
+ hittar du nya vänner också.\n\nVi som arrangerar detta är kuratorer och stu
+ dievägledare på Chalmers tillsammans med Universitetskyrkan.\n\nVarmt välko
+ mna!\n\nDatum: måndagar 18/11\, 2/12 och 16/12\n\nTid: 17:00 – 19:00\n\nPla
+ ts: Fuse lokaler i SB3-huset\, våning 1\, Sven Hultins gata 8
+LAST-MODIFIED:20241101T120127Z
+LOCATION:Fuse lokaler i SB3-huset\, våning 1\, Sven Hultins gata 8
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Måndagsfika
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241216T160000Z
+DTEND:20241216T180000Z
+DTSTAMP:20241105T091036Z
+UID:6dj66dr3chgm6bb16ks38b9k70r3ebb26hgj8b9m6gq30phoc9hmaopjco@google.com
+CREATED:20241101T120142Z
+DESCRIPTION:Vi på Studentstöd och Universitetskyrkan vill bjuda in er till 
+ Måndagsfika. Det blir en mötesplats där du kan träffa andra och prata om li
+ vet i stort och smått.\n\nDu får möjlighet att träffa nya människor och oav
+ sett intressen vill vi skapa möjligheter för prat och fika på ett avslappna
+ t och kravlöst sätt. Du kommer möta studenter från alla program och kanske 
+ hittar du nya vänner också.\n\nVi som arrangerar detta är kuratorer och stu
+ dievägledare på Chalmers tillsammans med Universitetskyrkan.\n\nVarmt välko
+ mna!\n\nDatum: måndagar 18/11\, 2/12 och 16/12\n\nTid: 17:00 – 19:00\n\nPla
+ ts: Fuse lokaler i SB3-huset\, våning 1\, Sven Hultins gata 8
+LAST-MODIFIED:20241101T120142Z
+LOCATION:Fuse lokaler i SB3-huset\, våning 1\, Sven Hultins gata 8
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Måndagsfika
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20250118
+DTEND;VALUE=DATE:20250119
+DTSTAMP:20241105T091036Z
+UID:69ij0pj5c8p3cbb275im4b9k71j36b9p61j3gb9o68r66chm71hj6c346c@google.com
+CREATED:20241103T143949Z
+LAST-MODIFIED:20241103T143949Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:EDA433 Tentamen
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241104T173100Z
+DTEND:20241104T183000Z
+DTSTAMP:20241105T091036Z
+UID:c5j64phj6spmcb9mc4s3gb9k75hjeb9o64pjeb9h6kpjedhi74sjadhkc8@google.com
+CREATED:20241104T083820Z
+DESCRIPTION:Imorgon\, måndag 4/11\, är det äntligen dags för aspkickoff för
+  OvKIT (NollKIT\, sexIT\, P.R.I.T.). Vi kommer vara i HC3 18.01.\n\nDär kom
+ mer vi tillsammans med ValleB visa schemat och berätta hur aspningen går ti
+ ll.\nGå med i #ovkit-aspning24 på slack\, där kommer massa information och 
+ påminnelser inför de olika arren.\n\nAspa allt\, sök det du vill!\n\nInnan 
+ aspkickoffen startar kommer såklart sexIT arra øhlkubb i sandlådan!\n\nP.S.
+  Kom mätta!\n\nDin kickoff till aspningen\,\nPuss & Sex\,\nDansband & Techn
+ o\,\nNollKIT\, sexIT\, P.R.I.T.
+LAST-MODIFIED:20241104T092330Z
+LOCATION:HC3
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Aspkickoff - OvKIT 2024
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241104T163100Z
+DTEND:20241104T173000Z
+DTSTAMP:20241105T091036Z
+UID:65hjid1h6ssjgb9l6pj30b9k6lijab9p61i32b9jccpm8c31c4q66oj4co@google.com
+CREATED:20241104T083918Z
+DESCRIPTION:Imorgon\, måndag 4/11\, är det äntligen dags för aspkickoff för
+  OvKIT (NollKIT\, sexIT\, P.R.I.T.). Vi kommer vara i HC3 18.01.\n\nDär kom
+ mer vi tillsammans med ValleB visa schemat och berätta hur aspningen går ti
+ ll.\nGå med i #ovkit-aspning24 på slack\, där kommer massa information och 
+ påminnelser inför de olika arren.\n\nAspa allt\, sök det du vill!\n\nInnan 
+ aspkickoffen startar kommer såklart sexIT arra øhlkubb i sandlådan!\n\nP.S.
+  Kom mätta!\n\nDin kickoff till aspningen\,\nPuss & Sex\,\nDansband & Techn
+ o\,\nNollKIT\, sexIT\, P.R.I.T.
+LAST-MODIFIED:20241104T102450Z
+LOCATION:Sandlådan
+SEQUENCE:2
+STATUS:CONFIRMED
+SUMMARY:Øhlkubb i Sandlådan
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241107T160000Z
+DTEND:20241108T010000Z
+DTSTAMP:20241105T091036Z
+UID:6kcpd0neplgjnns9e13o86afng@google.com
+CREATED:20241104T232449Z
+LAST-MODIFIED:20241104T232448Z
+LOCATION:Hubben
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Pubrunda Hubben
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241109
+DTEND;VALUE=DATE:20241110
+DTSTAMP:20241105T091036Z
+UID:3oetr03286p1qts2mljag125gk@google.com
+CREATED:20241104T232754Z
+LAST-MODIFIED:20241104T232754Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspa MrKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241111
+DTEND;VALUE=DATE:20241112
+DTSTAMP:20241105T091036Z
+UID:5bodih58fecd750596vv5jt48q@google.com
+CREATED:20241104T232809Z
+LAST-MODIFIED:20241104T232809Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:8-bIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241120
+DTEND;VALUE=DATE:20241121
+DTSTAMP:20241105T091036Z
+UID:0g8ata8idv6lctlvrg61k3de6n@google.com
+CREATED:20241104T233024Z
+LAST-MODIFIED:20241104T233024Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:MexicoGasque — Aspa sexIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241119
+DTEND;VALUE=DATE:20241120
+DTSTAMP:20241105T091036Z
+UID:37btaivqer8ac6h1jojgqj08v3@google.com
+CREATED:20241104T233008Z
+LAST-MODIFIED:20241104T233030Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Mexicoprepp — Aspa sexIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241118
+DTEND;VALUE=DATE:20241119
+DTSTAMP:20241105T091036Z
+UID:2aim1ng9abblqctl7rfso0lqia@google.com
+CREATED:20241104T232958Z
+LAST-MODIFIED:20241104T233034Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:[REDACTED] — Aspa NollKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241117
+DTEND;VALUE=DATE:20241118
+DTSTAMP:20241105T091036Z
+UID:3k3pu2eb7reaetrt2cmb853bjo@google.com
+CREATED:20241104T232943Z
+LAST-MODIFIED:20241104T233040Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Akutmottagning — Aspa NollKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241116
+DTEND;VALUE=DATE:20241117
+DTSTAMP:20241105T091036Z
+UID:6esas5qavo7266aaha7dpj4b38@google.com
+CREATED:20241104T232913Z
+LAST-MODIFIED:20241104T233044Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:"Mexicoprepp" — Aspa sexIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241115
+DTEND;VALUE=DATE:20241116
+DTSTAMP:20241105T091036Z
+UID:48970pf4e39thqebh67om6cgbg@google.com
+CREATED:20241104T232857Z
+LAST-MODIFIED:20241104T233048Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:GoosePC — Aspa P.R.I.T.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241114
+DTEND;VALUE=DATE:20241115
+DTSTAMP:20241105T091036Z
+UID:72q2j2k8q2dfojf5suhc4rib7f@google.com
+CREATED:20241104T232846Z
+LAST-MODIFIED:20241104T233056Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:KfKGsexIT — Aspa sexIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241112
+DTEND;VALUE=DATE:20241113
+DTSTAMP:20241105T091036Z
+UID:05m0qlccmi9f9hv6sipshmr6uf@google.com
+CREATED:20241104T232830Z
+LAST-MODIFIED:20241104T233106Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspmästerirundvandring — Aspa sexIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241108T170000Z
+DTEND:20241109T020000Z
+DTSTAMP:20241105T091036Z
+UID:0178f9urt1s42bm5bcka180fno@google.com
+CREATED:20241104T232724Z
+LAST-MODIFIED:20241104T233118Z
+LOCATION:Hubben
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Skit i hjärtarr?! — Aspa NollKIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241107T120000Z
+DTEND:20241108T030000Z
+DTSTAMP:20241105T091036Z
+UID:6pgnicgjb1i5l7k0fb4vr51gj0@google.com
+CREATED:20241104T232601Z
+DESCRIPTION:Varje torsdag LV1 håller P.R.I.T. i IT-sektionens pub på pubrun
+ dan. Nu är det er tur att hålla den med oss! <br><br>Det är begränsat antal
+  platser så det är först till kvarn som gäller. Vi kommer även ge förtur ti
+ ll de som inte puffat pub tidigare.<br><br>Det ni kommer att få testa är at
+ t: <br>- Laga våfflor <br>- Checka ID &amp\; Kårkort<br>- Visitera<br>- Stå
+  i bar <br>- Plocka &amp\; kök <br>- Och ba ha riktigt jävla dunderkul unde
+ r en arbetskväll med oss och era aspkompisar! <br><br>Vi kommer att preppa 
+ pubrundan från kl. 13 (<b><u>senaste</u></b> tid att komma är 15.01) och se
+ dan arbeta mellan 17-02. Sedan pågår städ från 02-sent.
+LAST-MODIFIED:20241104T233131Z
+LOCATION:Hubben
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Puffa Pubrunda — Aspa P.R.I.T.
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241105T163100Z
+DTEND:20241105T230000Z
+DTSTAMP:20241105T091036Z
+UID:36bs3hm2d8nfs7l7gsipijv8ft@google.com
+CREATED:20241104T225516Z
+DESCRIPTION:Hejhej alla aspar! Imorgon (5/11) är det dags för sexIT’s först
+ a asparr - KMK!! Kom och lär känna oss och se vad vi gör\, sen ska vi bestä
+ mma tema och planera inför gasquen. Efter det blir det krök🕺🪩\n\nVar: Hub
+ ben\nNär: 17.31\nHur: BYOB!\n\nPuss & Sex <3
+LAST-MODIFIED:20241104T233141Z
+LOCATION:Hubben
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:KMK — Aspa sexIT
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241106
+DTEND;VALUE=DATE:20241107
+DTSTAMP:20241105T091036Z
+UID:310o2jjth7gmdcp1nbu3enh6og@google.com
+CREATED:20241104T230111Z
+DESCRIPTION:På onsdag kväll har P.R.I.T. pubprepp där vi kommer fixa all de
+ kor inför puben!
+LAST-MODIFIED:20241104T233157Z
+LOCATION:Hubben
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:PubPrepp — Aspa P.R.I.T.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241121
+DTEND;VALUE=DATE:20241122
+DTSTAMP:20241105T091036Z
+UID:03er0vesonm04umlk01j0kc39b@google.com
+CREATED:20241104T233246Z
+LAST-MODIFIED:20241104T233246Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:NollKrundvandring — Aspa NollKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241122
+DTEND;VALUE=DATE:20241123
+DTSTAMP:20241105T091036Z
+UID:5luehe3s2276fr3mibfff4u80c@google.com
+CREATED:20241104T233307Z
+LAST-MODIFIED:20241104T233307Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:P.R.I.T. med S.P.R.I.T. — Aspa P.R.I.T.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241123
+DTEND;VALUE=DATE:20241124
+DTSTAMP:20241105T091036Z
+UID:51d3i8q400juu3jqd4iio3d0m5@google.com
+CREATED:20241104T233342Z
+LAST-MODIFIED:20241104T233342Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Spontanrust — Aspa P.R.I.T.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241124
+DTEND;VALUE=DATE:20241125
+DTSTAMP:20241105T091036Z
+UID:6hk9gi1cvgdh4n98c5ocupkdto@google.com
+CREATED:20241104T233410Z
+LAST-MODIFIED:20241104T233410Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspsittningskickoff — Aspa OvKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241125
+DTEND;VALUE=DATE:20241126
+DTSTAMP:20241105T091036Z
+UID:76gqjqcenbpkqa8jkre8bn0sms@google.com
+CREATED:20241104T233424Z
+LAST-MODIFIED:20241104T233424Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspun — Aspa OvKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241126
+DTEND;VALUE=DATE:20241127
+DTSTAMP:20241105T091036Z
+UID:205p7fch3g7t078rnp391ckh70@google.com
+CREATED:20241104T233440Z
+LAST-MODIFIED:20241104T233440Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:(P)ost & vin — Aspa NollKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241127
+DTEND;VALUE=DATE:20241128
+DTSTAMP:20241105T091036Z
+UID:6tjclq0bmcc07rgcm4ip31dk6q@google.com
+CREATED:20241104T233456Z
+LAST-MODIFIED:20241104T233456Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspsittningsprepp — Aspa OvKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241128
+DTEND;VALUE=DATE:20241129
+DTSTAMP:20241105T091036Z
+UID:4slirarmrkdmskoc2bj0or8ttk@google.com
+CREATED:20241104T233507Z
+LAST-MODIFIED:20241104T233507Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspsittning — Aspa OvKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241129
+DTEND;VALUE=DATE:20241130
+DTSTAMP:20241105T091036Z
+UID:3s8tm4evbbtb5akdoeudmvl17o@google.com
+CREATED:20241104T233533Z
+LAST-MODIFIED:20241104T233533Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:MötespresidIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241130
+DTEND;VALUE=DATE:20241201
+DTSTAMP:20241105T091036Z
+UID:6itsj8biejmb154kkdfnbhspjj@google.com
+CREATED:20241104T233547Z
+LAST-MODIFIED:20241104T233547Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Sekreten — Aspa NollKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241201
+DTEND;VALUE=DATE:20241202
+DTSTAMP:20241105T091036Z
+UID:63int5iscrd55hjrt2u4hcpe4i@google.com
+CREATED:20241104T233604Z
+LAST-MODIFIED:20241104T233604Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Rustdag — Aspa P.R.I.T.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241202
+DTEND;VALUE=DATE:20241203
+DTSTAMP:20241105T091036Z
+UID:0mkh77mair83at02gi2l31o13k@google.com
+CREATED:20241104T233619Z
+LAST-MODIFIED:20241104T233619Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:EfterAspFest — Aspa OvKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241203
+DTEND;VALUE=DATE:20241204
+DTSTAMP:20241105T091036Z
+UID:7r8eb3gotvv74650tnd6d13bjm@google.com
+CREATED:20241104T233629Z
+LAST-MODIFIED:20241104T233629Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Aspa MrKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241205
+DTEND;VALUE=DATE:20241206
+DTSTAMP:20241105T091036Z
+UID:34j09bd5hhq7em6ki6nsvitl2p@google.com
+CREATED:20241104T233649Z
+LAST-MODIFIED:20241104T233649Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Nomineringar för OvKIT
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241210
+DTEND;VALUE=DATE:20241211
+DTSTAMP:20241105T091036Z
+UID:4re3t4gpsutgvmd3mpq2j7k7df@google.com
+CREATED:20241104T233701Z
+LAST-MODIFIED:20241104T233701Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Sektionsmöte LP2
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241212
+DTEND;VALUE=DATE:20241213
+DTSTAMP:20241105T091036Z
+UID:2bou5bndgcqk1tdojv02f4k47g@google.com
+CREATED:20241104T233713Z
+LAST-MODIFIED:20241104T233713Z
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Sektionsmöte 2 pt. 2
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART:20241113T070000Z
+DTEND:20241113T083000Z
+DTSTAMP:20241105T091036Z
+UID:65im6d1kcdgjeb9g6cr6cb9k68sjab9p6spm6bb56kp64o9j75j3ac326k@google.com
+CREATED:20241105T091019Z
+DESCRIPTION:Economic Outlook Seminar with guest speaker Micael Johansson\, 
+ CEO of Saab Group\n\nWHEN\n2024-11-13 08:00 - 2024-11-13 09:30\n\nWHERE\nCh
+ almers Conference Centre\, Runan\n\nNOTE!\nThis seminar will be held entire
+ ly in Swedish!\nSecure your spot at this autumn’s economic outlook seminar 
+ in Gothenburg! We have reserved a limited number of spaces for students.\n\
+ nRegistration and more info:\nhttps://www.businessregiongoteborg.se/evenema
+ ng/konjunkturseminarium-med-gast-micael-johansson-vd-saabLänkar till en ext
+ ern sida.\n\n• We will provide a presentation on the economic outlook of th
+ e Gothenburg region.\n• During the seminar\, the economic outlook of Gothen
+ burg report will be presented.\n• Following this\, we will continue with a 
+ conversation featuring Micael Johansson\, CEO of Saab Group.\n\nThis is a g
+ reat opportunity for students to meet business leaders from various industr
+ ies and gain valuable insights from Micael Johansson on Saab and the curren
+ t economic trends in Gothenburg.\n\nProgram\n\n08:00-08:30\nRegistration an
+ d coffee with sandwiches\n\n08:30-09:00\nPresentation of the economic outlo
+ ok report\, providing insights into the regional economic situation by Pete
+ r Warda and Henrik Einarsson.\n\n09:00-09:30\nAn on-stage interview with Mi
+ cael Johansson\, CEO of Saab Group. Saab is a global leader in several area
+ s of security and defense\, and as a result of recent geopolitical developm
+ ents\, the company has gained increased attention for its advanced products
+ \, services\, and knowledge-based solutions\, ranging from military defense
+  to civil security.\n\nThe conversation will cover some of the biggest glob
+ al security challenges Saab is addressing\, the company’s investments in re
+ search and development\, its collaborations with Swedish universities to se
+ cure talent in the defense industry\, and Saab’s connection to Gothenburg a
+ nd the city’s significance for its operations.
+LAST-MODIFIED:20241105T091019Z
+LOCATION:RunAn\, Chalmersplatsen 1\, 412 58 Göteborg\, Sweden
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Seminarium från Saab
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
