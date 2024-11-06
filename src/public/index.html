@@ -23,12 +23,42 @@
     <meta name="twitter:image:alt" content="Cal's cals banner">
     <meta name="twitter:site" content="@olilllin">
     <meta name="twitter:creator" content="@olilllin">
+    <script src="/calendar-picker.js"></script>
 </head>
 <body>
     <main>
-        <h1>Cal's cals</h1>
+        <section>
+            <h1>Welcome to Cal's cals!</h1>
+        </section>
 
-        <p>Calendar builder coming soon...</p>
+        <section class="calendar-picker">
+            <h2>Calendar picker</h2>
+
+            <span class="checkbox-field">
+                <input type="checkbox" id="aspa-allt" />
+                <label for="aspa-allt">Aspa allt!</label>
+            </span>
+
+            <div class="calendar-grid" id="calendar-grid"></div>
+
+            <span class="checkbox-field" id="show-origin-section">
+                <input type="checkbox" id="show-origin" checked="true" onchange="updateUrl()">
+                <label for="show-origin">Show calendar name in events</label>
+            </span>
+
+            <span class="checkbox-field calendar-url" id="calendar-url-section">
+                <input type="text" id="calendar-url" disabled aria-disabled="true">
+                <span id="copy-notice"><span class="no-select">Copied!</span></span>
+                <button id="copy-calendar-url" onclick="copyUrl()"></button>
+            </span>
+
+        </section>
+
+        <section>
+            <h2>Calendar builder</h2>
+
+            <p>Coming soon...</p>
+        </section>
     </main>
 </body>
 </html>

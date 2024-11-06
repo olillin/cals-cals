@@ -1,16 +1,182 @@
+:root {
+    --border-radius: 1.25em;
+    --selected-color: #00cdda;
+    --glow-strength: 10px;
+}
+
 body {
     width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    flex-flow: row nowrap;
-    align-items: center;
     background-color: #111;
     color: #ffffff;
     font-family: sans-serif;
 }
 
-main {
+@media screen and (min-width: 800px) {
+    main {
+        width: 700px;
+        margin: 8em auto;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    main {
+        width: auto;
+        margin: 8em 2em
+    }
+}
+
+section {
+    width: 100%;
+    padding: 0;
+    margin: 4em 0;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 1.75em;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+
+button {
+    background-color: transparent;
+    color: white;
+    font-family: sans-serif;
+    text-align: left;
+    font-size: 1em;
+    border: 2px solid white;
+    padding: 1em 1.5em;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none; /* For WebKit browsers */
+    -moz-appearance: none; /* For Firefox */
+    appearance: none;
+    margin: 0;
+    vertical-align: middle;
+    width: 1.5em;
+    height: 1.5em;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 0.3em;
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--selected-color);
+    border-color: var(--selected-color);
+    box-shadow: var(--selected-color) 0 0 var(--glow-strength) 0;
+}
+
+*[hidden] {
+    display: none !important;
+}
+
+/* Calendar selector */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
+    gap: 1em;
+}
+
+.calendar-item {
+    transition-duration: 1s;
+}
+
+.calendar-item.selected {
+    border-color: var(--selected-color);
+    box-shadow: inset var(--selected-color) 0 0 var(--glow-strength) 0,
+                      var(--selected-color) 0 0 var(--glow-strength) 0;
+    color: var(--selected-color);
+    transition-duration: 0.5s;
+}
+
+.checkbox-field {
+    display: flex;
+    margin-block: 1.5em;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5em;
+}
+
+.calendar-url {
+    display: grid;
+    grid-template-columns: 1fr max-content 2em;
+    grid-template-rows: 1fr;
+    align-items: center;
+    margin-block: 1.5em;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1em 1.5em;
+    border-radius: var(--border-radius);
+    background: #0A0A0A;
+    color: #fff;
+}
+
+.calendar-url input {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+}
+
+#copy-calendar-url {
+    height: 2em;
+    width: 2em;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    background-image: url("/icons/copy.png");
+    background-position: center;
+    background-size: contain;
+}
+
+#copy-notice {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
     width: fit-content;
-    height: fit-content;
+    overflow: hidden;
+    position: relative;
+}
+
+#copy-notice span {
+    position: relative;
+    right: -100%;
+    width: fit-content;
+    white-space: nowrap;
+    text-align: right;
+    padding-right: 0.5em;
+    transition: right 0.5s ease;
+}
+
+#copy-notice.visible span {
+    right: 0;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+}
+
+.aspa-allt {
+    display: block;
+    margin: 2em auto;
+    padding: 1em 4em;
+    background-color: white;
+    color: var(--selected-color);
 }
