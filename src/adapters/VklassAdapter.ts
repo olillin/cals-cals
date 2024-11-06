@@ -85,6 +85,10 @@ class VklassAdapter extends Adapter {
      * @returns {Calendar}
      */
     modifyCalendar = (calendar: Calendar, includeLocation: boolean = false) => {
+        if (!calendar.VEVENT) {
+            return calendar
+        }
+
         // Loop through calendar events
         const events: Array<Event> = calendar.VEVENT
         const options = {
@@ -105,6 +109,10 @@ class VklassAdapter extends Adapter {
      * @returns {Calendar} The original calendar with the events removed
      */
     subtractCalendar = (calendar: Calendar, subtractCalendar: Calendar, compare: Array<PropertyKey>): Calendar => {
+        if (!subtractCalendar.VEVENT || !calendar.VEVENT) {
+            return calendar
+        }
+
         const calendarEvents = calendar.VEVENT
         const subtractCalendarEvents = subtractCalendar.VEVENT
 

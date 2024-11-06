@@ -8,7 +8,7 @@ export interface Calendar {
     'X-WR-CALNAME': WrCalendarName
     'X-WR-TIMEZONE': WrTimeZone
     'X-WR-CALDESC': WrCalendarDescription
-    VEVENT: Array<Event>
+    VEVENT?: Array<Event>
 }
 
 export type ProductIdentifier = String
@@ -58,23 +58,37 @@ export function mergeCalendars(calendars: Calendar[], appendOriginName: boolean 
     const base: Calendar = deepCopy(calendars[0])
     const names = [base['X-WR-CALNAME']]
     if (appendOriginName) {
-        base.VEVENT.forEach(e => {
+        base.VEVENT?.forEach(e => {
             e.SUMMARY += ' - ' + base['X-WR-CALNAME']
         })
     }
     for (const calendar of calendars.slice(1)) {
         names.push(calendar['X-WR-CALNAME'])
-        base.VEVENT = base.VEVENT.concat(
-            calendar.VEVENT.map(e => {
+        if (!calendar.VEVENT) {
+            continue
+        }
+
+        if (base.VEVENT) {
+            base.VEVENT = base.VEVENT.concat(
+                calendar.VEVENT.map(e => {
+                    const newEvent = deepCopy(e)
+                    if (appendOriginName) {
+                        newEvent.SUMMARY += ' - ' + calendar['X-WR-CALNAME']
+                    }
+                    return newEvent
+                })
+            )
+        } else {
+            base.VEVENT = calendar.VEVENT.map(e => {
                 const newEvent = deepCopy(e)
                 if (appendOriginName) {
                     newEvent.SUMMARY += ' - ' + calendar['X-WR-CALNAME']
                 }
                 return newEvent
             })
-        )
+        }
     }
-    base['X-WR-CALNAME'] = names.join("+")
+    base['X-WR-CALNAME'] = names.join('+')
     return base
 }
 
