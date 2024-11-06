@@ -19,11 +19,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 el.classList.add(selectedClassName)
             }
-            updateUrl()
+            update()
         })
     })
 
-    updateUrl()
+    update()
+
+    const aspaAlltButton = document.getElementById('aspa-allt') as HTMLInputElement 
+    aspaAlltButton.addEventListener("change", () => {
+        if (aspaAlltButton.checked) {
+            aspaAllt()
+        } else {
+            select(() => false)
+        }
+    })
 })
 
 async function toGridElements(index: string[]): Promise<HTMLElement[]> {
@@ -78,10 +87,11 @@ function getCalendarName(filename: string): Promise<string> {
     })
 }
 
-function updateUrl() {
+function update() {
     const calendarGrid = document.getElementById('calendar-grid') as HTMLDivElement
     const calendarUrl = document.getElementById('calendar-url') as HTMLInputElement
     const showOrigin = document.getElementById('show-origin') as HTMLInputElement
+    const aspaAlltCheck = document.getElementById('aspa-allt') as HTMLInputElement
 
     const showOriginSection = document.getElementById('show-origin-section') as HTMLSpanElement
     showOriginSection.hidden = true
@@ -90,6 +100,7 @@ function updateUrl() {
 
     const urlBase = window.location.origin
 
+    const elements = Array.from(calendarGrid.getElementsByClassName('calendar-item'))
     const selectedElements = Array.from(calendarGrid.getElementsByClassName(selectedClassName))
     if (selectedElements.length == 1) {
         const filename = selectedElements[0].getAttribute("data-calendar-filename")
@@ -107,6 +118,12 @@ function updateUrl() {
         calendarUrlSection.hidden = true
         calendarUrl.value = ''
     }
+
+    aspaAlltCheck.checked = elements.every(e => {
+        let isSelected = e.classList.contains('selected')
+        let isAspa = e.getAttribute('data-calendar-filename')!.startsWith('aspa')
+        return !(+isSelected ^ +isAspa)
+    })
 }
 
 function copyUrl() {
@@ -122,4 +139,25 @@ function copyUrl() {
     setTimeout(() => {
         copyNotice.classList.remove('visible')
     }, 3000)
+}
+
+function aspaAllt() {
+    select(el => {
+        const filename = el.getAttribute('data-calendar-filename')!
+        return filename.startsWith("aspa")
+    })
+}
+
+function select(predicate: (el: Element) => boolean) {
+    const calendarGrid = document.getElementById('calendar-grid') as HTMLDivElement
+    
+    const elements = calendarGrid.getElementsByClassName("calendar-item")
+    for (const element of elements) {
+        if (predicate(element)) {
+            element.classList.add(selectedClassName)
+        } else {
+            element.classList.remove(selectedClassName)
+        }
+    }
+    update()
 }

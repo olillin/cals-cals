@@ -34,14 +34,19 @@
         <section class="calendar-picker">
             <h2>Calendar picker</h2>
 
+            <span class="checkbox-field">
+                <input type="checkbox" id="aspa-allt" />
+                <label for="aspa-allt">Aspa allt!</label>
+            </span>
+
             <div class="calendar-grid" id="calendar-grid"></div>
 
-            <span class="show-origin" id="show-origin-section">
+            <span class="checkbox-field" id="show-origin-section">
                 <input type="checkbox" id="show-origin" checked="true" onchange="updateUrl()">
                 <label for="show-origin">Show calendar name in events</label>
             </span>
 
-            <span class="calendar-url" id="calendar-url-section">
+            <span class="checkbox-field calendar-url" id="calendar-url-section">
                 <input type="text" id="calendar-url" disabled aria-disabled="true">
                 <span id="copy-notice"><span class="no-select">Copied!</span></span>
                 <button id="copy-calendar-url" onclick="copyUrl()"></button>
