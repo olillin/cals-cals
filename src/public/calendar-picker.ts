@@ -6,8 +6,82 @@ const elements: Promise<HTMLElement[]> = (async () => {
     return toGridElements(index)
 })()
 
+interface PickerConfig {
+    calendars: PickerCalendar[]
+}
+
+interface PickerCalendar {
+    filename: string
+    id: number
+    order?: number
+    category?: string
+}
+
+interface PickerCalendarTree {
+    calendars?: PickerCalendar[]
+    subcategories?: PickerCalendarSubTree[]
+}
+
+interface PickerCalendarSubTree extends PickerCalendarTree {
+    name: string
+}
+
+const picker: Promise<PickerConfig> = (async () => {
+    const response = await fetch('/picker.json')
+    return response.json()
+})()
+
 document.addEventListener('DOMContentLoaded', async () => {
     const calendarGrid = document.getElementById('calendar-grid') as HTMLDivElement
+
+    const calendarTree: PickerCalendarTree = {}
+    const addCalendar = (calendar: PickerCalendar) => {
+        if (calendar.category) {
+            let tokens: string[] = calendar.category.split('/')
+            let latest: string
+            let node: PickerCalendarTree = calendarTree
+            while (tokens) {
+                [latest, ...tokens] = tokens
+                let subcategory = node.subcategories?.find(s => {s.name === latest})
+                if (subcategory) {
+                    node = subcategory
+                } else {
+                    subcategory = {
+                        name: latest
+                    }
+                    if (node.subcategories) {
+                        node.subcategories.push(subcategory)
+                    } else {
+                        node.subcategories = [subcategory]
+                    }
+                    node = subcategory
+                }
+            }
+        } else {
+            if (calendarTree.calendars) {
+                calendarTree.calendars.push(calendar)
+            } else {
+                calendarTree.calendars = [calendar]
+            }
+        }
+    }
+
+    ;(await picker).calendars.forEach(calendar => {
+        addCalendar(calendar)
+    })
+
+    const renderRoot = calendarGrid
+    const renderTree = (tree: PickerCalendarTree|PickerCalendarSubTree, level=2) => {
+        if ("name" in tree) {
+            const header = document.createElement(`h${level}`)
+            renderRoot.append(header)
+        }
+
+        const sortedCalendars = tree.calendars?.sort((a, b) => a.filename.localeCompare(b .filename))
+        sortedCalendars.forEach(calendar => {
+            
+        })
+    }
 
     ;(await elements).forEach(element => {
         calendarGrid.append(element)
