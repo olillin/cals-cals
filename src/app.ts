@@ -95,17 +95,17 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
 }
 
 // Merge calendars
-// const calendarIndex = fs
-//     .readFileSync(INDEX_PATH)
-//     .toString()
-//     .split('\n')
-//     .map(line => line.trim())
-//     .filter(line => line.length > 0)
-// console.log('Available calendars:', calendarIndex)
+const calendarIds = fs
+    .readFileSync(INDEX_PATH)
+    .toString()
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+console.log('Available calendars:', calendarIds)
 
-// function dec2bin(dec: number) {
-//     return (dec >>> 0).toString(2)
-// }
+function dec2bin(dec: number) {
+    return (dec >>> 0).toString(2)
+}
 
 // app.get('/m/:calendars', async (req, res) => {
 //     const appendOriginName = !!(req.query['origin'] ?? false)
