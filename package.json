@@ -9,7 +9,7 @@
     "buildFrontend": "tsc --project tsconfig.frontend.json && npm run copyPublic && rimraf --glob ./dist/**/*.ts",
     "copyPublic": "node -e \"require('fs').cpSync('./src/frontend', './dist/public', {recursive: true});\"",
     "start": "cd dist && node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,9 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/node": "^20.2.3"
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.2.3",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5"
   }
 }

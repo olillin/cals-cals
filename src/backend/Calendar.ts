@@ -1,16 +1,7 @@
 import { Calendar, CalendarEvent, Component } from 'iamcal'
 import { deserializeString, parseCalendar } from 'iamcal/parse'
 
-export type ProductIdentifier = String
-export type Version = String
-export type CalendarScale = String
-export type Method = String
-
-export type WrCalendarName = String
-export type WrTimeZone = String
-export type WrCalendarDescription = String
-
-async function deepCopy<T extends Component>(component: T): Promise<T> {
+export async function deepCopy<T extends Component>(component: T): Promise<T> {
     const copied = await deserializeString(component.serialize())
     return new (component.constructor as { new (component: Component): T })(copied)
 }
@@ -18,10 +9,14 @@ async function deepCopy<T extends Component>(component: T): Promise<T> {
 export async function mergeCalendars(calendars: Calendar[], appendOriginName: boolean = false): Promise<Calendar> {
     const base: Calendar = await deepCopy(calendars[0])
 
-    const baseName = base.getProperty('X-WR-CALNAME')!.value
-    const names = [baseName]
+    const names: string[] = []
 
-    if (appendOriginName) {
+    const baseName = base.getProperty('X-WR-CALNAME')?.value
+    if (baseName) {
+        names.push(baseName)
+    }
+
+    if (appendOriginName && baseName) {
         // Append calendar name to first calendar
         base.events().forEach(e => {
             e.setSummary(e.summary() + ' - ' + baseName)
@@ -29,14 +24,16 @@ export async function mergeCalendars(calendars: Calendar[], appendOriginName: bo
     }
 
     for (const calendar of calendars.slice(1)) {
-        const calendarName = calendar.getProperty('X-WR-CALNAME')!.value
-        names.push(calendarName)
+        const calendarName = calendar.getProperty('X-WR-CALNAME')?.value
+        if (calendarName) {
+            names.push(calendarName)
+        }
 
         base.components.push(
             ...(await Promise.all(
                 calendar.events().map(async e => {
                     const newEvent = (await deepCopy(e)) as unknown as CalendarEvent
-                    if (appendOriginName) {
+                    if (appendOriginName && calendarName) {
                         newEvent.setSummary(newEvent.summary() + ' - ' + calendarName)
                     }
                     return newEvent
@@ -44,7 +41,9 @@ export async function mergeCalendars(calendars: Calendar[], appendOriginName: bo
             ))
         )
     }
-    base.setProperty('X-WR-CALNAME', names.join('+'))
+    if (names.length > 0) {
+        base.setProperty('X-WR-CALNAME', names.join('+'))
+    }
     return base
 }
 
