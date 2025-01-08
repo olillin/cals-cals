@@ -1,11 +1,11 @@
 import express, { Response } from 'express'
-import fs, { readFile } from 'fs'
-import https from 'https'
+import fs from 'fs'
 import http from 'http'
-import VklassAdapter from './adapters/VklassAdapter'
-import * as ical2json from 'ical2json'
-import { IcalObject } from 'ical2json'
-import { getMainCalendar, mergeCalendarsIcal } from './Calendar'
+import https from 'https'
+import { Calendar } from 'iamcal'
+import { parseCalendar } from 'iamcal/parse'
+import path from 'path'
+import { mergeCalendars } from './Calendar'
 
 // Environment variables
 interface EnvironmentVariables {
@@ -24,11 +24,17 @@ const DEFAULT_ENVIRONMENT: Concrete<EnvironmentVariables> = {
 const ENVIRONMENT: Concrete<EnvironmentVariables> = Object.assign(Object.assign({}, DEFAULT_ENVIRONMENT), process.env as EnvironmentVariables)
 const { PORT } = ENVIRONMENT
 
+// Paths
+const REDIRECTS_PATH = '../data/redirects.json'
+const PICKER_PATH = '../data/picker.json'
+const PUBLIC_DIRECTORY = 'public'
+const CALENDAR_DIRECTORY = '../data/calendars'
+// const INDEX_PATH = '../data/calendars/index'
+
 // Setup express app
 const app = express()
 
 // Redirects
-const REDIRECTS_PATH = '../data/redirects.json'
 interface Redirects {
     [x: string]: string
 }
@@ -41,7 +47,10 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use('/vklass', new VklassAdapter().createRouter())
+// Picker
+app.get('/picker.json', (req, res) => {
+    res.sendFile(path.resolve(PICKER_PATH))
+})
 
 function noStoreCals(res: Response, path: string) {
     if (path.endsWith('.ics')) {
@@ -49,14 +58,12 @@ function noStoreCals(res: Response, path: string) {
     }
 }
 
-const PUBLIC_DIRECTORY = 'public'
 if (fs.existsSync(PUBLIC_DIRECTORY)) {
     app.use('/', express.static(PUBLIC_DIRECTORY))
 } else {
     console.warn('WARNING: No public directory')
 }
 
-const CALENDAR_DIRECTORY = '../data/calendars'
 if (fs.existsSync(CALENDAR_DIRECTORY)) {
     app.use(
         '/c',
@@ -65,7 +72,7 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
             setHeaders: noStoreCals,
         })
     )
-    app.get('/c/name/:calendar', (req, res) => {
+    app.get('/c/name/:calendar', async (req, res) => {
         const calendarName = req.params.calendar
         if (!/^[\w_-]+\.[\w_-]+$/.test(calendarName)) {
             res.status(400).json({
@@ -76,23 +83,32 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
             return
         }
         const text = fs.readFileSync(CALENDAR_DIRECTORY + '/' + calendarName).toString()
-        const ical = ical2json.convert(text)
-        const calendar = getMainCalendar(ical)
+        const calendar: Calendar = await parseCalendar(text)
         res.status(200).json({
-            name: calendar?.['X-WR-CALNAME'],
+            name: calendar.getProperty('X-WR-CALNAME')!.value,
         })
     })
 }
 
 // Merge calendars
-const INDEX_PATH = '../data/calendars/index'
-const calendarIndex = fs
-    .readFileSync(INDEX_PATH)
-    .toString()
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-console.log('Available calendars:', calendarIndex)
+interface PickerCalendar {
+    filename: string
+    id: number
+    order?: number
+    category?: string
+}
+
+interface Picker {
+    calendars: PickerCalendar[]
+}
+
+const pickerText = fs.readFileSync(path.resolve(PICKER_PATH)).toString()
+const pickerConfig: Picker = JSON.parse(pickerText)
+
+console.log(
+    'Available calendars:',
+    pickerConfig.calendars.map(c => c.filename)
+)
 
 function dec2bin(dec: number) {
     return (dec >>> 0).toString(2)
@@ -112,9 +128,14 @@ app.get('/m/:calendars', async (req, res) => {
     }
     const selectedBits = dec2bin(selectedCalendars)
 
-    const calendarNames: string[] = calendarIndex.filter((_, i) => {
-        return selectedBits.length > i && selectedBits.charAt(selectedBits.length - 1 - i) === '1'
-    })
+    const calendarNames: string[] = pickerConfig.calendars
+        .filter(c => {
+            return (
+                selectedBits.length > c.id && //
+                selectedBits.charAt(selectedBits.length - 1 - c.id) === '1'
+            )
+        })
+        .map(c => c.filename)
     if (calendarNames.length == 0) {
         res.status(400).json({
             error: {
@@ -127,21 +148,20 @@ app.get('/m/:calendars', async (req, res) => {
     const calendars = await Promise.all(
         calendarNames.map(
             name =>
-                new Promise<IcalObject>((resolve, reject) =>
+                new Promise<Calendar>((resolve, reject) =>
                     fs.readFile(CALENDAR_DIRECTORY + '/' + name, (err, data) => {
                         if (err) {
                             reject(err)
                         } else {
-                            const ical = ical2json.convert(data.toString())
-                            resolve(ical)
+                            parseCalendar(data.toString()).then(resolve)
                         }
                     })
                 )
         )
     )
 
-    const ical = ical2json.revert(mergeCalendarsIcal(calendars, appendOriginName))
-    res.status(200).end(ical)
+    const mergedCalendar = (await mergeCalendars(calendars, appendOriginName)).serialize()
+    res.status(200).end(mergedCalendar)
 })
 
 // Start server

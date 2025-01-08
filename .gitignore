@@ -8,6 +8,14 @@ temp/
 !.env.project
 !.env.vault
 
+# Calendar data
+data/*
+!data/$schema/
+!data/calendars/
+
+data/calendars/*
+!data/calendars/.gitkeep
+
 # Logs
 logs
 *.log
