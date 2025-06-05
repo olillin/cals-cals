@@ -14,8 +14,8 @@
           },
           "id": {
             "type": "integer",
-            "description": "Which bit in a merged calendar id that this calendar corresponds to, from least significant",
-            "minimum": 0
+            "description": "Which bit in a merged calendar id that this calendar corresponds to, from least significant. An id of -1 means that this calendar is always hidden and cannot be merged",
+            "minimum": -1
           },
           "order": {
             "type": "integer",
@@ -32,7 +32,10 @@
             "default": false
           }
         },
-        "required": ["filename", "id"]
+        "required": [
+          "filename",
+          "id"
+        ]
       }
     }
   },
