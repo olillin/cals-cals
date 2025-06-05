@@ -25,6 +25,11 @@
           "category": {
             "type": "string",
             "description": "The heading of this calendar. Subheadings can be added seperated by /"
+          },
+          "hidden": {
+            "type": "boolean",
+            "description": "If true, this calendar will not be shown in the picker, but can still be used in the URL",
+            "default": false
           }
         },
         "required": ["filename", "id"]

@@ -21,7 +21,10 @@ const DEFAULT_ENVIRONMENT: Concrete<EnvironmentVariables> = {
     PORT: 8080,
 }
 
-const ENVIRONMENT: Concrete<EnvironmentVariables> = Object.assign(Object.assign({}, DEFAULT_ENVIRONMENT), process.env as EnvironmentVariables)
+const ENVIRONMENT: Concrete<EnvironmentVariables> = Object.assign(
+    Object.assign({}, DEFAULT_ENVIRONMENT),
+    process.env as EnvironmentVariables
+)
 const { PORT } = ENVIRONMENT
 
 // Paths
@@ -38,7 +41,9 @@ const app = express()
 interface Redirects {
     [x: string]: string
 }
-const redirects: Redirects = JSON.parse(fs.readFileSync(REDIRECTS_PATH).toString()).redirects
+const redirects: Redirects = JSON.parse(
+    fs.readFileSync(REDIRECTS_PATH).toString()
+).redirects
 app.use((req, res, next) => {
     if (req.url in redirects) {
         const newUrl = redirects[req.url]
@@ -82,7 +87,9 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
             })
             return
         }
-        const text = fs.readFileSync(CALENDAR_DIRECTORY + '/' + calendarName).toString()
+        const text = fs
+            .readFileSync(CALENDAR_DIRECTORY + '/' + calendarName)
+            .toString()
         const calendar: Calendar = await parseCalendar(text)
         res.status(200).json({
             name: calendar.getProperty('X-WR-CALNAME')!.value,
@@ -96,6 +103,7 @@ interface PickerCalendar {
     id: number
     order?: number
     category?: string
+    hidden?: boolean
 }
 
 interface Picker {
@@ -149,18 +157,23 @@ app.get('/m/:calendars', async (req, res) => {
         calendarNames.map(
             name =>
                 new Promise<Calendar>((resolve, reject) =>
-                    fs.readFile(CALENDAR_DIRECTORY + '/' + name, (err, data) => {
-                        if (err) {
-                            reject(err)
-                        } else {
-                            parseCalendar(data.toString()).then(resolve)
+                    fs.readFile(
+                        CALENDAR_DIRECTORY + '/' + name,
+                        (err, data) => {
+                            if (err) {
+                                reject(err)
+                            } else {
+                                parseCalendar(data.toString()).then(resolve)
+                            }
                         }
-                    })
+                    )
                 )
         )
     )
 
-    const mergedCalendar = (await mergeCalendars(calendars, appendOriginName)).serialize()
+    const mergedCalendar = (
+        await mergeCalendars(calendars, appendOriginName)
+    ).serialize()
     res.status(200).end(mergedCalendar)
 })
 
