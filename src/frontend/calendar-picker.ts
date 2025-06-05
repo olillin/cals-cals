@@ -10,6 +10,7 @@ interface PickerCalendar {
     id: number
     order?: number
     category?: string
+    hidden?: boolean
 }
 
 interface PickerCalendarTree {
@@ -27,17 +28,23 @@ const picker: Promise<PickerConfig> = (async () => {
 })()
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const calendarContainer = document.getElementById('calendars') as HTMLDivElement
+    const calendarContainer = document.getElementById(
+        'calendars'
+    ) as HTMLDivElement
 
     const calendarTree: PickerCalendarTree = {}
     function addCalendar(calendar: PickerCalendar) {
         if (calendar.category) {
-            let tokens: string[] = calendar.category.split('/').filter(token => token.trim().length)
+            let tokens: string[] = calendar.category
+                .split('/')
+                .filter(token => token.trim().length)
             let latest: string
             let node: PickerCalendarTree = calendarTree
             while (tokens.length > 0) {
                 ;[latest, ...tokens] = tokens
-                let subcategory = node.subcategories?.find(s => s.name === latest)
+                let subcategory = node.subcategories?.find(
+                    s => s.name === latest
+                )
                 if (subcategory) {
                     node = subcategory
                 } else {
@@ -65,9 +72,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    ;(await picker).calendars.forEach(calendar => {
-        addCalendar(calendar)
-    })
+    ;(await picker).calendars
+        .filter(calendar => calendar.hidden !== true)
+        .forEach(calendar => {
+            addCalendar(calendar)
+        })
 
     renderTree(calendarTree, calendarContainer)
     update()
@@ -84,7 +93,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
-function renderTree(tree: PickerCalendarTree | PickerCalendarSubTree, container: HTMLElement, depth: number = 2) {
+function renderTree(
+    tree: PickerCalendarTree | PickerCalendarSubTree,
+    container: HTMLElement,
+    depth: number = 2
+) {
     if (depth > 6) {
         throw Error(`Unable to create header for depth ${depth}`)
     }
@@ -120,7 +133,9 @@ function renderTree(tree: PickerCalendarTree | PickerCalendarSubTree, container:
 
     // Render subcategories
     const subCategories = tree.subcategories ?? []
-    const sortedCategories = subCategories.sort((a, b) => a.name.localeCompare(b.name))
+    const sortedCategories = subCategories.sort((a, b) =>
+        a.name.localeCompare(b.name)
+    )
     sortedCategories.forEach(category => {
         renderTree(category, subContainer, depth + 1)
     })
@@ -149,7 +164,10 @@ function createSelectAllButton(group: HTMLElement) {
     return selectAll
 }
 
-async function makeCalendarButton(button: HTMLButtonElement, calendar: PickerCalendar) {
+async function makeCalendarButton(
+    button: HTMLButtonElement,
+    calendar: PickerCalendar
+) {
     // Data
     button.setAttribute('data-calendar-id', calendar.id.toString())
     button.setAttribute('data-calendar-filename', calendar.filename)
@@ -184,7 +202,9 @@ function getIndex(indexUrl: string): Promise<string[]> {
             }
 
             const text = await response.text()
-            const lines = text.split('\n').filter(line => line.trim().length > 0)
+            const lines = text
+                .split('\n')
+                .filter(line => line.trim().length > 0)
 
             resolve(lines)
         })
@@ -211,23 +231,39 @@ function getCalendarName(filename: string): Promise<string> {
 
 function update() {
     // Get elements
-    const calendarContainer = document.getElementById('calendars') as HTMLDivElement
-    const calendarUrl = document.getElementById('calendar-url') as HTMLInputElement
-    const showOrigin = document.getElementById('show-origin') as HTMLInputElement
+    const calendarContainer = document.getElementById(
+        'calendars'
+    ) as HTMLDivElement
+    const calendarUrl = document.getElementById(
+        'calendar-url'
+    ) as HTMLInputElement
+    const showOrigin = document.getElementById(
+        'show-origin'
+    ) as HTMLInputElement
 
-    const showOriginSection = document.getElementById('show-origin-section') as HTMLSpanElement
+    const showOriginSection = document.getElementById(
+        'show-origin-section'
+    ) as HTMLSpanElement
     showOriginSection.hidden = true
-    const calendarUrlSection = document.getElementById('calendar-url-section') as HTMLSpanElement
+    const calendarUrlSection = document.getElementById(
+        'calendar-url-section'
+    ) as HTMLSpanElement
     calendarUrlSection.hidden = false
 
     // Get domain name
     const urlBase = window.location.origin
 
     // Find selected elements
-    const elements = Array.from(calendarContainer.getElementsByClassName('calendar-item'))
-    const selectedElements = Array.from(calendarContainer.getElementsByClassName(selectedClassName))
+    const elements = Array.from(
+        calendarContainer.getElementsByClassName('calendar-item')
+    )
+    const selectedElements = Array.from(
+        calendarContainer.getElementsByClassName(selectedClassName)
+    )
     if (selectedElements.length == 1) {
-        const filename = selectedElements[0].getAttribute('data-calendar-filename')
+        const filename = selectedElements[0].getAttribute(
+            'data-calendar-filename'
+        )
 
         calendarUrl.value = `${urlBase}/c/${filename}`
     } else if (selectedElements.length > 1) {
@@ -265,7 +301,9 @@ function update() {
 }
 
 function copyUrl() {
-    const calendarUrl = document.getElementById('calendar-url') as HTMLInputElement
+    const calendarUrl = document.getElementById(
+        'calendar-url'
+    ) as HTMLInputElement
     const copyNotice = document.getElementById('copy-notice') as HTMLSpanElement
 
     calendarUrl.select()
@@ -280,7 +318,9 @@ function copyUrl() {
 }
 
 function select(predicate: (el: Element) => boolean) {
-    const calendarContainer = document.getElementById('calendars') as HTMLDivElement
+    const calendarContainer = document.getElementById(
+        'calendars'
+    ) as HTMLDivElement
 
     const elements = calendarContainer.getElementsByClassName('calendar-item')
     for (const element of elements) {
@@ -292,7 +332,9 @@ function select(predicate: (el: Element) => boolean) {
 }
 
 function unselect(predicate: (el: Element) => boolean) {
-    const calendarContainer = document.getElementById('calendars') as HTMLDivElement
+    const calendarContainer = document.getElementById(
+        'calendars'
+    ) as HTMLDivElement
 
     const elements = calendarContainer.getElementsByClassName('calendar-item')
     for (const element of elements) {

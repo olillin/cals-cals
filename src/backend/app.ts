@@ -6,22 +6,17 @@ import { Calendar } from 'iamcal'
 import { parseCalendar } from 'iamcal/parse'
 import path from 'path'
 import { mergeCalendars } from './Calendar'
+import type { Concrete, EnvironmentVariables, Picker, Redirects } from './types'
 
-// Environment variables
-interface EnvironmentVariables {
-    PORT?: Number
-}
-
-// Remove 'optional' attributes from a type's properties
-type Concrete<Type> = {
-    [Property in keyof Type]-?: Type[Property]
-}
-
+// Environment
 const DEFAULT_ENVIRONMENT: Concrete<EnvironmentVariables> = {
     PORT: 8080,
 }
 
-const ENVIRONMENT: Concrete<EnvironmentVariables> = Object.assign(Object.assign({}, DEFAULT_ENVIRONMENT), process.env as EnvironmentVariables)
+const ENVIRONMENT: Concrete<EnvironmentVariables> = Object.assign(
+    Object.assign({}, DEFAULT_ENVIRONMENT),
+    process.env as EnvironmentVariables
+)
 const { PORT } = ENVIRONMENT
 
 // Paths
@@ -31,14 +26,22 @@ const PUBLIC_DIRECTORY = 'public'
 const CALENDAR_DIRECTORY = '../data/calendars'
 // const INDEX_PATH = '../data/calendars/index'
 
+// Read picker config
+const pickerText = fs.readFileSync(path.resolve(PICKER_PATH)).toString()
+const pickerConfig: Picker = JSON.parse(pickerText)
+
+console.log(
+    'Loaded calendars:\n',
+    pickerConfig.calendars.map(c => `\t${c.filename}`).join('\n')
+)
+
 // Setup express app
 const app = express()
 
 // Redirects
-interface Redirects {
-    [x: string]: string
-}
-const redirects: Redirects = JSON.parse(fs.readFileSync(REDIRECTS_PATH).toString()).redirects
+const redirects: Redirects = JSON.parse(
+    fs.readFileSync(REDIRECTS_PATH).toString()
+).redirects
 app.use((req, res, next) => {
     if (req.url in redirects) {
         const newUrl = redirects[req.url]
@@ -49,7 +52,10 @@ app.use((req, res, next) => {
 
 // Picker
 app.get('/picker.json', (req, res) => {
-    res.sendFile(path.resolve(PICKER_PATH))
+    const filteredPicker: Picker = {
+        calendars: pickerConfig.calendars.filter(c => c.id !== -1),
+    }
+    res.status(200).json(filteredPicker)
 })
 
 function noStoreCals(res: Response, path: string) {
@@ -82,7 +88,9 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
             })
             return
         }
-        const text = fs.readFileSync(CALENDAR_DIRECTORY + '/' + calendarName).toString()
+        const text = fs
+            .readFileSync(CALENDAR_DIRECTORY + '/' + calendarName)
+            .toString()
         const calendar: Calendar = await parseCalendar(text)
         res.status(200).json({
             name: calendar.getProperty('X-WR-CALNAME')!.value,
@@ -91,25 +99,6 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
 }
 
 // Merge calendars
-interface PickerCalendar {
-    filename: string
-    id: number
-    order?: number
-    category?: string
-}
-
-interface Picker {
-    calendars: PickerCalendar[]
-}
-
-const pickerText = fs.readFileSync(path.resolve(PICKER_PATH)).toString()
-const pickerConfig: Picker = JSON.parse(pickerText)
-
-console.log(
-    'Available calendars:',
-    pickerConfig.calendars.map(c => c.filename)
-)
-
 function dec2bin(dec: number) {
     return (dec >>> 0).toString(2)
 }
@@ -149,18 +138,23 @@ app.get('/m/:calendars', async (req, res) => {
         calendarNames.map(
             name =>
                 new Promise<Calendar>((resolve, reject) =>
-                    fs.readFile(CALENDAR_DIRECTORY + '/' + name, (err, data) => {
-                        if (err) {
-                            reject(err)
-                        } else {
-                            parseCalendar(data.toString()).then(resolve)
+                    fs.readFile(
+                        CALENDAR_DIRECTORY + '/' + name,
+                        (err, data) => {
+                            if (err) {
+                                reject(err)
+                            } else {
+                                parseCalendar(data.toString()).then(resolve)
+                            }
                         }
-                    })
+                    )
                 )
         )
     )
 
-    const mergedCalendar = (await mergeCalendars(calendars, appendOriginName)).serialize()
+    const mergedCalendar = (
+        await mergeCalendars(calendars, appendOriginName)
+    ).serialize()
     res.status(200).end(mergedCalendar)
 })
 
