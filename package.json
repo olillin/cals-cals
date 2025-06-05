@@ -1,7 +1,7 @@
 {
-  "name": "webcal-adapter",
+  "name": "cals-cals",
   "version": "1.1.0",
-  "description": "",
+  "description": "Calendar website for subscribing to multiple calendars",
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "npm run clean && npm run buildBackend && npm run buildFrontend",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/olillin/WebCal-Adapter.git"
+    "url": "git+https://github.com/olillin/cals-cals.git"
   },
   "author": "Olillin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/olillin/WebCal-Adapter/issues"
+    "url": "https://github.com/olillin/cals-cals/issues"
   },
-  "homepage": "https://github.com/olillin/WebCal-Adapter#README",
+  "homepage": "https://cal.olillin.com",
   "dependencies": {
     "express": "^4.21.1",
     "iamcal": "^1.0.2",
