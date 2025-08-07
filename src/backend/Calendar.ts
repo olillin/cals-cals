@@ -3,10 +3,15 @@ import { deserializeString, parseCalendar } from 'iamcal/parse'
 
 export async function deepCopy<T extends Component>(component: T): Promise<T> {
     const copied = await deserializeString(component.serialize())
-    return new (component.constructor as { new (component: Component): T })(copied)
+    return new (component.constructor as { new (component: Component): T })(
+        copied
+    )
 }
 
-export async function mergeCalendars(calendars: Calendar[], appendOriginName: boolean = false): Promise<Calendar> {
+export async function mergeCalendars(
+    calendars: Calendar[],
+    appendOriginName: boolean = false
+): Promise<Calendar> {
     const base: Calendar = await deepCopy(calendars[0])
 
     const names: string[] = []
@@ -32,9 +37,13 @@ export async function mergeCalendars(calendars: Calendar[], appendOriginName: bo
         base.components.push(
             ...(await Promise.all(
                 calendar.events().map(async e => {
-                    const newEvent = (await deepCopy(e)) as unknown as CalendarEvent
+                    const newEvent = (await deepCopy(
+                        e
+                    )) as unknown as CalendarEvent
                     if (appendOriginName && calendarName) {
-                        newEvent.setSummary(newEvent.summary() + ' - ' + calendarName)
+                        newEvent.setSummary(
+                            newEvent.summary() + ' - ' + calendarName
+                        )
                     }
                     return newEvent
                 })
@@ -47,8 +56,16 @@ export async function mergeCalendars(calendars: Calendar[], appendOriginName: bo
     return base
 }
 
-export async function mergeCalendarsText(calendars: string[], appendOriginName: boolean = false): Promise<string> {
-    const parsedCalendars: Calendar[] = await Promise.all(calendars.map(async c => await parseCalendar(c)))
-    const calendar: Calendar = await mergeCalendars(parsedCalendars, appendOriginName)
+export async function mergeCalendarsText(
+    calendars: string[],
+    appendOriginName: boolean = false
+): Promise<string> {
+    const parsedCalendars: Calendar[] = await Promise.all(
+        calendars.map(async c => await parseCalendar(c))
+    )
+    const calendar: Calendar = await mergeCalendars(
+        parsedCalendars,
+        appendOriginName
+    )
     return calendar.serialize()
 }

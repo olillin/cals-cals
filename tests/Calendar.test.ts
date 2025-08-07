@@ -1,5 +1,9 @@
 import { load } from 'iamcal/io'
-import { deepCopy, mergeCalendars, mergeCalendarsText } from '../src/backend/Calendar'
+import {
+    deepCopy,
+    mergeCalendars,
+    mergeCalendarsText,
+} from '../src/backend/Calendar'
 import { parseCalendar } from 'iamcal/parse'
 
 const EMPTY_CALENDAR = load('tests/resources/empty.ics')
@@ -70,7 +74,9 @@ describe('test mergeCalendars', () => {
         let extra = await exampleCalendar2()
 
         let merged = await mergeCalendars([base, extra])
-        expect(merged.events().length).toBe(base.events().length + extra.events().length)
+        expect(merged.events().length).toBe(
+            base.events().length + extra.events().length
+        )
     })
 
     test('unnamed calendar still unnamed', async () => {
@@ -90,6 +96,8 @@ describe('test mergeCalendarsText', () => {
         let mergedText = await mergeCalendarsText([baseText, extraText])
         let merged = await parseCalendar(mergedText)
 
-        expect(merged.events().length).toBe(base.events().length + extra.events().length)
+        expect(merged.events().length).toBe(
+            base.events().length + extra.events().length
+        )
     })
 })

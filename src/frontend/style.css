@@ -22,7 +22,7 @@ body {
 @media screen and (max-width: 800px) {
     main {
         width: auto;
-        margin: 8em 2em
+        margin: 8em 2em;
     }
 }
 
@@ -56,7 +56,7 @@ button {
     cursor: pointer;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
     -webkit-appearance: none; /* For WebKit browsers */
     -moz-appearance: none; /* For Firefox */
     appearance: none;
@@ -71,7 +71,7 @@ input[type="checkbox"] {
     transition-duration: 0.3s;
 }
 
-input[type="checkbox"]:checked {
+input[type='checkbox']:checked {
     background-color: var(--selected-color);
     border-color: var(--selected-color);
     box-shadow: var(--selected-color) 0 0 var(--glow-strength) 0;
@@ -94,8 +94,9 @@ input[type="checkbox"]:checked {
 
 .calendar-item.selected {
     border-color: var(--selected-color);
-    box-shadow: inset var(--selected-color) 0 0 var(--glow-strength) 0,
-                      var(--selected-color) 0 0 var(--glow-strength) 0;
+    box-shadow:
+        inset var(--selected-color) 0 0 var(--glow-strength) 0,
+        var(--selected-color) 0 0 var(--glow-strength) 0;
     color: var(--selected-color);
     transition-duration: 0.5s;
 }
@@ -118,7 +119,7 @@ input[type="checkbox"]:checked {
     box-sizing: border-box;
     padding: 1em 1.5em;
     border-radius: var(--border-radius);
-    background: #0A0A0A;
+    background: #0a0a0a;
     color: #fff;
 }
 
@@ -139,7 +140,7 @@ input[type="checkbox"]:checked {
     border: none;
     cursor: pointer;
     background-color: transparent;
-    background-image: url("/icons/copy.png");
+    background-image: url('/icons/copy.png');
     background-position: center;
     background-size: contain;
 }

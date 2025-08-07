@@ -1,59 +1,78 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cal's cals</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <meta property="og:title" content="Cal's cals">
-    <meta property="og:site_name" content="Olillin">
-    <meta property="og:description" content="Calendar builder coming soon...">
-    <meta property="og:image" content="/media.png">
-    <meta property="og:image:alt" content="Cal's cals banner">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
-    <meta property="og:image:type" content="image/png">
-    <meta name="theme-color" content="#5ac1a2">
-    <meta name="twitter:title" content="Cal's cals">
-    <meta name="twitter:description" content="Calendar builder coming soon...">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image:src" content="/media.png">
-    <meta name="twitter:image:alt" content="Cal's cals banner">
-    <meta name="twitter:site" content="@olilllin">
-    <meta name="twitter:creator" content="@olilllin">
-    <script src="/calendar-picker.js"></script>
-</head>
-<body>
-    <main>
-        <section>
-            <h1>Welcome to Cal's cals!</h1>
-        </section>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cal's cals</title>
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <meta property="og:title" content="Cal's cals" />
+        <meta property="og:site_name" content="Olillin" />
+        <meta
+            property="og:description"
+            content="Calendar builder coming soon..."
+        />
+        <meta property="og:image" content="/media.png" />
+        <meta property="og:image:alt" content="Cal's cals banner" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="600" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="theme-color" content="#5ac1a2" />
+        <meta name="twitter:title" content="Cal's cals" />
+        <meta
+            name="twitter:description"
+            content="Calendar builder coming soon..."
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image:src" content="/media.png" />
+        <meta name="twitter:image:alt" content="Cal's cals banner" />
+        <meta name="twitter:site" content="@olilllin" />
+        <meta name="twitter:creator" content="@olilllin" />
+        <script src="/calendar-picker.js"></script>
+    </head>
+    <body>
+        <main>
+            <section>
+                <h1>Welcome to Cal's cals!</h1>
+            </section>
 
-        <section class="calendar-picker">
-            <h2>Calendar picker</h2>
+            <section class="calendar-picker">
+                <h2>Calendar picker</h2>
 
-            <div class="calendars" id="calendars"></div>
+                <div class="calendars" id="calendars"></div>
 
-            <span class="checkbox-field" id="show-origin-section">
-                <input type="checkbox" id="show-origin" checked="true" onchange="update()">
-                <label for="show-origin">Show calendar name in events</label>
-            </span>
+                <span class="checkbox-field" id="show-origin-section">
+                    <input
+                        type="checkbox"
+                        id="show-origin"
+                        checked="true"
+                        onchange="update()"
+                    />
+                    <label for="show-origin"
+                        >Show calendar name in events</label
+                    >
+                </span>
 
-            <span class="calendar-url" id="calendar-url-section">
-                <input type="text" id="calendar-url" disabled aria-disabled="true">
-                <span id="copy-notice"><span class="no-select">Copied!</span></span>
-                <button id="copy-calendar-url" onclick="copyUrl()"></button>
-            </span>
+                <span class="calendar-url" id="calendar-url-section">
+                    <input
+                        type="text"
+                        id="calendar-url"
+                        disabled
+                        aria-disabled="true"
+                    />
+                    <span id="copy-notice"
+                        ><span class="no-select">Copied!</span></span
+                    >
+                    <button id="copy-calendar-url" onclick="copyUrl()"></button>
+                </span>
+            </section>
 
-        </section>
+            <section>
+                <h2>Calendar builder</h2>
 
-        <section>
-            <h2>Calendar builder</h2>
-
-            <p>Coming soon...</p>
-        </section>
-    </main>
-</body>
+                <p>Coming soon...</p>
+            </section>
+        </main>
+    </body>
 </html>
