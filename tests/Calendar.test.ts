@@ -1,10 +1,9 @@
-import { load } from 'iamcal/io'
+import { load, parseCalendar } from 'iamcal'
 import {
     deepCopy,
     mergeCalendars,
     mergeCalendarsText,
 } from '../src/backend/Calendar'
-import { parseCalendar } from 'iamcal/parse'
 
 const EMPTY_CALENDAR = load('tests/resources/empty.ics')
 async function emptyCalendar() {
@@ -33,9 +32,9 @@ describe('test deepCopy', () => {
         let original = await EXAMPLE_CALENDAR_1
         let copied = await deepCopy(original)
 
-        let originalSummary = original.events()[0].summary()
-        copied.events()[0].setSummary('foo')
-        expect(original.events()[0].summary()).toBe(originalSummary)
+        let originalSummary = original.getEvents()[0].getSummary()
+        copied.getEvents()[0].setSummary('foo')
+        expect(original.getEvents()[0].getSummary()).toBe(originalSummary)
     })
 
     test('returns same class: Calendar', async () => {
@@ -46,7 +45,7 @@ describe('test deepCopy', () => {
 
     test('returns same class: CalendarEvent', async () => {
         let calendar = await EXAMPLE_CALENDAR_1
-        let original = calendar.events()[0]
+        let original = calendar.getEvents()[0]
         let copied = await deepCopy(original)
         expect(copied.constructor.name).toBe(original.constructor.name)
     })
@@ -60,12 +59,12 @@ describe('test mergeCalendars', () => {
     })
     test('merged calendar name', async () => {
         let base = await exampleCalendar1()
-        let baseName = base.getProperty('X-WR-CALNAME')?.value
+        let baseName = base.getCalendarName()
         let extra = await exampleCalendar2()
-        let extraName = extra.getProperty('X-WR-CALNAME')?.value
+        let extraName = extra.getCalendarName()
 
         let merged = await mergeCalendars([base, extra])
-        let name = merged.getProperty('X-WR-CALNAME')?.value
+        let name = merged.getCalendarName()
         expect(name).toBe(baseName + '+' + extraName)
     })
 
@@ -74,16 +73,16 @@ describe('test mergeCalendars', () => {
         let extra = await exampleCalendar2()
 
         let merged = await mergeCalendars([base, extra])
-        expect(merged.events().length).toBe(
-            base.events().length + extra.events().length
+        expect(merged.getEvents().length).toBe(
+            base.getEvents().length + extra.getEvents().length
         )
     })
 
     test('unnamed calendar still unnamed', async () => {
         let calendar = await emptyCalendar()
-        expect(calendar.getProperty('X-WR-CALNAME')).toBeNull()
+        expect(calendar.getCalendarName()).toBeUndefined()
         let merged = await mergeCalendars([calendar])
-        expect(merged.getProperty('X-WR-CALNAME')).toBeNull()
+        expect(merged.getCalendarName()).toBeUndefined()
     })
 })
 
@@ -96,8 +95,8 @@ describe('test mergeCalendarsText', () => {
         let mergedText = await mergeCalendarsText([baseText, extraText])
         let merged = await parseCalendar(mergedText)
 
-        expect(merged.events().length).toBe(
-            base.events().length + extra.events().length
+        expect(merged.getEvents().length).toBe(
+            base.getEvents().length + extra.getEvents().length
         )
     })
 })
