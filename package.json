@@ -1,6 +1,6 @@
 {
     "name": "cals-cals",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Calendar website for subscribing to multiple calendars",
     "scripts": {
         "clean": "rimraf ./dist",
