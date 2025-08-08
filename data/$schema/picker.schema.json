@@ -1,45 +1,40 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "calendars": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "filename": {
-            "type": "string",
-            "description": "The filename of this calendar in /c/",
-            "pattern": ".+\\.ics$"
-          },
-          "id": {
-            "type": "integer",
-            "description": "Which bit in a merged calendar id that this calendar corresponds to, from least significant. An id of -1 means that this calendar is always hidden and cannot be merged",
-            "minimum": -1
-          },
-          "order": {
-            "type": "integer",
-            "description": "How to order this calendar, lower numbers are shown first",
-            "default": 0
-          },
-          "category": {
-            "type": "string",
-            "description": "The heading of this calendar. Subheadings can be added seperated by /"
-          },
-          "hidden": {
-            "type": "boolean",
-            "description": "If true, this calendar will not be shown in the picker, but can still be used in the URL",
-            "default": false
-          }
-        },
-        "required": [
-          "filename",
-          "id"
-        ]
-      }
-    }
-  },
-  "required": [
-    "calendars"
-  ]
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "calendars": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "filename": {
+                        "type": "string",
+                        "description": "The filename of this calendar in /c/",
+                        "pattern": ".+\\.ics$"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "description": "Which bit in a merged calendar id that this calendar corresponds to, from least significant. An id of -1 means that this calendar is always hidden and cannot be merged",
+                        "minimum": -1
+                    },
+                    "order": {
+                        "type": "integer",
+                        "description": "How to order this calendar, lower numbers are shown first",
+                        "default": 0
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "The heading of this calendar. Subheadings can be added seperated by /"
+                    },
+                    "hidden": {
+                        "type": "boolean",
+                        "description": "If true, this calendar will not be shown in the picker, but can still be used in the URL",
+                        "default": false
+                    }
+                },
+                "required": ["filename", "id"]
+            }
+        }
+    },
+    "required": ["calendars"]
 }

@@ -1,0 +1,15 @@
+{
+    "arrowParens": "avoid",
+    "endOfLine": "lf",
+    "insertPragma": false,
+    "objectWrap": "preserve",
+    "printWidth": 80,
+    "proseWrap": "preserve",
+    "quoteProps": "as-needed",
+    "requirePragma": false,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "es5",
+    "useTabs": false
+}

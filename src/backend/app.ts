@@ -2,8 +2,7 @@ import express, { Response } from 'express'
 import fs from 'fs'
 import http from 'http'
 import https from 'https'
-import { Calendar } from 'iamcal'
-import { parseCalendar } from 'iamcal/parse'
+import { Calendar, load, parseCalendar } from 'iamcal'
 import path from 'path'
 import { mergeCalendars } from './Calendar'
 import type { Concrete, EnvironmentVariables, Picker, Redirects } from './types'
@@ -88,10 +87,8 @@ if (fs.existsSync(CALENDAR_DIRECTORY)) {
             })
             return
         }
-        const text = fs
-            .readFileSync(CALENDAR_DIRECTORY + '/' + calendarName)
-            .toString()
-        const calendar: Calendar = await parseCalendar(text)
+        const filePath = CALENDAR_DIRECTORY + '/' + calendarName
+        const calendar: Calendar = await load(filePath)
         res.status(200).json({
             name: calendar.getProperty('X-WR-CALNAME')!.value,
         })
@@ -137,18 +134,14 @@ app.get('/m/:calendars', async (req, res) => {
     const calendars = await Promise.all(
         calendarNames.map(
             name =>
-                new Promise<Calendar>((resolve, reject) =>
-                    fs.readFile(
-                        CALENDAR_DIRECTORY + '/' + name,
-                        (err, data) => {
-                            if (err) {
-                                reject(err)
-                            } else {
-                                parseCalendar(data.toString()).then(resolve)
-                            }
-                        }
-                    )
-                )
+                new Promise<Calendar>((resolve, reject) => {
+                    try {
+                        const filePath = CALENDAR_DIRECTORY + '/' + name
+                        load(filePath).then(resolve).catch(reject)
+                    } catch (reason) {
+                        reject(reason)
+                    }
+                })
         )
     )
 
