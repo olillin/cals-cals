@@ -1,6 +1,5 @@
-import { group } from 'console'
+import { Calendar } from 'iamcal'
 import Adapter from '../Adapter'
-import { Calendar, parseCalendar } from 'iamcal'
 
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
@@ -25,6 +24,9 @@ export default class TimeEditAdapter extends Adapter {
                 `Unable to find category in TimeEdit URL: '${url.href}'`
             )
 
+        if (category !== 'public')
+            throw new Error('Calendar must be from the public calendar')
+
         const filenamePattern = /[^\/]+?(?=\.ics)/
         const filename = filenamePattern.exec(url.href)?.[0]
         if (!filename)
@@ -32,16 +34,14 @@ export default class TimeEditAdapter extends Adapter {
                 `Unable to find filename in TimeEdit URL: '${url.href}'`
             )
 
-        return `${filename}@${category}@${organization}`
+        const id = `${filename}@${category}@${organization}`
+        return id
     }
 
     convertCalendar(calendar: Calendar): Calendar {
         calendar.getEvents().forEach(event => {
             const oldSummary = this.unescapeText(event.getSummary()!)
-            const oldLocation = this.unescapeText(event.getLocation()!).replace(
-                '\n',
-                ' '
-            )
+            const oldLocation = this.unescapeText(event.getLocation()!)
 
             const groupedSummaryData = this.groupRawData(oldSummary)
             const groupedLocationData = this.groupRawData(oldLocation)
@@ -86,15 +86,22 @@ export default class TimeEditAdapter extends Adapter {
 
             const url = event.getProperty('URL')?.value
 
-            event.setLocation(
-                this.escapeText(
-                    room.join(', ') +
-                        (campus[0] ? ` (${campus.join(', ')})` : '') +
-                        url
-                        ? ` ${url}`
-                        : ''
+            if (
+                event
+                    .getSummary()
+                    ?.includes('Välkommen på drop in utanför Hubben')
+            ) {
+                // Special case for this specific event
+                event.setLocation('Utanför Hubben')
+            } else {
+                event.setLocation(
+                    this.escapeText(
+                        room.join(', ') +
+                            (campus[0] ? ` (${campus.join(', ')})` : '') +
+                            (url ? ` ${url}` : '')
+                    )
                 )
-            )
+            }
         })
         return calendar
     }
@@ -102,9 +109,9 @@ export default class TimeEditAdapter extends Adapter {
     private groupRawData(rawData: string): { [k: string]: string[] } {
         const dataPairs = Array.from(
             rawData.matchAll(
-                /([^:.,\s][^:.,]*?): (.+?)(?=(?:[,.] )?(?:[^:.,\s][^:.,]*?:|$))/g
+                /([^:.,\s][^:.,\n]*?): (.+?)(?=(?:[,.] )?(?:[^:.,\s][^:.,\n]*?:|$))/gm
             )
-        ).map(match => [match[1], match[2]])
+        ).map(match => [match[1].trim(), match[2].trim()])
 
         const groupedData = dataPairs.reduce<{ [k: string]: string[] }>(
             (acc, [key, value]) => {

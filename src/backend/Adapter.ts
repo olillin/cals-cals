@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express'
+import { RequestHandler, Router } from 'express'
 import { Calendar, load, parseCalendar } from 'iamcal'
 
 class ErrorResponse extends Error {
@@ -11,10 +11,27 @@ class ErrorResponse extends Error {
 
 abstract class Adapter {
     /**
+     * Create an express router with routes for this adapter:
+     *
+     * - `GET /`: The route created by {@link createCalendarRoute}.
+     * - `POST /`: The route created by {@link createUrlRoute}.
+     *
+     * @returns An express router with the routes for this adapter.
+     */
+    createRouter(): Router {
+        const router = Router()
+
+        router.get('/', this.createCalendarRoute())
+        router.post('/', this.createUrlRoute())
+
+        return router
+    }
+
+    /**
      * Create a route which takes a query parameter 'id' and returns the
      * converted calendar from the service of this adapter.
      */
-    createHandler(timeout?: number): RequestHandler {
+    createCalendarRoute(timeout?: number): RequestHandler {
         return async (req, res) => {
             const id = req.query.id
             if (!id) {
@@ -98,6 +115,46 @@ abstract class Adapter {
         }
 
         return calendar
+    }
+
+    /**
+     * Create a route which takes a query parameter 'url' and returns the
+     * URL which will route the calendar through this adapter.
+     */
+    createUrlRoute(): RequestHandler {
+        return (req, res) => {
+            const originalUrl = req.query.url
+            if (!originalUrl) {
+                res.status(400).json({
+                    error: {
+                        message: "Missing required query parameter 'url'",
+                    },
+                })
+                return
+            }
+            let id: string | undefined = undefined
+            try {
+                id = this.getId(new URL(String(originalUrl)))
+            } catch (error) {
+                res.status(400).json({
+                    error: {
+                        message: `Failed to extract id from URL: ${error}`,
+                    },
+                })
+                return
+            }
+
+            const adapterUrl = new URL(
+                req.protocol + '://' + req.get('host') + req.originalUrl
+            )
+            // Replace query parameter with id
+            adapterUrl.search = '?id=' + encodeURIComponent(id)
+
+            res.status(200).json({
+                id: id,
+                url: adapterUrl,
+            })
+        }
     }
 
     /**

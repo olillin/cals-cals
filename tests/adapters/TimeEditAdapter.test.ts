@@ -1,5 +1,5 @@
 import { parseCalendar } from 'iamcal'
-import TimeEditAdapter from '../../src/backend/adapters/timeedit'
+import TimeEditAdapter from '../../src/backend/adapters/TimeEditAdapter'
 
 test('log converted events', async () => {
     const calendar = await parseCalendar(CALENDAR_CONTENT).then(calendar => {
