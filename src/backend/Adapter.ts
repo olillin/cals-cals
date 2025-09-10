@@ -1,12 +1,20 @@
 import { RequestHandler } from 'express'
 import { Calendar, load, parseCalendar } from 'iamcal'
 
+class ErrorResponse extends Error {
+    status: number
+    constructor(status: number, message: string) {
+        super(message)
+        this.status = status
+    }
+}
+
 abstract class Adapter {
     /**
      * Create a route which takes a query parameter 'id' and returns the
      * converted calendar from the service of this adapter.
      */
-    createHandler(timeout: number = 5000): RequestHandler {
+    createHandler(timeout?: number): RequestHandler {
         return async (req, res) => {
             const id = req.query.id
             if (!id) {
@@ -15,49 +23,18 @@ abstract class Adapter {
                 })
                 return
             }
-            const url = this.createUrl(String(id))
 
-            // Fetch with timeout
-            const timeoutPromise = new Promise<undefined>(resolve =>
-                setTimeout(() => {
-                    resolve(undefined)
-                }, timeout)
-            )
-            const fetchPromise = fetch(url)
-            const response = await Promise.race([timeoutPromise, fetchPromise])
-            if (response === undefined) {
-                // Fetch timed out
-                res.status(504).json({
-                    error: { message: `Fetch to ${url} timed out` },
-                })
-                return
-            }
-
-            if (!response.ok) {
-                res.status(502).json({
-                    error: {
-                        message: `Received not ok response from ${url}, status code is ${response.status}`,
-                    },
-                })
-                return
-            }
-
-            const contentType = response.headers.get('Content-Type')
-            // If missing header, assume it is fine and fail while parsing in worst case
-            const isCalendar = contentType?.includes('text/calendar') ?? true
-            if (!isCalendar)
-                throw `Response has invalid content type. Expected 'text/calendar' but got ${contentType}`
-
-            const calendarText = await response.text()
-            let originalCalendar: Calendar | undefined = undefined
-            try {
-                originalCalendar = await parseCalendar(calendarText)
-            } catch (error) {
-                res.status(500).json({
-                    error: { message: `Failed to parse calendar: ${error}` },
-                })
-                return
-            }
+            let originalCalendar: Calendar | undefined =
+                await this.fetchCalendarFromId(String(id), timeout).catch(
+                    error => {
+                        const errorResponse = error as ErrorResponse
+                        res.status(errorResponse.status).json({
+                            error: { message: errorResponse.message },
+                        })
+                        return undefined
+                    }
+                )
+            if (!originalCalendar) return
 
             let convertedCalendar: Calendar
             try {
@@ -75,6 +52,52 @@ abstract class Adapter {
                 serializedConvertedCalendar
             )
         }
+    }
+
+    async fetchCalendarFromId(
+        id: string,
+        timeoutMilliseconds: number = 5000
+    ): Promise<Calendar> {
+        const url = this.createUrl(String(id))
+
+        // Fetch with timeout
+        const timeoutPromise = new Promise<null>(resolve =>
+            setTimeout(() => {
+                resolve(null)
+            }, timeoutMilliseconds)
+        )
+        const fetchPromise = fetch(url)
+        const response = await Promise.race([timeoutPromise, fetchPromise])
+        if (response === null) {
+            // Fetch timed out
+            throw new ErrorResponse(504, `Calendar provider did not respond`)
+        }
+
+        if (!response.ok) {
+            throw new ErrorResponse(
+                502,
+                `Calendar provider gave not ok response`
+            )
+        }
+
+        const contentType = response.headers.get('Content-Type')
+        // If missing header, assume it is fine and fail while parsing in worst case
+        const isCalendar = contentType?.includes('text/calendar') ?? true
+        if (!isCalendar)
+            throw new ErrorResponse(
+                502,
+                `Response has invalid content type. Expected 'text/calendar' but got ${contentType}`
+            )
+
+        const calendarText = await response.text()
+        let calendar: Calendar | undefined = undefined
+        try {
+            calendar = await parseCalendar(calendarText)
+        } catch (error) {
+            throw new ErrorResponse(500, `Failed to parse calendar: ${error}`)
+        }
+
+        return calendar
     }
 
     /**
