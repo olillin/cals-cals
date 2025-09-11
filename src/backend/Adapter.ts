@@ -145,7 +145,7 @@ abstract class Adapter {
             }
 
             const adapterUrl = new URL(
-                req.protocol + '://' + req.get('host') + req.originalUrl
+                'webcal://' + req.get('host') + req.originalUrl
             )
             // Replace query parameter with id
             adapterUrl.search = '?id=' + encodeURIComponent(id)
