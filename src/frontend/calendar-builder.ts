@@ -80,7 +80,7 @@ function updateBuilder() {
 
 function copyBuilderUrl() {
     const calendarUrl = document.getElementById(
-        'calendar-builder-url'
+        'calendar-builder-output-url'
     ) as HTMLInputElement
     const copyNotice = document.getElementById(
         'copy-builder-notice'
