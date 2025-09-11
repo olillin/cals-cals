@@ -6,23 +6,27 @@
 
 body {
     width: 100vw;
-    height: 100vh;
     background-color: #111;
     color: #ffffff;
     font-family: sans-serif;
+    overflow-x: hidden;
+}
+
+main {
+    margin-block: 8em;
 }
 
 @media screen and (min-width: 800px) {
-    main {
+    main, footer {
         width: 700px;
-        margin: 8em auto;
+        margin-inline: auto;
     }
 }
 
 @media screen and (max-width: 800px) {
-    main {
+    main, footer {
         width: auto;
-        margin: 8em 2em;
+        margin-inline: 2em;
     }
 }
 
@@ -208,4 +212,26 @@ input[type='checkbox']:checked {
     border-radius: 0.5em;
     background: transparent;
     color: white;
+}
+
+summary {
+    font-weight: bold;
+}
+
+details {
+    margin: 1em 0 2.5em 1em;
+}
+
+a {
+    color: var(--selected-color);
+}
+
+footer {
+    margin-top: 5em;
+    margin-bottom: 2em;
+
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    align-items: center;
 }

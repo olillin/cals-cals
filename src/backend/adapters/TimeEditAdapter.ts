@@ -11,7 +11,7 @@ export default class TimeEditAdapter extends Adapter {
 
     getId(url: URL): string {
         const urlPattern =
-            /^https:\/\/cloud\.timeedit\.net\/chalmers\/web\/public\/[^\/]+\.ics$/
+            /^(https|webcal):\/\/cloud\.timeedit\.net\/chalmers\/web\/public\/[^\/]+\.ics$/
         if (!urlPattern.test(url.href)) {
             throw new Error('Invalid URL')
         }
