@@ -1,7 +1,7 @@
 {
     "name": "cals-cals",
-    "version": "1.1.2",
-    "description": "Calendar website for subscribing to multiple calendars",
+    "version": "1.2.0",
+    "description": "Calendar website for better calendars at Chalmers",
     "scripts": {
         "clean": "rimraf ./dist",
         "build": "npm run clean && npm run buildBackend && npm run buildFrontend",
