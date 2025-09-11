@@ -251,7 +251,7 @@ function update() {
     calendarUrlSection.hidden = false
 
     // Get domain name
-    const urlBase = window.location.origin
+    const urlBase = window.location.origin.replace(/^https?/, 'webcal')
 
     // Find selected elements
     const elements = Array.from(
