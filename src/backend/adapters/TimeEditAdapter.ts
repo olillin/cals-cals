@@ -55,6 +55,8 @@ export default class TimeEditAdapter extends Adapter {
                 )
             )
 
+            const url = event.getProperty('URL')?.value
+
             const activityRow = activity[0] ? `Vad: ${activity[0]}` : null
             const courseRow =
                 courseNames[0] && courseCodes[0]
@@ -67,16 +69,15 @@ export default class TimeEditAdapter extends Adapter {
             const classRow = classCodes[0]
                 ? 'Klass: ' + classCodes.join(', ')
                 : null
+            const mapRow = url ? 'Karta: ' + url : null
 
             event.setDescription(
                 this.escapeText(
-                    [activityRow, courseRow, classRow]
+                    [activityRow, courseRow, classRow, mapRow]
                         .filter(row => row !== null)
                         .join('\n')
                 )
             )
-
-            const url = event.getProperty('URL')?.value
 
             if (
                 event
@@ -89,8 +90,7 @@ export default class TimeEditAdapter extends Adapter {
                 event.setLocation(
                     this.escapeText(
                         room.join(', ') +
-                            (campus[0] ? ` (${campus.join(', ')})` : '') +
-                            (url ? ` ${url}` : '')
+                            (campus[0] ? ` (${campus.join(', ')})` : '')
                     )
                 )
             }
