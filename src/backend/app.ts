@@ -2,8 +2,9 @@ import express, { Response } from 'express'
 import fs from 'fs'
 import http from 'http'
 import https from 'https'
-import { Calendar, load, parseCalendar } from 'iamcal'
+import { Calendar, load } from 'iamcal'
 import path from 'path'
+import adapterRouter from './adapterRouter'
 import { mergeCalendars } from './Calendar'
 import type { Concrete, EnvironmentVariables, Picker, Redirects } from './types'
 
@@ -150,6 +151,9 @@ app.get('/m/:calendars', async (req, res) => {
     ).serialize()
     res.status(200).end(mergedCalendar)
 })
+
+// Adapters
+app.use('/adapter', adapterRouter)
 
 // Start server
 var server

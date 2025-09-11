@@ -6,23 +6,27 @@
 
 body {
     width: 100vw;
-    height: 100vh;
     background-color: #111;
     color: #ffffff;
     font-family: sans-serif;
+    overflow-x: hidden;
+}
+
+main {
+    margin-block: 8em;
 }
 
 @media screen and (min-width: 800px) {
-    main {
+    main, footer {
         width: 700px;
-        margin: 8em auto;
+        margin-inline: auto;
     }
 }
 
 @media screen and (max-width: 800px) {
-    main {
+    main, footer {
         width: auto;
-        margin: 8em 2em;
+        margin-inline: 2em;
     }
 }
 
@@ -131,7 +135,7 @@ input[type='checkbox']:checked {
     color: inherit;
 }
 
-#copy-calendar-url {
+.copy-calendar-url {
     height: 2em;
     width: 2em;
     padding: 0;
@@ -145,7 +149,7 @@ input[type='checkbox']:checked {
     background-size: contain;
 }
 
-#copy-notice {
+.copy-notice {
     display: flex;
     align-items: center;
     background-color: transparent;
@@ -154,7 +158,7 @@ input[type='checkbox']:checked {
     position: relative;
 }
 
-#copy-notice span {
+.copy-notice span {
     position: relative;
     right: -100%;
     width: fit-content;
@@ -164,7 +168,7 @@ input[type='checkbox']:checked {
     transition: right 0.5s ease;
 }
 
-#copy-notice.visible span {
+.copy-notice.visible span {
     right: 0;
 }
 
@@ -180,4 +184,54 @@ input[type='checkbox']:checked {
 
 .checkbox-field * {
     cursor: pointer;
+}
+
+.error {
+    color: #ff4c4c;
+}
+
+.calendar-builder-input {
+    display: flex;
+    gap: 2em;
+    justify-content: stretch;
+    align-items: flex-end;
+    margin-block: 1em;
+}
+
+.calendar-builder-input div {
+    flex: 1;
+
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.5em;
+}
+
+.calendar-builder-input input {
+    padding: 0.5em;
+    border: 1px solid white;
+    border-radius: 0.5em;
+    background: transparent;
+    color: white;
+}
+
+summary {
+    font-weight: bold;
+}
+
+details {
+    margin: 1em 0 2.5em 1em;
+}
+
+a {
+    color: var(--selected-color);
+}
+
+footer {
+    margin-top: 5em;
+    margin-bottom: 2em;
+
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    align-items: center;
 }
