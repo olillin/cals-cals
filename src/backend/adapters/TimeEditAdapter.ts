@@ -3,38 +3,30 @@ import Adapter from '../Adapter'
 
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
-        const [filename, category, organization] = id.split('@')
+        const [category, filename] = id.split('.')
         return new URL(
-            `https://cloud.timeedit.net/${organization}/web/${category}/${filename}.ics`
+            `https://cloud.timeedit.net/chalmers/web/${category}/${filename}.ics`
         )
     }
 
     getId(url: URL): string {
-        const organizationPattern = /(?<=timeedit\.net\/).+?(?=\/)/
-        const organization = organizationPattern.exec(url.href)?.[0]
-        if (!organization)
-            throw new Error(
-                `Unable to find organization in TimeEdit URL: '${url.href}'`
-            )
+        const urlPattern =
+            /^https:\/\/cloud\.timeedit\.net\/chalmers\/web\/public\/[^\/]+\.ics$/
+        if (!urlPattern.test(url.href)) {
+            throw new Error('Invalid URL')
+        }
 
         const categoryPattern = /(?<=web\/).+?(?=\/)/
         const category = categoryPattern.exec(url.href)?.[0]
-        if (!category)
-            throw new Error(
-                `Unable to find category in TimeEdit URL: '${url.href}'`
-            )
 
         if (category !== 'public')
-            throw new Error('Calendar must be from the public calendar')
+            throw new Error('Calendar must be from the public schedule')
 
         const filenamePattern = /[^\/]+?(?=\.ics)/
         const filename = filenamePattern.exec(url.href)?.[0]
-        if (!filename)
-            throw new Error(
-                `Unable to find filename in TimeEdit URL: '${url.href}'`
-            )
+        if (!filename) throw new Error(`Invalid URL, unable to find filename`)
 
-        const id = `${filename}@${category}@${organization}`
+        const id = `${category}.${filename}`
         return id
     }
 

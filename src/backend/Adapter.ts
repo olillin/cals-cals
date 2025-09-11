@@ -138,7 +138,7 @@ abstract class Adapter {
             } catch (error) {
                 res.status(400).json({
                     error: {
-                        message: `Failed to extract id from URL: ${error}`,
+                        message: `Failed to extract id from URL: ${error instanceof Error ? error.message : error}`,
                     },
                 })
                 return
