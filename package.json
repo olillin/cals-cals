@@ -1,6 +1,6 @@
 {
     "name": "cals-cals",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Calendar website for better calendars at Chalmers",
     "scripts": {
         "clean": "rimraf ./dist",
