@@ -40,19 +40,26 @@ export async function mergeCalendars(
         }
 
         base.components.push(
-            ...(await Promise.all(
-                calendar.getEvents().map(async e => {
-                    const newEvent = (await deepCopy(
-                        e
-                    )) as unknown as CalendarEvent
-                    if (appendOriginName && calendarName) {
-                        newEvent.setSummary(
-                            newEvent.getSummary() + ' - ' + calendarName
-                        )
-                    }
-                    return newEvent
-                })
-            ))
+            ...(
+                await Promise.all(
+                    calendar.getEvents().map(async event => {
+                        try {
+                            const newEvent = await deepCopy(event)
+                            if (appendOriginName && calendarName) {
+                                newEvent.setSummary(
+                                    newEvent.getSummary() + ' - ' + calendarName
+                                )
+                            }
+                            return newEvent
+                        } catch (error) {
+                            console.warn(
+                                `Failed to add event ${event.getUid()} to merged calendar: ${error}`
+                            )
+                            return undefined
+                        }
+                    })
+                )
+            ).filter(e => e !== undefined)
         )
     }
     if (names.length > 0) {
