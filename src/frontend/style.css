@@ -235,3 +235,16 @@ footer {
     gap: 1em;
     align-items: center;
 }
+
+.pixelnheart::after {
+    display: inline-block;
+    content: "";
+    height: 1.2em;
+    width: 1.2em;
+    background: transparent url('/icons/pixelnheart.png') no-repeat;
+    background-size: 1em;
+    background-position: bottom;
+
+    scale: 1.5;
+    translate: 0 0.05em;
+}

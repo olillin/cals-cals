@@ -102,7 +102,9 @@ function dec2bin(dec: number) {
 }
 
 app.get('/m/:calendars', async (req, res) => {
-    const appendOriginName = !!(req.query['origin'] ?? false)
+    const appendOriginName = !['false', '0', 'f'].includes(
+        String(req.query['origin'] ?? false).toLowerCase()
+    )
 
     const selectedCalendars = parseInt(req.params.calendars)
     if (isNaN(selectedCalendars)) {
