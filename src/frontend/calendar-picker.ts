@@ -274,7 +274,7 @@ function update() {
             const id = parseInt(element.getAttribute('data-calendar-id')!)
             selected += 1 << id
         }
-        calendarUrl.value = `${urlBase}/m/${selected}?origin=${+showOrigin.checked}`
+        calendarUrl.value = `${urlBase}/m/${selected}${showOrigin.checked ? '?origin' : ''}`
     } else {
         calendarUrlSection.hidden = true
         calendarUrl.value = ''
