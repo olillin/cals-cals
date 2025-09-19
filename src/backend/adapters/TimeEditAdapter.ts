@@ -1,4 +1,4 @@
-import { Calendar } from 'iamcal'
+import { Calendar, CalendarEvent } from 'iamcal'
 import Adapter from '../Adapter'
 
 export default class TimeEditAdapter extends Adapter {
@@ -31,88 +31,108 @@ export default class TimeEditAdapter extends Adapter {
     }
 
     convertCalendar(calendar: Calendar): Calendar {
-        calendar.getEvents().forEach(event => {
-            const oldSummary = this.unescapeText(event.getSummary()!)
-            const oldLocation = this.unescapeText(event.getLocation()!)
-
-            const groupedSummaryData = this.groupRawData(oldSummary)
-            const groupedLocationData = this.groupRawData(oldLocation)
-
-            const courseCodes = groupedSummaryData['Kurs kod'] ?? []
-            const courseNames = groupedSummaryData['Kurs namn'] ?? []
-            const classCodes = groupedSummaryData['Klass kod'] ?? []
-            const activity = groupedSummaryData['Activity'] ?? []
-
-            const title = groupedSummaryData['Titel'] ?? []
-
-            const room = groupedLocationData['Lokalnamn'] ?? []
-            const campus = groupedLocationData['Campus'] ?? []
-
-            event.setSummary(
-                this.escapeText(
-                    title[0] ??
-                        `${activity[0]}: ${courseNames[0]} (${courseCodes.map(code => code.split('_')[0]).join(', ')})`
-                )
-            )
-
-            const url = event.getProperty('URL')?.value
-
-            const activityRow = activity[0] ? `Vad: ${activity[0]}` : null
-            const courseRow =
-                courseNames[0] && courseCodes[0]
-                    ? `Kurs: ${courseNames[0]} (${courseCodes.join(', ')})`
-                    : courseNames[0]
-                      ? `Kurs: ${courseNames[0]}`
-                      : courseCodes[0]
-                        ? `Kurs: ${courseCodes.join(', ')}`
-                        : null
-            const classRow = classCodes[0]
-                ? 'Klass: ' + classCodes.join(', ')
-                : null
-            const mapRow = url ? 'Karta: ' + url : null
-
-            event.setDescription(
-                this.escapeText(
-                    [activityRow, courseRow, classRow, mapRow]
-                        .filter(row => row !== null)
-                        .join('\n')
-                )
-            )
-
-            if (
-                event
-                    .getSummary()
-                    ?.includes('Välkommen på drop in utanför Hubben')
-            ) {
-                // Special case for this specific event
-                event.setLocation('Utanför Hubben')
-            } else {
-                event.setLocation(
-                    this.escapeText(
-                        room.join(', ') +
-                            (campus[0] ? ` (${campus.join(', ')})` : '')
-                    )
-                )
-            }
-        })
+        calendar.getEvents().forEach(this.convertEvent)
         return calendar
     }
 
-    private groupRawData(rawData: string): { [k: string]: string[] } {
-        const dataPairs = Array.from(
-            rawData.matchAll(
-                /([^:.,\s][^:.,\n]*?): (.+?)(?=(?:[,.] )?(?:[^:.,\s][^:.,\n]*?:|$))/gm
-            )
-        ).map(match => [match[1].trim(), match[2].trim()])
+    convertEvent(event: CalendarEvent) {
+        const eventData = this.groupEventData(event)
 
-        const groupedData = dataPairs.reduce<{ [k: string]: string[] }>(
-            (acc, [key, value]) => {
-                if (!acc[key]) acc[key] = []
-                if (!acc[key].includes(value)) acc[key].push(value)
-                return acc
-            },
-            {}
-        )
+        const summary = this.formatSummary(eventData, event)
+        event.setSummary(this.escapeText(summary))
+        const description = this.formatDescription(eventData, event)
+        event.setDescription(this.escapeText(description))
+        const location = this.formatLocation(eventData, event)
+        event.setLocation(this.escapeText(location))
+    }
+
+    formatSummary(data: TimeEditEventData, context: CalendarEvent): string {
+        if (data.titel) {
+            return data.titel.join(', ')
+        }
+
+        const activityPart = data.activity
+            ? `${data.activity.join(', ')}${data.kursKod || data.kursNamn ? ':' : ''}`
+            : null
+        const courseNamePart = data.kursNamn ? data.kursNamn[0] : null
+        const joinedCourseCodes = data.kursKod
+            ?.map(code => code.split('_')[0])
+            .join(', ')
+        const courseCodesPart = courseNamePart
+            ? `(${joinedCourseCodes})`
+            : joinedCourseCodes
+
+        return [activityPart, courseNamePart, courseCodesPart]
+            .filter(part => part !== null)
+            .join(' ')
+    }
+
+    formatDescription(data: TimeEditEventData, context: CalendarEvent): string {
+        const activityRow = data.activity ? `Vad: ${data.activity[0]}` : null
+        const courseRow =
+            data.kursNamn && data.kursKod
+                ? `Kurs: ${data.kursNamn[0]} (${data.kursKod.join(', ')})`
+                : data.kursNamn
+                  ? `Kurs: ${data.kursNamn[0]}`
+                  : data.kursKod
+                    ? `Kurs: ${data.kursKod.join(', ')}`
+                    : null
+        const classRow = data.klassKod
+            ? 'Klass: ' + data.klassKod.join(', ')
+            : null
+
+        const url =
+            data.kartlänk ??
+            (context.hasProperty('URL')
+                ? [context.getProperty('URL')!.value]
+                : null)
+
+        const mapRow = url ? 'Karta: ' + url.join(', ') : null
+
+        return [activityRow, courseRow, classRow, mapRow]
+            .filter(row => row !== null)
+            .join('\n')
+    }
+
+    formatLocation(data: TimeEditEventData, context: CalendarEvent): string {
+        if (data.titel && data.titel[0].includes('utanför Hubben')) {
+            return 'Utanför Hubben'
+        }
+
+        const room = data.lokalnamn ? data.lokalnamn.join(', ') : null
+        const campus = data.campus
+            ? room
+                ? `(${data.campus.join(', ')})`
+                : data.campus.join(', ')
+            : null
+
+        return [room, campus].filter(part => part !== null).join(' ')
+    }
+
+    private groupEventData(event: CalendarEvent): TimeEditEventData {
+        const summary = this.unescapeText(event.getSummary()!)
+        const location = this.unescapeText(event.getLocation()!)
+        return this.groupEventDataString(summary, location)
+    }
+
+    private groupEventDataString(...strings: string[]): TimeEditEventData {
+        const dataPairs = strings
+            .flatMap(s =>
+                Array.from(
+                    s.matchAll(
+                        /([^:.,\s][^:.,\n]*?): (.+?)(?=(?:[,.] )?(?:[^:.,\s][^:.,\n]*?:|$))/gm
+                    )
+                )
+            )
+            .map(match => [this.toCamelCase(match[1].trim()), match[2].trim()])
+
+        const groupedData: TimeEditEventData = dataPairs.reduce<{
+            [k: string]: string[]
+        }>((acc, [key, value]) => {
+            if (!acc[key]) acc[key] = []
+            if (!acc[key].includes(value)) acc[key].push(value)
+            return acc
+        }, {})
 
         return groupedData
     }
@@ -124,4 +144,34 @@ export default class TimeEditAdapter extends Adapter {
     private escapeText(text: string): string {
         return text.replace(/(?=[,;\\])/g, '\\').replace(/(?<!\\)\n/g, '\\n')
     }
+
+    private toCamelCase(text: string): string {
+        const words = text.split(' ')
+        return (
+            words[0].charAt(0).toLowerCase() +
+            words[0].slice(1) +
+            words
+                .slice(1)
+                .map(
+                    word =>
+                        word.charAt(0).toUpperCase() +
+                        word.slice(1).toLowerCase()
+                )
+                .join('')
+        )
+    }
+}
+
+interface TimeEditEventData {
+    [k: string]: string[] | undefined
+    activity?: string[]
+    klassNamn?: string[]
+    klassKod?: string[]
+    kursNamn?: string[]
+    kursKod?: string[]
+    titel?: string[]
+    lokalnamn?: string[]
+    kartlänk?: string[]
+    campus?: string[]
+    antalDatorer?: string[]
 }

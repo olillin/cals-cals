@@ -1,18 +1,30 @@
-import { parseCalendar } from 'iamcal'
+import { CalendarDateTime, CalendarEvent, parseCalendar } from 'iamcal'
 import TimeEditAdapter from '../../src/backend/adapters/TimeEditAdapter'
 
-test('log converted events', async () => {
-    const calendar = await parseCalendar(CALENDAR_CONTENT).then(calendar => {
-        const adapter = new TimeEditAdapter()
-        const converted = adapter.convertCalendar(calendar)
-        console.log(
-            converted
-                .getEvents()
-                .map(e => e.serialize())
-                .join('\n\n')
-        )
+let adapter: TimeEditAdapter
+beforeAll(() => {
+    adapter = new TimeEditAdapter()
+})
+
+const time = new CalendarDateTime('20250919T120000')
+
+describe('groupEventDataString', () => {
+    test('it splits strings', () => {
+        const event = new CalendarEvent('', time, time).setSummary('')
     })
 })
+
+// test('log converted events', async () => {
+//     await parseCalendar(CALENDAR_CONTENT).then(calendar => {
+//         const converted = adapter.convertCalendar(calendar)
+//         console.log(
+//             converted
+//                 .getEvents()
+//                 .map(e => e.serialize())
+//                 .join('\n\n')
+//         )
+//     })
+// })
 
 const CALENDAR_CONTENT = String.raw`BEGIN:VCALENDAR
 VERSION:2.0
