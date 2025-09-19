@@ -39,11 +39,11 @@ export default class TimeEditAdapter extends Adapter {
         const eventData = this.groupEventData(event)
 
         const summary = this.formatSummary(eventData, event)
-        event.setSummary(this.escapeText(summary))
+        event.setSummary(escapeText(summary))
         const description = this.formatDescription(eventData, event)
-        event.setDescription(this.escapeText(description))
+        event.setDescription(escapeText(description))
         const location = this.formatLocation(eventData, event)
-        event.setLocation(this.escapeText(location))
+        event.setLocation(escapeText(location))
     }
 
     formatSummary(data: TimeEditEventData, context: CalendarEvent): string {
@@ -110,8 +110,8 @@ export default class TimeEditAdapter extends Adapter {
     }
 
     private groupEventData(event: CalendarEvent): TimeEditEventData {
-        const summary = this.unescapeText(event.getSummary()!)
-        const location = this.unescapeText(event.getLocation()!)
+        const summary = unescapeText(event.getSummary()!)
+        const location = unescapeText(event.getLocation()!)
         return this.groupEventDataString(summary, location)
     }
 
@@ -135,14 +135,6 @@ export default class TimeEditAdapter extends Adapter {
         }, {})
 
         return groupedData
-    }
-
-    private unescapeText(text: string): string {
-        return text.replace(/\\(?=[,;\\])/g, '').replace(/(?<!\\)\\n/g, '\n')
-    }
-
-    private escapeText(text: string): string {
-        return text.replace(/(?=[,;\\])/g, '\\').replace(/(?<!\\)\n/g, '\\n')
     }
 
     private toCamelCase(text: string): string {
@@ -174,4 +166,12 @@ interface TimeEditEventData {
     kartlänk?: string[]
     campus?: string[]
     antalDatorer?: string[]
+}
+
+export function unescapeText(text: string): string {
+    return text.replace(/\\(?=[,;\\])/g, '').replace(/(?<!\\)\\n/g, '\n')
+}
+
+export function escapeText(text: string): string {
+    return text.replace(/(?=[,;\\])/g, '\\').replace(/(?<!\\)\n/g, '\\n')
 }

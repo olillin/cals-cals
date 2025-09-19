@@ -1,5 +1,7 @@
 import { CalendarDateTime, CalendarEvent, parseCalendar } from 'iamcal'
-import TimeEditAdapter from '../../src/backend/adapters/TimeEditAdapter'
+import TimeEditAdapter, {
+    escapeText,
+} from '../../src/backend/adapters/TimeEditAdapter'
 
 let adapter: TimeEditAdapter
 beforeAll(() => {
@@ -7,10 +9,55 @@ beforeAll(() => {
 })
 
 const time = new CalendarDateTime('20250919T120000')
+const summary =
+    'Kurs kod: ABC123. Kurs namn: Lorem ipsum, Kurs kod: DEF456. Kurs namn: Foo spam, Activity: Föreläsning, Klass kod: KLASS-1. Klass namn: Rats'
+const event = new CalendarEvent('', time, time)
+    .setSummary(escapeText(summary))
+    .setLocation('Lokalnamn: HA1. Campus: Johanneberg')
 
 describe('groupEventDataString', () => {
-    test('it splits strings', () => {
-        const event = new CalendarEvent('', time, time).setSummary('')
+    it('groups strings correctly', () => {
+        const data = adapter['groupEventDataString'](summary)
+
+        expect(data.kursKod).toEqual(['ABC123', 'DEF456'])
+        expect(data.kursNamn).toEqual(['Lorem ipsum', 'Foo spam'])
+        expect(data.activity).toEqual(['Föreläsning'])
+        expect(data.klassKod).toEqual(['KLASS-1'])
+        expect(data.klassNamn).toEqual(['Rats'])
+        expect(data).not.toHaveProperty('Kurs kod')
+        expect(data).not.toHaveProperty('titel')
+    })
+
+    it('deduplicates repeat values', () => {
+        const s = 'Campus: A. Campus: A, Campus: A'
+        const data = adapter['groupEventDataString'](s)
+
+        expect(data.campus).toEqual(['A'])
+    })
+
+    it('combines multiple sources', () => {
+        const s1 = 'Foo: Spam. Lorem: Ipsum, Same: Value'
+        const s2 = 'Spam: Foo, Lorem: Solor. Same: Value'
+        const data = adapter['groupEventDataString'](s1, s2)
+
+        expect(data['foo']).toEqual(['Spam'])
+        expect(data['spam']).toEqual(['Foo'])
+        expect(data['lorem']).toEqual(['Ipsum', 'Solor'])
+        expect(data['same']).toEqual(['Value'])
+    })
+
+    it('returns an empty object for an empty string', () => {
+        const data = adapter['groupEventDataString']('')
+        expect(data).toEqual({})
+    })
+})
+
+describe('groupEventData', () => {
+    it('uses summary and location as sources', () => {
+        const data = adapter['groupEventData'](event)
+
+        expect(data).toHaveProperty('activity')
+        expect(data).toHaveProperty('lokalnamn')
     })
 })
 
