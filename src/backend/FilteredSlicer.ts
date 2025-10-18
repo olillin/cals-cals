@@ -3,13 +3,18 @@ import { CalendarEvent } from 'iamcal'
 export default class FilteredSlicer {
     filters: Filter[]
 
+    /** The size of this slicer. Represents how many groups {@link apply} will produce. */
+    get size(): number {
+        return this.filters.length + 1
+    }
+
     constructor(filters: Filter[] = []) {
         this.filters = filters
     }
 
     /**
      * Split events into groups based on the first filter they hit.
-     * @param events The events to group
+     * @param events The events to group.
      * @returns An array of grouped events. There will be one for every filter on this slicer, and an extra at the end for the events that matches no filter.
      */
     apply(events: CalendarEvent[]): FilteredEventGroup[] {
@@ -36,6 +41,19 @@ export default class FilteredSlicer {
             events: pool,
         })
         return groups
+    }
+
+    /**
+     * Get the group of events at the specified index.
+     * @param events The events to group.
+     * @param filterGroup The index of the group to get.
+     * @throws If {@link filterGroup} is out of bounds for this slicer.
+     */
+    getGroup(events: CalendarEvent[], filterGroup: number): FilteredEventGroup {
+        if (filterGroup < 0 || filterGroup >= this.size)
+            throw new Error('Filter index is out of bounds for this slicer.')
+        const groups = this.apply(events)
+        return groups[filterGroup]
     }
 
     serialize(): string {
@@ -67,7 +85,7 @@ export default class FilteredSlicer {
 }
 
 /** Represents events that have been grouped by a filter. */
-export type FilteredEventGroup = {
+export interface FilteredEventGroup {
     /**
      * The filter that these events hit.
      * A `null` filter means that these events hit no filter.
