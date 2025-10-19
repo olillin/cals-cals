@@ -1,9 +1,13 @@
 import { CalendarEvent } from 'iamcal'
+import Slicer, { EventGroup } from './Slicer'
 
-export default class FilteredSlicer {
+/**
+ * Slices events into groups based on the first filter they match.
+ */
+export default class FilterSlicer implements Slicer<FilterEventGroup> {
     filters: Filter[]
 
-    /** The size of this slicer. Represents how many groups {@link apply} will produce. */
+    /** The size of this slicer. Represents how many groups {@link groupEvents} will produce. */
     get size(): number {
         return this.filters.length + 1
     }
@@ -17,9 +21,9 @@ export default class FilteredSlicer {
      * @param events The events to group.
      * @returns An array of grouped events. There will be one for every filter on this slicer, and an extra at the end for the events that matches no filter.
      */
-    apply(events: CalendarEvent[]): FilteredEventGroup[] {
+    groupEvents(events: CalendarEvent[]): FilterEventGroup[] {
         const pool = [...events]
-        const groups: FilteredEventGroup[] = []
+        const groups: FilterEventGroup[] = []
         this.filters.forEach(filter => {
             const matches: CalendarEvent[] = []
             for (let i = 0; i < pool.length; i++) {
@@ -49,10 +53,10 @@ export default class FilteredSlicer {
      * @param filterGroup The index of the group to get.
      * @throws If {@link filterGroup} is out of bounds for this slicer.
      */
-    getGroup(events: CalendarEvent[], filterGroup: number): FilteredEventGroup {
+    getGroup(events: CalendarEvent[], filterGroup: number): FilterEventGroup {
         if (filterGroup < 0 || filterGroup >= this.size)
             throw new Error('Filter index is out of bounds for this slicer.')
-        const groups = this.apply(events)
+        const groups = this.groupEvents(events)
         return groups[filterGroup]
     }
 
@@ -60,7 +64,7 @@ export default class FilteredSlicer {
         return this.filters.map(filter => filter.serialize()).join('')
     }
 
-    static fromSerialized(serialized: string): FilteredSlicer {
+    static fromSerialized(serialized: string): FilterSlicer {
         const serializedFilters: string[] = []
 
         let parenthesisDepth = 0
@@ -80,18 +84,17 @@ export default class FilteredSlicer {
         }
 
         const filters = serializedFilters.map(Filter.fromSerialized)
-        return new FilteredSlicer(filters)
+        return new FilterSlicer(filters)
     }
 }
 
 /** Represents events that have been grouped by a filter. */
-export interface FilteredEventGroup {
+export interface FilterEventGroup extends EventGroup {
     /**
      * The filter that these events hit.
      * A `null` filter means that these events hit no filter.
      */
     filter: Filter | null
-    events: CalendarEvent[]
 }
 
 export const FilterModes = {

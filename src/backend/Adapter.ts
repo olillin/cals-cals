@@ -1,6 +1,6 @@
 import { RequestHandler, Router } from 'express'
 import { Calendar, parseCalendar } from 'iamcal'
-import FilteredSlicer, { FilteredEventGroup } from './FilteredSlicer'
+import FilterSlicer, { FilterEventGroup } from './slicers/FilterSlicer'
 
 class ErrorResponse extends Error {
     status: number
@@ -43,11 +43,11 @@ abstract class Adapter {
             }
 
             const serializedFilter = req.query.f
-            let filter: FilteredSlicer | undefined = undefined
+            let filter: FilterSlicer | undefined = undefined
             let filterGroup: number = -1
             if (serializedFilter) {
                 try {
-                    filter = FilteredSlicer.fromSerialized(
+                    filter = FilterSlicer.fromSerialized(
                         String(serializedFilter)
                     )
                 } catch (e) {
@@ -237,10 +237,10 @@ export function escapeText(text: string): string {
 /** Convert a calendar to a filtered calendar. */
 export function useFilter(
     calendar: Calendar,
-    filter: FilteredSlicer,
+    filter: FilterSlicer,
     filterGroup: number
 ) {
-    let filteredGroup: FilteredEventGroup
+    let filteredGroup: FilterEventGroup
     try {
         filteredGroup = filter.getGroup(calendar.getEvents(), filterGroup)
     } catch (error) {

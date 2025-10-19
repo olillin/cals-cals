@@ -1,5 +1,5 @@
 import e from 'express'
-import { Filter } from '../../../src/backend/FilteredSlicer'
+import { Filter } from '../../../src/backend/slicers/FilterSlicer'
 
 it('follows the format "mode(option1.-option2)"', () => {
     const filter = new Filter(0, 'option 1', 'option 2')
