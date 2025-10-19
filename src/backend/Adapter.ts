@@ -225,31 +225,3 @@ abstract class Adapter {
 }
 
 export default Adapter
-
-export function unescapeText(text: string): string {
-    return text.replace(/\\(?=[,;\\])/g, '').replace(/(?<!\\)\\n/g, '\n')
-}
-
-export function escapeText(text: string): string {
-    return text.replace(/(?=[,;\\])/g, '\\').replace(/(?<!\\)\n/g, '\\n')
-}
-
-/** Convert a calendar to a filtered calendar. */
-export function useFilter(
-    calendar: Calendar,
-    filter: FilterSlicer,
-    filterGroup: number
-) {
-    let filteredGroup: FilterEventGroup
-    try {
-        filteredGroup = filter.getGroup(calendar.getEvents(), filterGroup)
-    } catch (error) {
-        throw `Failed to convert calendar: ${error}`
-    }
-
-    calendar.components = filteredGroup.events
-    // Append filter group to calendar name
-    calendar.setCalendarName(
-        (calendar.getCalendarName()?.concat(' ') ?? '') + `#${filterGroup}`
-    )
-}
