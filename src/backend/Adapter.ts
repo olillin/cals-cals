@@ -180,11 +180,3 @@ abstract class Adapter {
 }
 
 export default Adapter
-
-export function unescapeText(text: string): string {
-    return text.replace(/\\(?=[,;\\])/g, '').replace(/(?<!\\)\\n/g, '\n')
-}
-
-export function escapeText(text: string): string {
-    return text.replace(/(?=[,;\\])/g, '\\').replace(/(?<!\\)\n/g, '\\n')
-}

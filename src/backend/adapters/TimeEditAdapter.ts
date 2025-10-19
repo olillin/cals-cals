@@ -1,5 +1,5 @@
 import { Calendar, CalendarEvent } from 'iamcal'
-import Adapter, { escapeText, unescapeText } from '../Adapter'
+import Adapter from '../Adapter'
 
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
@@ -49,21 +49,21 @@ export default class TimeEditAdapter extends Adapter {
 
         const summary = this.formatSummary(eventData, event)
         if (summary) {
-            event.setSummary(escapeText(summary))
+            event.setSummary(summary)
         } else {
             event.removeSummary()
         }
 
         const description = this.formatDescription(eventData, event)
         if (description) {
-            event.setDescription(escapeText(description))
+            event.setDescription(description)
         } else {
             event.removeDescription()
         }
 
         const location = this.formatLocation(eventData, event)
         if (location) {
-            event.setLocation(escapeText(location))
+            event.setLocation(location)
         } else {
             event.removeLocation()
         }
@@ -206,11 +206,9 @@ export default class TimeEditAdapter extends Adapter {
     }
 
     private groupEventData(event: CalendarEvent): TimeEditEventData {
-        const escapedSummary = event.getSummary()
-        const summary = escapedSummary ? unescapeText(escapedSummary) : null
-        const escapedLocation = event.getLocation()
-        const location = escapedLocation ? unescapeText(escapedLocation) : null
-        const sources = [summary, location].filter(s => s !== null)
+        const summary = event.getSummary()
+        const location = event.getLocation()
+        const sources = [summary, location].filter(s => s !== undefined)
         return this.groupEventDataString(...sources)
     }
 
