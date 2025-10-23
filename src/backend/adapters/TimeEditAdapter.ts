@@ -47,8 +47,8 @@ export default class TimeEditAdapter extends Adapter {
     convertCalendar(calendar: Calendar, req: Request): Calendar {
         if (req.query.group) {
             const groupBy = parseGroupBy(req)
-            const includedValues = parseIncludedValues(req)
-            const slicer = getGroupSlicer(groupBy, includedValues)
+            const allowedValues = parseAllowedValues(req)
+            const slicer = getGroupSlicer(groupBy, allowedValues)
 
             // Include only the group which has events with the included values
             const mask = 0b10
@@ -84,7 +84,14 @@ function parseGroupBy(req: Request): number {
     return groupBy
 }
 
-function parseIncludedValues(req: Request): Set<string> {
+/**
+ * Get the allowed values for grouping from the request.
+ *
+ * One element represents one allowed combination of TimeEdit property values.
+ * @param req The request to parse.
+ * @returns A set of allowed values.
+ */
+function parseAllowedValues(req: Request): Set<string> {
     const serializedValues = req.query.gi
     if (serializedValues === undefined)
         throw new Error(
@@ -92,8 +99,15 @@ function parseIncludedValues(req: Request): Set<string> {
         )
 
     const values = String(serializedValues)
-        .replace(/[^a-z- ]/g, '')
+        .replace(/[^a-z_ -]/g, '')
         .split(' ')
+        .map(v =>
+            v
+                .split('_')
+                .filter(v => v !== '')
+                .sort()
+                .join('_')
+        )
         .filter(v => v !== '')
 
     return new Set(values)
@@ -101,7 +115,7 @@ function parseIncludedValues(req: Request): Set<string> {
 
 function getGroupSlicer(
     groupBy: number,
-    includeValues: Set<string>
+    allowedValues: Set<string>
 ): Slicer<EventGroup> {
     if (groupBy >= GroupByOptions.length) {
         throw new Error(`Unknown group by option ${groupBy}.`)
@@ -114,12 +128,9 @@ function getGroupSlicer(
      */
     const hash = (event: CalendarEvent): number => {
         const data = parseEventData(event)
-        const values = data[property]
-        if (!values) return 0
-        const result = Number(
-            values.some(v => includeValues.has(prepareForComparison(v)))
-        )
-        return result
+        if (!data[property]) return 0
+        const values = data[property].map(prepareForComparison).sort().join('_')
+        return Number(allowedValues.has(values))
     }
     return new HashSlicer(hash, 2)
 }
