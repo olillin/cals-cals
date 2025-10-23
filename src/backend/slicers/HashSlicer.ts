@@ -27,7 +27,7 @@ export default class HashSlicer implements Slicer<HashEventGroup> {
 
         // Slice events into groups
         events.forEach(event => {
-            const index = Math.abs(this.hash(event) % this.size)
+            const index = this.checkGroup(event)
             groups[index].events.push(event)
         })
 
@@ -36,6 +36,10 @@ export default class HashSlicer implements Slicer<HashEventGroup> {
 
     getGroup(events: CalendarEvent[], index: number): HashEventGroup {
         return this.groupEvents(events)[index]
+    }
+
+    checkGroup(event: CalendarEvent): number {
+        return Math.abs(this.hash(event) % this.size)
     }
 }
 

@@ -1,4 +1,4 @@
-import { RequestHandler, Router } from 'express'
+import { Request, RequestHandler, Response, Router } from 'express'
 import { Calendar, parseCalendar } from 'iamcal'
 import FilterSlicer, { FilterEventGroup } from './slicers/FilterSlicer'
 
@@ -42,46 +42,6 @@ abstract class Adapter {
                 return
             }
 
-            const serializedFilter = req.query.f
-            let filter: FilterSlicer | undefined = undefined
-            let filterGroup: number = -1
-            if (serializedFilter) {
-                try {
-                    filter = FilterSlicer.fromSerialized(
-                        String(serializedFilter)
-                    )
-                } catch (e) {
-                    console.error(
-                        `Error when parsing filter '${serializedFilter}': ${e}`
-                    )
-
-                    res.status(400).json({
-                        error: { message: `Invalid filter: ${e}` },
-                    })
-                    return
-                }
-
-                const serializedFilterGroup = req.query.fg
-                if (!serializedFilterGroup) {
-                    res.status(400).json({
-                        error: {
-                            message:
-                                "Query parameter 'fg' is required when supplying a filter",
-                        },
-                    })
-                    return
-                }
-                filterGroup = parseInt(String(serializedFilterGroup))
-                if (filterGroup < 0 || filterGroup >= filter.size) {
-                    res.status(400).json({
-                        error: {
-                            message: `Filter group ${filterGroup} is out of bounds for slicer of size ${filter.size}`,
-                        },
-                    })
-                    return
-                }
-            }
-
             let originalCalendar: Calendar | undefined =
                 await this.fetchCalendarFromId(String(id), timeout).catch(
                     error => {
@@ -96,16 +56,12 @@ abstract class Adapter {
 
             let convertedCalendar: Calendar
             try {
-                convertedCalendar = this.convertCalendar(originalCalendar)
+                convertedCalendar = this.convertCalendar(originalCalendar, req)
             } catch (error) {
                 res.status(500).json({
                     error: { message: `Failed to convert calendar: ${error}` },
                 })
                 return
-            }
-
-            if (filter) {
-                useFilter(convertedCalendar, filter, filterGroup)
             }
 
             const serializedConvertedCalendar = convertedCalendar.serialize()
@@ -219,9 +175,10 @@ abstract class Adapter {
     /**
      * Convert a calendar according to the rules of this adapter.
      * @param calendar The original calendar from the URL.
+     * @param req The context of the request to get this calendar.
      * @returns The converted calendar
      */
-    abstract convertCalendar(calendar: Calendar): Calendar
+    abstract convertCalendar(calendar: Calendar, req?: Request): Calendar
 }
 
 export default Adapter
