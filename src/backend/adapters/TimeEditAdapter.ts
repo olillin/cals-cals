@@ -4,10 +4,7 @@ import Adapter from '../Adapter'
 import HashSlicer from '../slicers/HashSlicer'
 import Slicer, { EventGroup, useSlicer } from '../slicers/Slicer'
 
-enum GroupByOptions {
-    ACTIVITY = 0,
-    CAMPUS = 1,
-}
+export const GroupByOptions = ['activity', 'campus'] as const
 
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
@@ -48,12 +45,14 @@ export default class TimeEditAdapter extends Adapter {
     }
 
     convertCalendar(calendar: Calendar, req: Request): Calendar {
-        const groupByString = req.query.group
-        if (groupByString) {
-            const index = getGroupIndex(req)
-            const slicer = getGroupSlicer(req)
+        if (req.query.group) {
+            const groupBy = parseGroupBy(req)
+            const includedValues = parseIncludedValues(req)
+            const slicer = getGroupSlicer(groupBy, includedValues)
 
-            useSlicer(calendar, slicer, index)
+            // Include only the group which has events with the included values
+            const mask = 0b10
+            useSlicer(calendar, slicer, mask)
         }
 
         calendar.getEvents().forEach(event => convertEvent(event))
@@ -61,12 +60,11 @@ export default class TimeEditAdapter extends Adapter {
     }
 }
 
-function getGroupSlicer(req: Request): Slicer<EventGroup> {
-    // Parse groupBy
+function parseGroupBy(req: Request): number {
     const groupByString = req.query.group
     if (groupByString === undefined)
         throw new Error(
-            "Unable to get property to group by. Missing query parameter 'group'"
+            "Unable to find property to group by. Missing query parameter 'group'"
         )
 
     let groupBy: number
@@ -77,42 +75,62 @@ function getGroupSlicer(req: Request): Slicer<EventGroup> {
             "Invalid query parameter 'group', must be a positive integer"
         )
     }
-    if (groupBy < 0)
+    if (groupBy < 0) {
         throw new Error(
             "Invalid query parameter 'group', must be a positive integer"
         )
-
-    switch (groupBy) {
-        case GroupByOptions.ACTIVITY:
-            return new HashSlicer(activityHash, 8)
-        case GroupByOptions.CAMPUS:
-            return new HashSlicer(campusHash, 4)
-        default:
-            throw new Error(`Unknown group by option ${groupBy}.`)
     }
+
+    return groupBy
 }
 
-function getGroupIndex(req: Request) {
-    const serializedIndex = req.query.gi
-    if (serializedIndex === undefined)
+function parseIncludedValues(req: Request): Set<string> {
+    const serializedValues = req.query.gi
+    if (serializedValues === undefined)
         throw new Error(
             "Unable to get group index. Missing query parameter 'gi'"
         )
 
-    let index: number
-    try {
-        index = parseInt(String(serializedIndex))
-    } catch {
-        throw new Error(
-            "Invalid query parameter 'gi', must be a positive integer"
-        )
-    }
-    if (index < 0)
-        throw new Error(
-            "Invalid query parameter 'gi', must be a positive integer"
-        )
+    const values = String(serializedValues)
+        .replace(/[^a-z- ]/g, '')
+        .split(' ')
+        .filter(v => v !== '')
 
-    return index
+    return new Set(values)
+}
+
+function getGroupSlicer(
+    groupBy: number,
+    includeValues: Set<string>
+): Slicer<EventGroup> {
+    if (groupBy >= GroupByOptions.length) {
+        throw new Error(`Unknown group by option ${groupBy}.`)
+    }
+    const property = GroupByOptions[groupBy]
+
+    /**
+     * This hash function returns 1 for events that have any of the included
+     * values, and 0 otherwise.
+     */
+    const hash = (event: CalendarEvent): number => {
+        const data = parseEventData(event)
+        const values = data[property]
+        if (!values) return 0
+        const result = Number(
+            values.some(v => includeValues.has(prepareForComparison(v)))
+        )
+        return result
+    }
+    return new HashSlicer(hash, 2)
+}
+
+/**
+ * Prepare a value to be used in grouping comparisons.
+ * @param value The value to simplify.
+ * @returns A URL friendly simplified version of the value.
+ */
+function prepareForComparison(value: string): string {
+    return value.toLowerCase().replace(/[^a-z]/g, '-')
 }
 
 function convertEvent(event: CalendarEvent) {
