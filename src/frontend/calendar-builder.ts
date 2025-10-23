@@ -43,7 +43,7 @@ function updateBuilder() {
         return
     }
 
-    fetch(`/adapter/${chosenAdapter}?url=${oldUrl}`, {
+    fetch(`/adapter/${chosenAdapter}/url?url=${oldUrl}`, {
         method: 'POST',
     })
         .then(response => {

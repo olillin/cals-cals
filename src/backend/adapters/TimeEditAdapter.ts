@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import { Calendar, CalendarEvent } from 'iamcal'
+import { Calendar, CalendarEvent, parseCalendar } from 'iamcal'
 import Adapter from '../Adapter'
 import HashSlicer from '../slicers/HashSlicer'
 import Slicer, { EventGroup, useSlicer } from '../slicers/Slicer'
@@ -58,6 +58,56 @@ export default class TimeEditAdapter extends Adapter {
         calendar.getEvents().forEach(event => convertEvent(event))
         return calendar
     }
+
+    getExtras(url: URL): Promise<object | undefined> {
+        return fetch(url)
+            .then(response => {
+                if (!response.ok)
+                    throw new Error('Failed to fetch TimeEdit calendar')
+                if (
+                    !response.headers
+                        .get('Content-Type')
+                        ?.includes('text/calendar')
+                )
+                    throw new Error(
+                        'Received non-calendar response from TimeEdit'
+                    )
+
+                return response.text()
+            })
+            .then(text => {
+                if (!text) return undefined
+                return parseCalendar(text)
+            })
+            .then(calendar => {
+                if (!calendar) return undefined
+
+                const groups: {
+                    property: (typeof GroupByOptions)[number]
+                    values: {
+                        [set: string]: string
+                    }
+                }[] = GroupByOptions.map(option => ({
+                    property: option,
+                    values: {},
+                }))
+
+                calendar.getEvents().map(event => {
+                    const data = parseEventData(event)
+                    for (let i = 0; i < GroupByOptions.length; i++) {
+                        const property = GroupByOptions[i]
+                        if (data[property]) {
+                            const key = prepareSetForComparison(data[property])
+                            groups[i].values[key] = data[property].join(', ')
+                        }
+                    }
+                })
+
+                return {
+                    groups: groups,
+                }
+            })
+    }
 }
 
 function parseGroupBy(req: Request): number {
@@ -101,8 +151,8 @@ function parseAllowedValues(req: Request): Set<string> {
     const values = String(serializedValues)
         .replace(/[^a-z_ -]/g, '')
         .split(' ')
-        .map(v =>
-            v
+        .map(value =>
+            value
                 .split('_')
                 .filter(v => v !== '')
                 .sort()
@@ -129,7 +179,7 @@ function getGroupSlicer(
     const hash = (event: CalendarEvent): number => {
         const data = parseEventData(event)
         if (!data[property]) return 0
-        const values = data[property].map(prepareForComparison).sort().join('_')
+        const values = prepareSetForComparison(data[property])
         return Number(allowedValues.has(values))
     }
     return new HashSlicer(hash, 2)
@@ -142,6 +192,19 @@ function getGroupSlicer(
  */
 function prepareForComparison(value: string): string {
     return value.toLowerCase().replace(/[^a-z]/g, '-')
+}
+
+/**
+ * Prepare a value to be used in grouping comparisons.
+ * @param value The set to simplify, represents one combination of property values.
+ * @returns A URL friendly simplified version of the value.
+ */
+function prepareSetForComparison(value: string[]): string {
+    return value
+        .map(prepareForComparison)
+        .filter(v => v !== '')
+        .sort()
+        .join('_')
 }
 
 function convertEvent(event: CalendarEvent) {

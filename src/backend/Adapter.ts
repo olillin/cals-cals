@@ -1,6 +1,5 @@
-import { Request, RequestHandler, Response, Router } from 'express'
+import { Request, RequestHandler, Router } from 'express'
 import { Calendar, parseCalendar } from 'iamcal'
-import FilterSlicer, { FilterEventGroup } from './slicers/FilterSlicer'
 
 class ErrorResponse extends Error {
     status: number
@@ -23,7 +22,7 @@ abstract class Adapter {
         const router = Router()
 
         router.get('/', this.createCalendarRoute())
-        router.post('/', this.createUrlRoute())
+        router.post('/url', this.createUrlRoute())
 
         return router
     }
@@ -123,7 +122,7 @@ abstract class Adapter {
      * URL which will route the calendar through this adapter.
      */
     createUrlRoute(): RequestHandler {
-        return (req, res) => {
+        return async (req, res) => {
             const originalUrl = req.query.url
             if (!originalUrl) {
                 res.status(400).json({
@@ -145,6 +144,18 @@ abstract class Adapter {
                 return
             }
 
+            let extra: object | undefined = undefined
+            try {
+                extra = await this.getExtras(new URL(String(originalUrl)))
+            } catch (error) {
+                res.status(500).json({
+                    error: {
+                        message: `Failed to get extra information about URL: ${error instanceof Error ? error.message : error}`,
+                    },
+                })
+                return
+            }
+
             const adapterUrl = new URL(
                 'webcal://' + req.get('host') + req.originalUrl
             )
@@ -154,6 +165,7 @@ abstract class Adapter {
             res.status(200).json({
                 id: id,
                 url: adapterUrl,
+                ...(extra ? { extra: extra } : {}),
             })
         }
     }
@@ -179,6 +191,15 @@ abstract class Adapter {
      * @returns The converted calendar
      */
     abstract convertCalendar(calendar: Calendar, req?: Request): Calendar
+
+    /**
+     * Provide extra information about the URL for this adapter.
+     * @param url The URL to the calendar.
+     * @returns The extra information as a JSON-serializable object, or undefined if no extra information is available.
+     */
+    getExtras(url: URL): object | undefined | Promise<object | undefined> {
+        return undefined
+    }
 }
 
 export default Adapter
