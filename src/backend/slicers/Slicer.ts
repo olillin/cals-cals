@@ -53,7 +53,7 @@ export function useSlicer(
     const events: CalendarEvent[] = []
     calendar.getEvents().forEach(event => {
         const group = slicer.checkGroup(event)
-        const includeEvent = (groupMask | (1 << group)) !== 0
+        const includeEvent = (groupMask & (1 << group)) !== 0
         if (includeEvent) events.push(event)
     })
 

@@ -60,6 +60,16 @@ export default class FilterSlicer implements Slicer<FilterEventGroup> {
         return groups[filterGroup]
     }
 
+    checkGroup(event: CalendarEvent): number {
+        for (let i = 0; i < this.filters.length; i++) {
+            const filter = this.filters[i]
+            if (filter.test(event)) {
+                return i
+            }
+        }
+        return this.size - 1
+    }
+
     serialize(): string {
         return this.filters.map(filter => filter.serialize()).join('')
     }
