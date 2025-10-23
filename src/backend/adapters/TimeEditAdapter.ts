@@ -4,7 +4,12 @@ import Adapter from '../Adapter'
 import HashSlicer from '../slicers/HashSlicer'
 import Slicer, { EventGroup, useSlicer } from '../slicers/Slicer'
 
-export const GroupByOptions = ['activity', 'campus'] as const
+export const GroupByOptions: (keyof TimeEditEventData)[] = [
+    'activity',
+    'campus',
+    'kursKod',
+    'lokalnamn',
+]
 
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
@@ -149,7 +154,7 @@ function parseAllowedValues(req: Request): Set<string> {
         )
 
     const values = String(serializedValues)
-        .replace(/[^a-z_ -]/g, '')
+        .replace(/[^a-z0-9_ -]/g, '')
         .split(' ')
         .map(value =>
             value
@@ -191,7 +196,7 @@ function getGroupSlicer(
  * @returns A URL friendly simplified version of the value.
  */
 function prepareForComparison(value: string): string {
-    return value.toLowerCase().replace(/[^a-z]/g, '-')
+    return value.toLowerCase().replace(/[^a-z0-9]/g, '-')
 }
 
 /**
