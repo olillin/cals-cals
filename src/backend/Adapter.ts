@@ -157,9 +157,11 @@ abstract class Adapter {
             }
 
             const adapterUrl = new URL(
-                'webcal://' + req.get('host') + req.originalUrl
+                'webcal://' +
+                    req.get('host') +
+                    req.originalUrl.replace(/\/url.*$/, '')
             )
-            // Replace query parameter with id
+            // Add id query parameter
             adapterUrl.search = '?id=' + encodeURIComponent(id)
 
             res.status(200).json({
