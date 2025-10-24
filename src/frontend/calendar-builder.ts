@@ -1,38 +1,58 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const calendarUrlSection = document.getElementById(
-        'calendar-builder-url-section'
-    ) as HTMLSpanElement
-    calendarUrlSection.hidden = true
+let calendarUrlIn: HTMLInputElement
+let builderError: HTMLSpanElement
+let builderOutput: HTMLDivElement
+let calendarsOut: HTMLDivElement
+let addCalendarButton: HTMLButtonElement
 
-    const calendarUrlIn = document.getElementById(
+type GroupByOption = 'activity' | 'campus' | 'kursKod' | 'lokalnamn'
+interface AvailableGroup {
+    property: GroupByOption
+    values: {
+        [k: string]: string
+    }
+}
+interface FilteredCalendar {
+    includedValues: string[]
+}
+interface UrlResponse {
+    id: string
+    url: string
+    groups: AvailableGroup[]
+}
+
+let currentBuilderData: UrlResponse | undefined = undefined
+let usingGroup: number = -1
+let currentCalendars: FilteredCalendar[] = []
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Get elements
+    calendarUrlIn = document.getElementById(
         'calendar-builder-input-url'
     ) as HTMLInputElement
+    builderError = document.getElementById(
+        'calendar-builder-error'
+    ) as HTMLSpanElement
+    builderOutput = document.getElementById(
+        'calendar-builder-output'
+    ) as HTMLDivElement
+    calendarsOut = document.getElementById(
+        'builder-calendars'
+    ) as HTMLInputElement
+    addCalendarButton = document.getElementById(
+        'add-calendar'
+    ) as HTMLButtonElement
+
+    // Setup
     calendarUrlIn.addEventListener('keydown', event => {
         if (event.key === 'Enter') {
-            updateBuilder()
+            setBuilderUrl()
             event.preventDefault()
         }
     })
+    builderOutput.hidden = true
 })
 
-function updateBuilder() {
-    // Get elements
-    const calendarUrlIn = document.getElementById(
-        'calendar-builder-input-url'
-    ) as HTMLInputElement
-
-    const calendarUrlOut = document.getElementById(
-        'calendar-builder-output-url'
-    ) as HTMLInputElement
-
-    const builderError = document.getElementById(
-        'calendar-builder-error'
-    ) as HTMLSpanElement
-
-    const calendarUrlSection = document.getElementById(
-        'calendar-builder-url-section'
-    ) as HTMLSpanElement
-
+function setBuilderUrl() {
     builderError.innerText = ''
 
     const chosenAdapter = 'timeedit'
@@ -48,7 +68,7 @@ function updateBuilder() {
     })
         .then(response => {
             if (response.ok) {
-                return response.json().then(data => data.url as string)
+                return response.json()
             }
 
             const isJson = response.headers
@@ -64,35 +84,108 @@ function updateBuilder() {
                     .then(data => data.error.message as string)
                     .then(message => {
                         builderError.innerText = message
-                        return calendarUrlOut.value
+                        return currentBuilderData
                     })
             } else {
-                const message = 'An unknown error occurred'
-                builderError.innerText = message
-                return calendarUrlOut.value
+                builderError.innerText = 'An unknown error occurred'
+                return currentBuilderData
             }
         })
-        .then(url => {
-            calendarUrlOut.value = url
-            calendarUrlSection.hidden = url === ''
+        .then(data => {
+            setBuilderData(data)
         })
 }
 
-function copyBuilderUrl() {
-    const calendarUrl = document.getElementById(
-        'calendar-builder-output-url'
-    ) as HTMLInputElement
-    const copyNotice = document.getElementById(
-        'copy-builder-notice'
-    ) as HTMLSpanElement
+function setBuilderData(data: UrlResponse) {
+    currentBuilderData = data
 
-    calendarUrl.select()
-    calendarUrl.setSelectionRange(0, 99999) // For mobile devices
+    updateBuilder()
+}
 
-    navigator.clipboard.writeText(calendarUrl.value)
+function updateBuilder() {
+    builderOutput.hidden =
+        currentBuilderData === undefined || currentBuilderData.url === ''
+    if (currentBuilderData === undefined) return
 
-    copyNotice.classList.add('visible')
-    setTimeout(() => {
-        copyNotice.classList.remove('visible')
-    }, 3000)
+    addCalendarButton.innerText =
+        currentCalendars.length === 0
+            ? 'Add another calendar to group events'
+            : 'Add calendar'
+
+    // Clear old output
+    calendarsOut.innerHTML = ''
+
+    if (currentCalendars.length === 0) {
+        const url = currentBuilderData.url
+        const urlContainer = createUrlContainer(url)
+        calendarsOut.appendChild(urlContainer)
+    } else {
+        currentCalendars.forEach(calendar => {
+            console.log(calendar.includedValues)
+            const url = createGroupUrl(calendar)
+            const urlContainer = createUrlContainer(url)
+            calendarsOut.appendChild(urlContainer)
+        })
+    }
+}
+
+function addCalendar() {
+    currentCalendars.push({
+        includedValues: [],
+    })
+    updateBuilder()
+}
+
+function removeCalendar(i: number) {
+    currentCalendars.splice(i, 1)
+    updateBuilder()
+}
+
+function createGroupUrl(calendar: FilteredCalendar): string {
+    if (currentBuilderData === undefined) {
+        throw new Error('Unable to create calendar group URL, no base URL data')
+    }
+    const baseUrl = currentBuilderData.url
+    const groupBy = usingGroup
+    const gi = calendar.includedValues.join('+')
+    const search = `&group=${groupBy}&gi=${gi}`
+
+    return baseUrl + search
+}
+
+function createUrlContainer(url: string): HTMLElement {
+    const container = document.createElement('span')
+    container.className = 'calendar-url'
+
+    const urlInput = document.createElement('input')
+    urlInput.type = 'text'
+    urlInput.disabled = true
+    urlInput.ariaDisabled = 'true'
+    urlInput.value = url
+    container.appendChild(urlInput)
+
+    const copyNotice = document.createElement('span')
+    copyNotice.className = 'copy-notice'
+    const innerCopyNotice = document.createElement('span')
+    innerCopyNotice.className = 'no-select'
+    innerCopyNotice.innerText = 'Copied!'
+    copyNotice.appendChild(innerCopyNotice)
+    container.appendChild(copyNotice)
+
+    const copyButton = document.createElement('button')
+    copyButton.className = 'copy-calendar-url'
+    copyButton.onclick = () => {
+        urlInput.select()
+        urlInput.setSelectionRange(0, 99999) // For mobile devices
+
+        navigator.clipboard.writeText(urlInput.value)
+
+        copyNotice.classList.add('visible')
+        setTimeout(() => {
+            copyNotice.classList.remove('visible')
+        }, 3000)
+    }
+    container.appendChild(copyButton)
+
+    return container
 }

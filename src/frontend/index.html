@@ -102,15 +102,11 @@
 
             <span id="calendar-builder-error" class="error"></span>
 
-            <span class="calendar-url" id="calendar-builder-url-section">
-                <input
-                       type="text"
-                       id="calendar-builder-output-url"
-                       disabled
-                       aria-disabled="true" />
-                <span id="copy-builder-notice" class="copy-notice"><span class="no-select">Copied!</span></span>
-                <button id="copy-calendar-builder-url" class="copy-calendar-url" onclick="copyBuilderUrl()"></button>
-            </span>
+            <div id="calendar-builder-output" class="calendar-builder-output">
+                <div id="builder-calendars" class="builder-calendars"></div>
+
+                <button id="add-calendar" class="add-calendar" onclick="addCalendar()"></button>
+            </div>
         </section>
     </main>
 
