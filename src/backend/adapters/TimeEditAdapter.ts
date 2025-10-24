@@ -11,6 +11,13 @@ export const GroupByOptions: (keyof TimeEditEventData)[] = [
     'lokalnamn',
 ]
 
+export interface AvailableGroup {
+    property: (typeof GroupByOptions)[number]
+    values: {
+        [k: string]: string
+    }
+}
+
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
         const [category, filename] = id.split('.')
@@ -87,12 +94,7 @@ export default class TimeEditAdapter extends Adapter {
             .then(calendar => {
                 if (!calendar) return undefined
 
-                const groups: {
-                    property: (typeof GroupByOptions)[number]
-                    values: {
-                        [set: string]: string
-                    }
-                }[] = GroupByOptions.map(option => ({
+                const groups: AvailableGroup[] = GroupByOptions.map(option => ({
                     property: option,
                     values: {},
                 }))
@@ -374,7 +376,7 @@ function parseEventDataString(...strings: string[]): TimeEditEventData {
         .flatMap(s =>
             Array.from(
                 s.matchAll(
-                    /([^:.,\s][^:.,\n]*?): (.+?)(?=(?:[,.] )?(?:[^:.,\s][^:.,\n]*?:|$))/gm
+                    /([^:.,\s][^:.,\n]*?): (.+?)(?=(?:[,.] )?(?:[^:.,\s][^:.,\n]*?: |$))/gm
                 )
             )
         )
