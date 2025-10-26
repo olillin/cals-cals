@@ -4,11 +4,13 @@ import Adapter from '../Adapter'
 import HashSlicer from '../slicers/HashSlicer'
 import Slicer, { EventGroup, useSlicer } from '../slicers/Slicer'
 
+// DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const GroupByOptions: (keyof TimeEditEventData)[] = [
     'activity',
     'campus',
     'kursKod',
     'lokalnamn',
+    'klassKod',
 ]
 
 export interface AvailableGroup {

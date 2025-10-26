@@ -264,6 +264,10 @@ input[type='checkbox']:checked {
     padding-block: 1em;
     margin-block: 0.5em;
     border-bottom: 1px solid #262626;
+
+    & span {
+        padding-right: 1.5em;
+    }
 }
 
 .move-down {
@@ -312,6 +316,7 @@ input[type='checkbox']:checked {
     border: 2px solid white;
 }
 
+/* Group by selector */
 .group-by {
     width: 100%;
     display: flex;
@@ -319,26 +324,20 @@ input[type='checkbox']:checked {
     align-items: center;
     margin-block: 1.5em;
     gap: 1.25em;
+    
+    & > label {
+        text-align: right;
+    }
 }
 
 .group-by-selector {
     flex: 1;
     height: 4em;
     box-sizing: border-box;
-    display: flex;
 
+    display: flex;
     gap: 0.25em;
     border-radius: var(--border-radius);
-}
-
-.group-by-selector > *:nth-child(1) {
-    border-top-left-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius);
-}
-
-.group-by-selector > *:nth-last-child(1) {
-    border-top-right-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
 }
 
 .group-by-selector > * {
@@ -362,6 +361,36 @@ input[type='checkbox']:checked {
     z-index: 2;
 }
 
+@media screen and (min-width: 651px) {
+    .group-by-selector > *:nth-child(1) {
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+    }
+
+    .group-by-selector > *:nth-last-child(1) {
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
+}
+
+@media screen and (max-width: 650px) {    
+    .group-by-selector {
+        flex-flow: column nowrap;
+        height: fit-content;
+    }
+    
+    .group-by-selector > *:nth-child(1) {
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+    }
+
+    .group-by-selector > *:nth-last-child(1) {
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
+}
+
+/* Generic rules */
 summary {
     font-weight: bold;
 }
@@ -382,6 +411,10 @@ footer {
     flex-flow: column nowrap;
     gap: 1em;
     align-items: center;
+    
+    & span {
+        text-align: center;
+    }
 }
 
 .pixelnheart::after {
