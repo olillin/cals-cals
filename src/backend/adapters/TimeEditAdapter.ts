@@ -105,7 +105,11 @@ export default class TimeEditAdapter extends Adapter {
                         const property = GroupByOptions[i]
                         if (data[property]) {
                             const key = prepareSetForComparison(data[property])
-                            groups[i].values[key] = data[property].join(', ')
+                            const prettyValues =
+                                property === 'kursKod'
+                                    ? data[property].map(shortenCourseCode)
+                                    : data[property]
+                            groups[i].values[key] = prettyValues.join(', ')
                         }
                     }
                 })
