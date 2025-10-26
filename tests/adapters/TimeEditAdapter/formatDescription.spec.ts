@@ -1,12 +1,8 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
-import TimeEditAdapter, {
+import {
+    formatDescription,
     TimeEditEventData,
 } from '../../../src/backend/adapters/TimeEditAdapter'
-
-let adapter: TimeEditAdapter
-beforeAll(() => {
-    adapter = new TimeEditAdapter()
-})
 
 it('follows the format when all data is present', () => {
     const data: TimeEditEventData = {
@@ -21,7 +17,7 @@ it('follows the format when all data is present', () => {
         titel: ['Event title'],
         kartlänk: ['https://example.com'],
     }
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
 
     expect(description).toBe(
         `Aktivitet: Föreläsning
@@ -39,7 +35,7 @@ it('omits activity when missing', () => {
         klassKod: ['KLASS-1', 'KLASS-2'],
         kartlänk: ['https://example.com'],
     }
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
 
     expect(description).toBe(
         `Kurs: Lorem ipsum (ABC123, DEF456)
@@ -55,7 +51,7 @@ it('omits course when missing', () => {
         klassKod: ['KLASS-1', 'KLASS-2'],
         kartlänk: ['https://example.com'],
     }
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
 
     expect(description).toBe(
         `Aktivitet: Föreläsning
@@ -71,7 +67,7 @@ it('omits class when missing', () => {
         kursKod: ['ABC123', 'DEF456'],
         kartlänk: ['https://example.com'],
     }
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
 
     expect(description).toBe(
         `Aktivitet: Föreläsning
@@ -88,7 +84,7 @@ it('omits map when missing', () => {
         klassNamn: ['Foo', 'Spam'],
         klassKod: ['KLASS-1', 'KLASS-2'],
     }
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
 
     expect(description).toBe(
         `Aktivitet: Föreläsning
@@ -105,7 +101,7 @@ it('uses event URL property if map as fallback', () => {
         new CalendarDateTime('20250101T120000')
     ).setProperty('URL', 'https://example.com')
 
-    const description = adapter.formatDescription(data, event)
+    const description = formatDescription(data, event)
     expect(description).toBe('Karta: https://example.com')
 })
 
@@ -119,7 +115,7 @@ it('does not use event URL property if "kartlänk" is present', () => {
         new CalendarDateTime('20250101T120000')
     ).setProperty('URL', 'https://example.com')
 
-    const description = adapter.formatDescription(data, event)
+    const description = formatDescription(data, event)
     expect(description).toBe('Karta: https://foo.net')
 })
 
@@ -129,7 +125,7 @@ it('shows extra data at bottom', () => {
         extra: ['ABC'],
     }
 
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
     expect(description).toBe(`Extra: ABC
 Unknown data: Lorem ipsum dolor sit amet`)
 })
@@ -138,14 +134,14 @@ it('shortens course codes', () => {
     const data: TimeEditEventData = {
         kursKod: ['ABC123_EXTRA_LONG_CODE456'],
     }
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
 
     expect(description).toBe('Kurs: ABC123')
 })
 
 it('returns null for no data', () => {
     const data: TimeEditEventData = {}
-    const description = adapter.formatDescription(data)
+    const description = formatDescription(data)
     expect(description).toBeNull()
 })
 
@@ -157,7 +153,7 @@ it('falls back to original event description for no data', () => {
         new CalendarDateTime('20250101T120000')
     ).setDescription('Foo')
 
-    const description = adapter.formatDescription(data, event)
+    const description = formatDescription(data, event)
 
     expect(description).toBe('Foo')
 })

@@ -1,10 +1,5 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
-import TimeEditAdapter from '../../../src/backend/adapters/TimeEditAdapter'
-
-let adapter: TimeEditAdapter
-beforeAll(() => {
-    adapter = new TimeEditAdapter()
-})
+import { parseEventData } from '../../../src/backend/adapters/TimeEditAdapter'
 
 const time = new CalendarDateTime('20250919T120000')
 const validEvent = new CalendarEvent('', time, time)
@@ -16,14 +11,14 @@ const invalidEvent = new CalendarEvent('', time, time)
     .setLocation('C')
 
 it('uses summary and location as sources', () => {
-    const data = adapter['groupEventData'](validEvent)
+    const data = parseEventData(validEvent)
 
     expect(data).toHaveProperty('activity')
     expect(data).toHaveProperty('lokalnamn')
 })
 
 it('returns no data if unable to parse', () => {
-    const data = adapter['groupEventData'](invalidEvent)
+    const data = parseEventData(invalidEvent)
 
     expect(data).toStrictEqual({})
 })

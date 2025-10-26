@@ -58,8 +58,8 @@ export default class TimeEditAdapter extends Adapter {
         return id
     }
 
-    convertCalendar(calendar: Calendar, req: Request): Calendar {
-        if (req.query.group) {
+    convertCalendar(calendar: Calendar, req?: Request): Calendar {
+        if (req?.query.group) {
             const groupBy = parseGroupBy(req)
             const allowedValues = parseAllowedValues(req)
             const slicer = getGroupSlicer(groupBy, allowedValues)
@@ -123,7 +123,7 @@ export default class TimeEditAdapter extends Adapter {
     }
 }
 
-function parseGroupBy(req: Request): number {
+export function parseGroupBy(req: Request): number {
     const groupByString = req.query.group
     if (groupByString === undefined)
         throw new Error(
@@ -154,7 +154,7 @@ function parseGroupBy(req: Request): number {
  * @param req The request to parse.
  * @returns A set of allowed values.
  */
-function parseAllowedValues(req: Request): Set<string> {
+export function parseAllowedValues(req: Request): Set<string> {
     const serializedValues = req.query.gi
     if (serializedValues === undefined)
         throw new Error(
@@ -176,7 +176,7 @@ function parseAllowedValues(req: Request): Set<string> {
     return new Set(values)
 }
 
-function getGroupSlicer(
+export function getGroupSlicer(
     groupBy: number,
     allowedValues: Set<string>
 ): Slicer<EventGroup> {
@@ -203,7 +203,7 @@ function getGroupSlicer(
  * @param value The value to simplify.
  * @returns A URL friendly simplified version of the value.
  */
-function prepareForComparison(value: string): string {
+export function prepareForComparison(value: string): string {
     return value.toLowerCase().replace(/[^a-z0-9]/g, '-')
 }
 
@@ -212,7 +212,7 @@ function prepareForComparison(value: string): string {
  * @param value The set to simplify, represents one combination of property values.
  * @returns A URL friendly simplified version of the value.
  */
-function prepareSetForComparison(value: string[]): string {
+export function prepareSetForComparison(value: string[]): string {
     return value
         .map(prepareForComparison)
         .filter(v => v !== '')
@@ -220,7 +220,7 @@ function prepareSetForComparison(value: string[]): string {
         .join('_')
 }
 
-function convertEvent(event: CalendarEvent) {
+export function convertEvent(event: CalendarEvent) {
     const eventData = parseEventData(event)
 
     const summary = formatSummary(eventData, event)
@@ -245,7 +245,7 @@ function convertEvent(event: CalendarEvent) {
     }
 }
 
-function formatSummary(
+export function formatSummary(
     data: TimeEditEventData,
     context?: CalendarEvent
 ): string | null {
@@ -265,7 +265,7 @@ function formatSummary(
     return summary === '' ? (context?.getSummary() ?? null) : summary
 }
 
-function formatDescription(
+export function formatDescription(
     data: TimeEditEventData,
     context?: CalendarEvent
 ): string | null {
@@ -310,7 +310,7 @@ function formatDescription(
         : description
 }
 
-function formatLocation(
+export function formatLocation(
     data: TimeEditEventData,
     context?: CalendarEvent
 ): string | null {
@@ -353,7 +353,7 @@ function formatLocation(
         .join('. ')
 }
 
-function formatCourse(data: TimeEditEventData): string | null {
+export function formatCourse(data: TimeEditEventData): string | null {
     const courseNamePart = data.kursNamn ? data.kursNamn[0] : null
     const joinedCourseCodes = data.kursKod
         ?.map(code => shortenCourseCode(code))
@@ -370,14 +370,14 @@ function formatCourse(data: TimeEditEventData): string | null {
     return course === '' ? null : course
 }
 
-function parseEventData(event: CalendarEvent): TimeEditEventData {
+export function parseEventData(event: CalendarEvent): TimeEditEventData {
     const summary = event.getSummary()
     const location = event.getLocation()
     const sources = [summary, location].filter(s => s !== undefined)
     return parseEventDataString(...sources)
 }
 
-function parseEventDataString(...strings: string[]): TimeEditEventData {
+export function parseEventDataString(...strings: string[]): TimeEditEventData {
     const dataPairs = strings
         .flatMap(s =>
             Array.from(
@@ -426,7 +426,7 @@ function parseEventDataString(...strings: string[]): TimeEditEventData {
     return groupedData
 }
 
-function toCamelCase(text: string): string {
+export function toCamelCase(text: string): string {
     const words = text.split(' ')
     return (
         words[0].charAt(0).toLowerCase() +
@@ -441,7 +441,7 @@ function toCamelCase(text: string): string {
     )
 }
 
-function fromCamelCase(text: string): string {
+export function fromCamelCase(text: string): string {
     if (text.length <= 1) return text.toUpperCase()
     const words = text.split(/(?=[A-Z])/g).map((word, i) => {
         if (i === 0) {
@@ -468,6 +468,6 @@ export interface TimeEditEventData {
     antalDatorer?: string[]
 }
 
-function shortenCourseCode(code: string): string {
+export function shortenCourseCode(code: string): string {
     return code.split('_')[0]
 }
