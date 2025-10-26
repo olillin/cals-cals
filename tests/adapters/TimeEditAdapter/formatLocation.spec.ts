@@ -1,19 +1,15 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
-import TimeEditAdapter, {
+import {
+    formatLocation,
     TimeEditEventData,
 } from '../../../src/backend/adapters/TimeEditAdapter'
-
-let adapter: TimeEditAdapter
-beforeAll(() => {
-    adapter = new TimeEditAdapter()
-})
 
 it('follows the format "room (campus)" when all data is present', () => {
     const data: TimeEditEventData = {
         lokalnamn: ['HA1'],
         campus: ['Johanneberg'],
     }
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
 
     expect(location).toBe('HA1 (Johanneberg)')
 })
@@ -22,7 +18,7 @@ it('follows the format "room" when only room is present', () => {
     const data: TimeEditEventData = {
         lokalnamn: ['HA1'],
     }
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
 
     expect(location).toBe('HA1')
 })
@@ -31,7 +27,7 @@ it('follows the format "campus" when only campus is present', () => {
     const data: TimeEditEventData = {
         campus: ['Johanneberg'],
     }
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
 
     expect(location).toBe('Johanneberg')
 })
@@ -41,7 +37,7 @@ it('joins multiple rooms', () => {
         lokalnamn: ['HA1', 'HB2'],
         campus: ['Johanneberg'],
     }
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
 
     expect(location).toBe('HA1, HB2 (Johanneberg)')
 })
@@ -51,7 +47,7 @@ it('groups rooms by campus when there are multiple campuses', () => {
         lokalnamn: ['HA1', 'Jupiter', 'HB2', 'HC4'],
         campus: ['Johanneberg', 'Lindholmen', 'Johanneberg', 'Johanneberg'],
     }
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
 
     expect(location).toBe('HA1, HB2, HC4 (Johanneberg). Jupiter (Lindholmen)')
 })
@@ -61,7 +57,7 @@ it('respects order of campuses', () => {
         lokalnamn: ['Jupiter', 'HA1'],
         campus: ['Lindholmen', 'Johanneberg'],
     }
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
 
     expect(location).toBe('Jupiter (Lindholmen). HA1 (Johanneberg)')
 })
@@ -71,14 +67,14 @@ it('does not group rooms by campus when there are different amount of rooms and 
         lokalnamn: ['HA1', 'Jupiter', 'HB2', 'Saga'],
         campus: ['Johanneberg', 'Lindholmen', 'Johanneberg'],
     }
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
 
     expect(location).toBe('HA1, Jupiter, HB2, Saga (Johanneberg, Lindholmen)')
 })
 
 it('returns null for no data', () => {
     const data: TimeEditEventData = {}
-    const location = adapter.formatLocation(data)
+    const location = formatLocation(data)
     expect(location).toBeNull()
 })
 
@@ -90,7 +86,7 @@ it('falls back to original event location for no data', () => {
         new CalendarDateTime('20250101T120000')
     ).setLocation('Foo')
 
-    const location = adapter.formatLocation(data, event)
+    const location = formatLocation(data, event)
 
     expect(location).toBe('Foo')
 })

@@ -1,14 +1,11 @@
-import TimeEditAdapter from '../../../src/backend/adapters/TimeEditAdapter'
-
-let adapter: TimeEditAdapter
-beforeAll(() => {
-    adapter = new TimeEditAdapter()
-})
+import TimeEditAdapter, {
+    parseEventDataString,
+} from '../../../src/backend/adapters/TimeEditAdapter'
 
 it('groups strings correctly', () => {
     const summary =
         'Kurs kod: ABC123. Kurs namn: Lorem ipsum, Kurs kod: DEF456. Kurs namn: Foo spam, Activity: Föreläsning, Klass kod: KLASS-1. Klass namn: Rats'
-    const data = adapter['groupEventDataString'](summary)
+    const data = parseEventDataString(summary)
 
     expect(data.kursKod).toStrictEqual(['ABC123', 'DEF456'])
     expect(data.kursNamn).toStrictEqual(['Lorem ipsum', 'Foo spam'])
@@ -21,14 +18,14 @@ it('groups strings correctly', () => {
 
 it('deduplicates repeat values', () => {
     const s = 'Campus: A. Campus: A, Campus: A'
-    const data = adapter['groupEventDataString'](s)
+    const data = parseEventDataString(s)
 
     expect(data.campus).toStrictEqual(['A'])
 })
 
 it('does not deduplicate campus if there are multiple values', () => {
     const s = 'Campus: A. Campus: A, Campus: B, Campus: A'
-    const data = adapter['groupEventDataString'](s)
+    const data = parseEventDataString(s)
 
     expect(data.campus).toStrictEqual(['A', 'A', 'B', 'A'])
 })
@@ -36,7 +33,7 @@ it('does not deduplicate campus if there are multiple values', () => {
 it('deduplicates multiple campuses together with room', () => {
     const s =
         'Lokalnamn: 1, Campus: A. Lokalnamn: 2, Campus: A, Lokalnamn: 3, Campus: B, Lokalnamn: 2, Campus: A'
-    const data = adapter['groupEventDataString'](s)
+    const data = parseEventDataString(s)
 
     expect(data.lokalnamn).toStrictEqual(['1', '2', '3'])
     expect(data.campus).toStrictEqual(['A', 'A', 'B'])
@@ -44,7 +41,7 @@ it('deduplicates multiple campuses together with room', () => {
 
 it('does not deduplicates rooms on different campuses', () => {
     const s = 'Lokalnamn: 1, Campus: A. Lokalnamn: 1, Campus: B'
-    const data = adapter['groupEventDataString'](s)
+    const data = parseEventDataString(s)
 
     expect(data.lokalnamn).toStrictEqual(['1', '1'])
     expect(data.campus).toStrictEqual(['A', 'B'])
@@ -53,7 +50,7 @@ it('does not deduplicates rooms on different campuses', () => {
 it('combines multiple sources', () => {
     const s1 = 'Foo: Spam. Lorem: Ipsum, Same: Value'
     const s2 = 'Spam: Foo, Lorem: Solor. Same: Value'
-    const data = adapter['groupEventDataString'](s1, s2)
+    const data = parseEventDataString(s1, s2)
 
     expect(data['foo']).toStrictEqual(['Spam'])
     expect(data['spam']).toStrictEqual(['Foo'])
@@ -62,11 +59,11 @@ it('combines multiple sources', () => {
 })
 
 it('returns an empty object for an empty string', () => {
-    const data = adapter['groupEventDataString']('')
+    const data = parseEventDataString('')
     expect(data).toStrictEqual({})
 })
 
 it('returns an empty object for no input', () => {
-    const data = adapter['groupEventDataString']()
+    const data = parseEventDataString()
     expect(data).toStrictEqual({})
 })
