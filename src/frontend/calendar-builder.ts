@@ -25,7 +25,7 @@ interface UrlResponse {
 }
 
 let currentBuilderData: UrlResponse | undefined = undefined
-let usingGroup: number = 0
+let usingGroup: number = -1
 const currentCalendarGroups: CalendarGroup[] = []
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -106,6 +106,7 @@ function setBuilderData(data: UrlResponse) {
     // Clear current filters
     currentCalendarGroups.splice(0)
     // Set using group to first available
+    usingGroup = -1
     for (let i = 0; i < data.extra.groups.length; i++) {
         const group = data.extra.groups[i]
         if (Object.keys(group.values).length >= 2) {
@@ -164,7 +165,11 @@ function addGroup() {
 
     if (currentCalendarGroups.length === 0) {
         currentCalendarGroups.push({
-            includedValues: currentBuilderData.extra.groups[usingGroup].values,
+            includedValues: Object.fromEntries(
+                Object.entries(
+                    currentBuilderData.extra.groups[usingGroup].values
+                )
+            ),
         })
     }
     currentCalendarGroups.push({
