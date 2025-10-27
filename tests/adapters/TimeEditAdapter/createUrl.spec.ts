@@ -1,4 +1,4 @@
-import TimeEditAdapter from '../../../src/backend/adapters/TimeEditAdapter'
+import TimeEditAdapter from '../../../app/lib/adapters/TimeEditAdapter'
 
 let adapter: TimeEditAdapter
 beforeAll(() => {

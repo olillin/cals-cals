@@ -1,5 +1,5 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
-import { parseEventData } from '../../../src/backend/adapters/TimeEditAdapter'
+import { parseEventData } from '../../../app/lib/adapters/TimeEditAdapter'
 
 const time = new CalendarDateTime('20250919T120000')
 const validEvent = new CalendarEvent('', time, time)

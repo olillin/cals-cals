@@ -1,4 +1,4 @@
-import { Filter } from '../../../src/backend/slicers/FilterSlicer'
+import { Filter } from '../../../app/lib/slicers/FilterSlicer'
 
 it('throws if creating with negative mode', () => {
     expect(() => {

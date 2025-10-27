@@ -2,7 +2,7 @@ import { CalendarDateTime, CalendarEvent } from 'iamcal'
 import {
     formatDescription,
     TimeEditEventData,
-} from '../../../src/backend/adapters/TimeEditAdapter'
+} from '../../../app/lib/adapters/TimeEditAdapter'
 
 it('follows the format when all data is present', () => {
     const data: TimeEditEventData = {

@@ -1,5 +1,5 @@
 import { Calendar, CalendarDateTime, CalendarEvent } from 'iamcal'
-import TimeEditAdapter from '../../../src/backend/adapters/TimeEditAdapter'
+import TimeEditAdapter from '../../../app/lib/adapters/TimeEditAdapter'
 
 let adapter: TimeEditAdapter
 let calendar: Calendar

@@ -1,4 +1,4 @@
-import FilterSlicer, { Filter } from '../../src/backend/slicers/FilterSlicer'
+import FilterSlicer, { Filter } from '../../app/lib/slicers/FilterSlicer'
 
 it('serializes to "" when there are no filters', () => {
     const slicer = new FilterSlicer()

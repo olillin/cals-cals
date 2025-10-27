@@ -1,5 +1,5 @@
 import { CalendarDate, CalendarDateTime, CalendarEvent } from 'iamcal'
-import HashSlicer from '../../src/backend/slicers/HashSlicer'
+import HashSlicer from '../../app/lib/slicers/HashSlicer'
 
 const event1 = new CalendarEvent(
     '1',

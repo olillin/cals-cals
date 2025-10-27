@@ -1,4 +1,4 @@
-import { capitalize } from '../src/backend/Util'
+import { capitalize } from '../app/lib/Util'
 
 describe('test capitalize', () => {
     test('foo -> Foo', () => {

@@ -1,6 +1,6 @@
 import TimeEditAdapter, {
     parseEventDataString,
-} from '../../../src/backend/adapters/TimeEditAdapter'
+} from '../../../app/lib/adapters/TimeEditAdapter'
 
 it('groups strings correctly', () => {
     const summary =

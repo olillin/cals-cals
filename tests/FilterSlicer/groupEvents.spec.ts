@@ -1,5 +1,5 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
-import FilterSlicer, { Filter } from '../../src/backend/slicers/FilterSlicer'
+import FilterSlicer, { Filter } from '../../app/lib/slicers/FilterSlicer'
 
 const time = new CalendarDateTime('20250920T120000')
 const events = [
