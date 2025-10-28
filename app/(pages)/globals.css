@@ -1,19 +1,19 @@
-@import 'tailwindcss';
+/* @import 'tailwindcss'; */
 
 :root {
     --background: #111111;
     --foreground: #ffffff;
     --border-radius: 1.25em;
-    --selected-color: #00cdda;
-    --glow-strength: 1em;
+    --selected-color: #00edda;
+    --glow-strength: 0.5em;
 }
 
-@theme inline {
+/* @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
-}
+} */
 
 /* @media (prefers-color-scheme: dark) {
     :root {
@@ -102,6 +102,13 @@ input[type='checkbox']:checked {
     box-shadow: var(--selected-color) 0 0 var(--glow-strength) 0;
 }
 
+input[type='checkbox'].partial {
+    border-color: var(--selected-color);
+    box-shadow:
+        var(--selected-color) 0 0 var(--glow-strength) 0,
+        inset var(--selected-color) 0 0 var(--glow-strength) 0;
+}
+
 *[hidden] {
     display: none !important;
 }
@@ -132,6 +139,10 @@ input[type='checkbox']:checked {
     align-items: center;
     justify-content: start;
     gap: 0.5em;
+}
+
+.show-origin-section {
+    margin-block: 2.5em -0.5em;
 }
 
 .calendar-url {

@@ -38,7 +38,7 @@ export default function RootLayout({
                         <h1>Welcome to Cal's cals!</h1>
                         <p>
                             A better calendar experience at Chalmers, made and
-                            maintained by
+                            maintained by&nbsp;
                             <a
                                 href="https://wiki.chalmers.it/Cal"
                                 target="_blank"
@@ -56,14 +56,14 @@ export default function RootLayout({
 
                 <footer>
                     <span>
-                        Made with <span className="pixelnheart"></span> by
+                        Made with <span className="pixelnheart"></span> by&nbsp;
                         <a href="https://wiki.chalmers.it/Cal" target="_blank">
                             Cal
                         </a>
                         .
                     </span>
                     <span>
-                        Is something wrong or could be improved?
+                        Is something wrong or could be improved?&nbsp;
                         <a
                             href="https://github.com/olillin/cals-cals/issues"
                             target="_blank"

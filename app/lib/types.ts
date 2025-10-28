@@ -18,3 +18,7 @@ export interface Picker {
 export interface Redirects {
     [x: string]: string
 }
+
+export interface CalendarNameResponse {
+    name: string
+}

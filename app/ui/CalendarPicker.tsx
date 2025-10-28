@@ -1,155 +1,155 @@
 'use client'
 
-import { useState } from 'react'
-import { Picker, PickerCalendar } from '../lib/types'
-import CalendarTree, {
-    buildSelectionTree,
-    SelectableCalendarTree,
-} from './CalendarTree'
+import {
+    buildTree,
+    cloneTree,
+    getSelectedCalendars,
+    getTreeCalendars,
+    getTrees,
+    propagateSelectionUp,
+    RenderedCalendarTree,
+    RenderedPicker,
+    RenderedPickerCalendar,
+    selectAll,
+    TreeSelectedState,
+} from '@/app/lib/RenderedCalendarTree'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { PickerCalendar } from '../lib/types'
+import CalendarTree from './CalendarTree'
 import CalendarUrl from './CalendarUrl'
 import ErrorPage from './ErrorPage'
+import { CalendarTreeSkeleton } from './skeletons'
 
-export default async function CalendarPicker() {
+export default function CalendarPicker({
+    picker,
+    urlBase,
+}: {
+    picker: RenderedPicker
+    urlBase: string
+}) {
+    const [tree, setTree] = useState<RenderedCalendarTree | null>(null)
+    const [error, setError] = useState(false)
+    const [showOrigin, setShowOrigin] = useState(true)
+
     // Load picker tree
-    const pickerResponse = await fetch('/picker.json')
-    if (
-        !pickerResponse.ok ||
-        !pickerResponse.headers
-            .get('Content-Type')
-            ?.includes('application/json')
-    ) {
-        console.error('Received invalid response from /picker.json, see below')
-        console.log(pickerResponse)
+    useEffect(() => {
+        try {
+            const calendars = picker.calendars
+            setTree(buildTree(calendars))
+        } catch (error) {
+            console.error('Failed to build picker tree, see error below.')
+            console.log(error)
+            setError(true)
+        }
+    }, [picker])
+
+    if (error) {
         return (
             <ErrorPage>
                 Failed to load calendar picker, try again later
             </ErrorPage>
         )
     }
-    const picker: Picker = await pickerResponse.json()
-    const [tree, setTree] = useState(buildSelectionTree(picker.calendars))
 
-    const url: string | null = null
+    if (!tree) {
+        return <CalendarTreeSkeleton />
+    }
+
+    const selectedCalendars = getSelectedCalendars(tree)
+    const showOriginCheckbox = selectedCalendars.length >= 2
+    const url: string | null = generateUrl(
+        urlBase,
+        selectedCalendars,
+        showOrigin
+    )
 
     return (
         <>
-            <CalendarTree tree={tree} />
-            <span className="checkbox-field" id="show-origin-section">
-                <input
-                    type="checkbox"
-                    id="show-origin"
-                    checked={true}
-                    // onChange={update}
-                />
-                <label htmlFor="show-origin">
-                    Show calendar name in events
-                </label>
-            </span>
+            <CalendarTree
+                tree={tree}
+                // Clone the tree so React can detect when we update it
+                onSelectCalendar={selectCalendar(cloneTree(tree), setTree)}
+                onSelectTree={selectTree(cloneTree(tree), setTree)}
+            />
+
+            {showOriginCheckbox && (
+                <span className="checkbox-field show-origin-section">
+                    <input
+                        type="checkbox"
+                        checked={showOrigin}
+                        onChange={ev => {
+                            setShowOrigin(ev.currentTarget.checked)
+                        }}
+                    />
+                    <label htmlFor="show-origin">
+                        Show calendar name in events
+                    </label>
+                </span>
+            )}
 
             {url && <CalendarUrl url={url} />}
         </>
     )
 }
 
-// document.addEventListener('DOMContentLoaded', async () => {
-//     update()
-// })
+function selectCalendar(
+    treeCopy: RenderedCalendarTree,
+    setTree: Dispatch<SetStateAction<RenderedCalendarTree | null>>
+) {
+    return (selectedCalendar: RenderedPickerCalendar) => {
+        if (!treeCopy) return
 
-function update() {
-    // Get elements
-    const calendarContainer = document.getElementById(
-        'calendars'
-    ) as HTMLDivElement
-    const calendarUrl = document.getElementById(
-        'calendar-url'
-    ) as HTMLInputElement
-    const showOrigin = document.getElementById(
-        'show-origin'
-    ) as HTMLInputElement
-
-    const showOriginSection = document.getElementById(
-        'show-origin-section'
-    ) as HTMLSpanElement
-    showOriginSection.hidden = true
-    const calendarUrlSection = document.getElementById(
-        'calendar-url-section'
-    ) as HTMLSpanElement
-    calendarUrlSection.hidden = false
-
-    // Get domain name
-    const urlBase = window.location.origin.replace(/^https?/, 'webcal')
-
-    // Find selected elements
-    const elements = Array.from(
-        calendarContainer.getElementsByClassName('calendar-item')
-    )
-    const selectedElements = Array.from(
-        calendarContainer.getElementsByClassName(selectedClassName)
-    )
-    if (selectedElements.length == 1) {
-        const filename = selectedElements[0].getAttribute(
-            'data-calendar-filename'
+        const calendarCopy = getTreeCalendars(treeCopy).find(
+            c => c.id === selectedCalendar.id
         )
 
-        calendarUrl.value = `${urlBase}/c/${filename}`
-    } else if (selectedElements.length > 1) {
-        showOriginSection.hidden = false
+        if (!calendarCopy) return
+        calendarCopy.selected = !selectedCalendar.selected
+        propagateSelectionUp(calendarCopy.parent)
 
-        let selected = 0
-        for (const element of selectedElements) {
-            const id = parseInt(element.getAttribute('data-calendar-id')!)
-            selected += 1 << id
-        }
-        calendarUrl.value = `${urlBase}/m/${selected}${showOrigin.checked ? '?origin' : ''}`
-    } else {
-        calendarUrlSection.hidden = true
-        calendarUrl.value = ''
-    }
-
-    for (const selectAll of document.getElementsByClassName('select-all')) {
-        ;(selectAll as HTMLInputElement).checked = elements.every(e => {
-            let isSelected = e.classList.contains('selected')
-            let inGroup = selectAll.parentElement!.parentElement!.contains(e)
-            console.log({
-                selectAll,
-                e,
-                isSelected,
-                inGroup,
-            })
-            return !(!isSelected && inGroup)
-            // S G
-            // 0 0 1
-            // 1 0 1
-            // 0 1 0
-            // 1 1 1
-        })
+        setTree(treeCopy)
     }
 }
 
-function select(predicate: (el: Element) => boolean) {
-    const calendarContainer = document.getElementById(
-        'calendars'
-    ) as HTMLDivElement
+function selectTree(
+    treeCopy: RenderedCalendarTree,
+    setTree: Dispatch<SetStateAction<RenderedCalendarTree | null>>
+) {
+    return (selectedTree: RenderedCalendarTree) => {
+        if (!treeCopy) return
 
-    const elements = calendarContainer.getElementsByClassName('calendar-item')
-    for (const element of elements) {
-        if (predicate(element)) {
-            element.classList.add(selectedClassName)
-        }
+        const selectTreeCopy = getTrees(treeCopy).find(
+            currentTree => currentTree.id === selectedTree.id
+        )
+        if (!selectTreeCopy) return
+
+        const newSelectedValue =
+            selectTreeCopy.selected !== TreeSelectedState.FULL
+        selectAll(selectTreeCopy, newSelectedValue)
+
+        setTree(treeCopy)
     }
-    update()
 }
 
-function unselect(predicate: (el: Element) => boolean) {
-    const calendarContainer = document.getElementById(
-        'calendars'
-    ) as HTMLDivElement
-
-    const elements = calendarContainer.getElementsByClassName('calendar-item')
-    for (const element of elements) {
-        if (predicate(element)) {
-            element.classList.remove(selectedClassName)
-        }
+function generateUrl(
+    urlBase: string,
+    calendars: PickerCalendar[],
+    showOrigin: boolean = true
+): string | null {
+    if (calendars.length === 0) {
+        return null
     }
-    update()
+
+    if (calendars.length == 1) {
+        // Single calendar
+        const filename = calendars[0].filename
+        return `${urlBase}/c/${filename}`
+    }
+
+    // Merge calendars
+    let bitmask = 0
+    for (const calendar of calendars) {
+        bitmask += 1 << calendar.id
+    }
+    return `${urlBase}/m/${bitmask}${showOrigin ? '?origin' : ''}`
 }

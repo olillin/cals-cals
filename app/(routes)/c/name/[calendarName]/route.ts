@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
-import {
-    getCalendarFile,
-    getSafeFilename,
-} from '@/app/(routes)/c/[calendarName]/route'
+'use server'
+
+import { getCalendarFile } from '@/app/(routes)/c/[calendarName]/route'
+import { CalendarNameResponse } from '@/app/lib/types'
+import { getSafeFilename } from '@/app/lib/Util'
 import { parseCalendar } from 'iamcal'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
     request: NextRequest,
@@ -51,14 +52,13 @@ export async function GET(
         )
     }
 
-    return NextResponse.json(
-        {
-            name: parsedCalendarName,
+    const response: CalendarNameResponse = {
+        name: parsedCalendarName,
+    }
+
+    return NextResponse.json(response, {
+        headers: {
+            'Cache-Control': 'no-store, max-age=0',
         },
-        {
-            headers: {
-                'Cache-Control': 'no-store, max-age=0',
-            },
-        }
-    )
+    })
 }

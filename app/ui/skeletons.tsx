@@ -1,7 +1,7 @@
 export function CalendarTreeSkeleton() {
     return (
         <>
-            <div></div>
+            <div className="error">Loading calendar tree</div>
         </>
     )
 }

@@ -1,25 +1,25 @@
+'use client'
+
 import { PickerCalendar } from '@/app/lib/types'
+import clsx from 'clsx'
 import React, { ReactNode } from 'react'
-import { getCalendarFile } from '../(routes)/c/[calendarName]/route'
-import { parseCalendar } from 'iamcal'
-import { CalendarButton, SelectAllButton } from './pickerClientComponents'
+import {
+    RenderedCalendarTree,
+    RenderedPickerCalendar,
+    TreeSelectedState,
+} from '../lib/RenderedCalendarTree'
+import {} from './CalendarPicker'
 
-export interface SelectablePickerCalendar extends PickerCalendar {
-    selected: boolean
-}
-
-export interface SelectableCalendarTree {
-    calendars?: SelectablePickerCalendar[]
-    subcategories?: SelectableCalendarTree[]
-    name?: string
-}
-
-export default async function CalendarTree({
+export default function CalendarTree({
     tree,
     depth = 2,
+    onSelectCalendar,
+    onSelectTree,
 }: {
-    tree: SelectableCalendarTree
+    tree: RenderedCalendarTree
     depth?: number
+    onSelectCalendar?: (calendar: RenderedPickerCalendar) => void
+    onSelectTree?: (tree: RenderedCalendarTree) => void
 }) {
     const subCalendars = tree.calendars ?? []
     const sortedCalendars = subCalendars //
@@ -33,24 +33,42 @@ export default async function CalendarTree({
 
     return (
         <div className="calendar-group">
-            {tree.name && <Header depth={depth}>data.name</Header>}
+            {tree.name && <Header depth={depth}>{tree.name}</Header>}
 
-            <SelectAllButton />
+            {onSelectTree && (
+                <SelectAllButton
+                    onClick={() => onSelectTree(tree)}
+                    selected={tree.selected}
+                />
+            )}
 
             {/* Calendar buttons */}
             <div className="calendar-grid">
-                {sortedCalendars.map(async calendar => (
+                {sortedCalendars.map(calendar => (
                     <CalendarButton
                         calendar={calendar}
-                        name={await getCalendarName(calendar.filename)}
                         key={calendar.id}
-                    />
+                        selected={calendar.selected}
+                        onClick={
+                            onSelectCalendar
+                                ? () => onSelectCalendar(calendar)
+                                : undefined
+                        }
+                    >
+                        {calendar.displayName}
+                    </CalendarButton>
                 ))}
             </div>
 
             {/* Subcategories */}
-            {sortedSubCategories.map(subTree => (
-                <CalendarTree tree={subTree} depth={depth + 1} />
+            {sortedSubCategories.map(subtree => (
+                <CalendarTree
+                    key={subtree.id}
+                    tree={subtree}
+                    depth={depth + 1}
+                    onSelectCalendar={onSelectCalendar}
+                    onSelectTree={onSelectTree}
+                />
             ))}
         </div>
     )
@@ -67,74 +85,61 @@ function Header({
     return React.createElement(`h${safeDepth}`, null, children)
 }
 
-export async function getCalendarName(filename: string): Promise<string> {
-    let parsedCalendarName: string | undefined
-    try {
-        const fileContents = await getCalendarFile(filename)
-        const calendar = await parseCalendar(fileContents)
-        parsedCalendarName = calendar.getCalendarName()
-    } catch (err) {
-        return 'N/A'
-    }
-
-    if (!parsedCalendarName) {
-        return 'N/A'
-    }
-
-    return parsedCalendarName
+export function SelectAllButton({
+    selected = TreeSelectedState.NONE,
+    onClick,
+}: {
+    selected?: TreeSelectedState | boolean
+    onClick?: () => void
+}) {
+    const isChecked =
+        typeof selected === 'boolean'
+            ? selected
+            : selected === TreeSelectedState.FULL
+    return (
+        <span
+            className="checkbox-field"
+            onClick={ev => {
+                if (onClick) {
+                    ev.preventDefault()
+                    onClick()
+                }
+            }}
+        >
+            <input
+                type="checkbox"
+                className={clsx('select-all', {
+                    partial: selected === TreeSelectedState.PARTIAL,
+                })}
+                checked={isChecked}
+                readOnly
+            />
+            <label className="no-select">Select all</label>
+        </span>
+    )
 }
 
-export function buildSelectionTree(
-    calendars: PickerCalendar[]
-): SelectableCalendarTree {
-    const calendarTree: SelectableCalendarTree = {}
-    function addCalendar(calendar: SelectablePickerCalendar) {
-        if (calendar.category) {
-            let tokens: string[] = calendar.category
-                .split('/')
-                .filter(token => token.trim().length)
-            let latest: string
-            let node: SelectableCalendarTree = calendarTree
-            while (tokens.length > 0) {
-                ;[latest, ...tokens] = tokens
-                let subcategory = node.subcategories?.find(
-                    s => s.name === latest
-                )
-                if (subcategory) {
-                    node = subcategory
-                } else {
-                    subcategory = {
-                        name: latest,
-                    }
-                    if (node.subcategories) {
-                        node.subcategories.push(subcategory)
-                    } else {
-                        node.subcategories = [subcategory]
-                    }
-                    node = subcategory
-                }
-            }
-            if (!node.calendars) {
-                node.calendars = []
-            }
-            node.calendars!.push(calendar)
-        } else {
-            if (calendarTree.calendars) {
-                calendarTree.calendars.push(calendar)
-            } else {
-                calendarTree.calendars = [calendar]
-            }
-        }
-    }
-
-    calendars
-        .filter(calendar => calendar.hidden !== true)
-        .forEach(calendar => {
-            addCalendar({
-                ...calendar,
-                selected: false,
-            })
-        })
-
-    return calendarTree
+export function CalendarButton({
+    calendar,
+    selected = false,
+    onClick,
+    children,
+}: {
+    calendar: PickerCalendar
+    selected?: boolean
+    onClick?: () => void
+    children: ReactNode
+}) {
+    return (
+        <button
+            data-calendar-id={calendar.id.toString()}
+            data-calendar-filename={calendar.filename}
+            className={clsx('calendar-item', {
+                selected: selected,
+            })}
+            onClick={onClick}
+        >
+            {children}
+        </button>
+    )
 }
