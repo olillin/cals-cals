@@ -1,14 +1,33 @@
+@import 'tailwindcss';
+
 :root {
+    --background: #111111;
+    --foreground: #ffffff;
     --border-radius: 1.25em;
     --selected-color: #00cdda;
     --glow-strength: 1em;
 }
 
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+}
+
+/* @media (prefers-color-scheme: dark) {
+    :root {
+        --background: #5a0a0a;
+        --foreground: #ededed;
+    }
+} */
+
 body {
-    width: 100vw;
-    background-color: #111;
-    color: #ffffff;
+    background: var(--background);
+    color: var(--foreground);
     font-family: sans-serif;
+
+    width: 100vw;
     overflow-x: hidden;
 }
 
@@ -324,7 +343,7 @@ input[type='checkbox']:checked {
     align-items: center;
     margin-block: 1.5em;
     gap: 1.25em;
-    
+
     & > label {
         text-align: right;
     }
@@ -373,12 +392,12 @@ input[type='checkbox']:checked {
     }
 }
 
-@media screen and (max-width: 650px) {    
+@media screen and (max-width: 650px) {
     .group-by-selector {
         flex-flow: column nowrap;
         height: fit-content;
     }
-    
+
     .group-by-selector > *:nth-child(1) {
         border-top-left-radius: var(--border-radius);
         border-top-right-radius: var(--border-radius);
@@ -411,7 +430,7 @@ footer {
     flex-flow: column nowrap;
     gap: 1em;
     align-items: center;
-    
+
     & span {
         text-align: center;
     }

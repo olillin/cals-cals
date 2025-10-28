@@ -1,3 +1,57 @@
+export default function Page() {
+    return (
+        <section>
+            <h2>Calendar Builder</h2>
+            <p>
+                Frustrated by your TimeEdit schedule being needlessly difficult
+                to read? By pasting the subscription URL to your schedule below
+                you can get a new URL which contains the same information but in
+                a more friendly format!
+            </p>
+
+            <details>
+                <summary>Where do I find the URL?</summary>
+                <p>
+                    Go to your TimeEdit schedule and click the "Subscribe"
+                    ("Prenumerera") button near the top right of the schedule.
+                    Copy the URL from the dialog that appears.
+                </p>
+            </details>
+
+            <span className="calendar-builder-input">
+                <div>
+                    <label htmlFor="calendar-builder-input-url">
+                        TimeEdit Calendar URL
+                    </label>
+                    <input
+                        type="text"
+                        name="calendar-builder-input-url"
+                        id="calendar-builder-input-url"
+                    ></input>
+                </div>
+                <button type="button" onClick={setBuilderUrl}>
+                    Convert URL
+                </button>
+            </span>
+
+            <span id="calendar-builder-error" className="error"></span>
+
+            <div
+                id="calendar-builder-output"
+                className="calendar-builder-output"
+            >
+                <div id="builder-calendars" className="builder-calendars"></div>
+
+                <button
+                    id="add-group"
+                    className="add-group"
+                    onClick={addGroup}
+                ></button>
+            </div>
+        </section>
+    )
+}
+
 let calendarUrlIn: HTMLInputElement
 let builderError: HTMLSpanElement
 let builderOutput: HTMLDivElement
