@@ -1,6 +1,6 @@
+import PageNavivgation from '@/app/ui/PageNavigation'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
     title: "Cal's cals",
@@ -49,10 +49,7 @@ export default function RootLayout({
                         </p>
                     </section>
 
-                    <nav>
-                        <Link href={'/picker'}>Calendar picker</Link>
-                        <Link href={'/builder'}>Calendar builder</Link>
-                    </nav>
+                    <PageNavivgation />
 
                     {children}
                 </main>

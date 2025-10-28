@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import {
     getCalendarFile,
     getSafeFilename,
@@ -6,7 +6,7 @@ import {
 import { parseCalendar } from 'iamcal'
 
 export async function GET(
-    request: Request,
+    request: NextRequest,
     { params }: { params: Promise<{ calendarName: string }> }
 ) {
     const { calendarName } = await params

@@ -1,5 +1,6 @@
 import { Picker } from '@/app/lib/types'
 import pickerConfig from '@/data/picker.json'
+import { NextResponse } from 'next/server'
 
 console.log(
     'Loaded calendars:\n',
@@ -10,5 +11,5 @@ export function GET() {
     const filteredPicker: Picker = {
         calendars: pickerConfig.calendars.filter(c => c.id !== -1),
     }
-    return Response.json(filteredPicker)
+    return NextResponse.json(filteredPicker)
 }

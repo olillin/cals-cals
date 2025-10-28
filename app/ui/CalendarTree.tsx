@@ -1,29 +1,24 @@
-'use server'
-
 import { PickerCalendar } from '@/app/lib/types'
 import React, { ReactNode } from 'react'
 import { getCalendarFile } from '../(routes)/c/[calendarName]/route'
 import { parseCalendar } from 'iamcal'
 import { CalendarButton, SelectAllButton } from './pickerClientComponents'
 
-export interface PickerCalendarTree {
-    calendars?: PickerCalendar[]
-    subcategories?: PickerCalendarSubTree[]
+export interface SelectablePickerCalendar extends PickerCalendar {
+    selected: boolean
 }
 
-export interface PickerCalendarSubTree extends PickerCalendarTree {
-    name: string
-}
-
-function isSubTree(tree: PickerCalendarTree): tree is PickerCalendarSubTree {
-    return 'name' in tree
+export interface SelectableCalendarTree {
+    calendars?: SelectablePickerCalendar[]
+    subcategories?: SelectableCalendarTree[]
+    name?: string
 }
 
 export default async function CalendarTree({
     tree,
     depth = 2,
 }: {
-    tree: PickerCalendarTree | PickerCalendarSubTree
+    tree: SelectableCalendarTree
     depth?: number
 }) {
     const subCalendars = tree.calendars ?? []
@@ -33,12 +28,12 @@ export default async function CalendarTree({
 
     const subCategories = tree.subcategories ?? []
     const sortedSubCategories = subCategories.sort((a, b) =>
-        a.name.localeCompare(b.name)
+        (a.name ?? '').localeCompare(b.name ?? '')
     )
 
     return (
         <div className="calendar-group">
-            {isSubTree(tree) ? <Header depth={depth}>data.name</Header> : null}
+            {tree.name && <Header depth={depth}>data.name</Header>}
 
             <SelectAllButton />
 
@@ -87,4 +82,59 @@ export async function getCalendarName(filename: string): Promise<string> {
     }
 
     return parsedCalendarName
+}
+
+export function buildSelectionTree(
+    calendars: PickerCalendar[]
+): SelectableCalendarTree {
+    const calendarTree: SelectableCalendarTree = {}
+    function addCalendar(calendar: SelectablePickerCalendar) {
+        if (calendar.category) {
+            let tokens: string[] = calendar.category
+                .split('/')
+                .filter(token => token.trim().length)
+            let latest: string
+            let node: SelectableCalendarTree = calendarTree
+            while (tokens.length > 0) {
+                ;[latest, ...tokens] = tokens
+                let subcategory = node.subcategories?.find(
+                    s => s.name === latest
+                )
+                if (subcategory) {
+                    node = subcategory
+                } else {
+                    subcategory = {
+                        name: latest,
+                    }
+                    if (node.subcategories) {
+                        node.subcategories.push(subcategory)
+                    } else {
+                        node.subcategories = [subcategory]
+                    }
+                    node = subcategory
+                }
+            }
+            if (!node.calendars) {
+                node.calendars = []
+            }
+            node.calendars!.push(calendar)
+        } else {
+            if (calendarTree.calendars) {
+                calendarTree.calendars.push(calendar)
+            } else {
+                calendarTree.calendars = [calendar]
+            }
+        }
+    }
+
+    calendars
+        .filter(calendar => calendar.hidden !== true)
+        .forEach(calendar => {
+            addCalendar({
+                ...calendar,
+                selected: false,
+            })
+        })
+
+    return calendarTree
 }
