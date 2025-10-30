@@ -1,5 +1,4 @@
-import { Request, RequestHandler, Router } from 'express'
-import { Calendar, parseCalendar } from 'iamcal'
+// import { Calendar, parseCalendar } from 'iamcal'
 
 class ErrorResponse extends Error {
     status: number
@@ -164,11 +163,12 @@ abstract class Adapter {
             // Add id query parameter
             adapterUrl.search = '?id=' + encodeURIComponent(id)
 
-            res.status(200).json({
+            const response: UrlResponse = {
                 id: id,
                 url: adapterUrl,
                 ...(extra ? { extra: extra } : {}),
-            })
+            }
+            res.status(200).json(response)
         }
     }
 
@@ -205,3 +205,9 @@ abstract class Adapter {
 }
 
 export default Adapter
+
+export interface UrlResponse<ExtraData extends object> {
+    id: string
+    url: string
+    extra: ExtraData
+}

@@ -1,20 +1,23 @@
-import { Request } from 'express'
-import { Calendar, CalendarEvent, parseCalendar } from 'iamcal'
-import Adapter from '../Adapter'
+// import { Calendar, CalendarEvent, parseCalendar } from 'iamcal'
+import Adapter, { UrlResponse } from '../Adapter'
 import HashSlicer from '../slicers/HashSlicer'
 import Slicer, { EventGroup, useSlicer } from '../slicers/Slicer'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
-export const GroupByOptions: (keyof TimeEditEventData)[] = [
+export const groupByOptions = (<T extends keyof TimeEditEventData>(
+    options: T[]
+): T[] => options)([
     'activity',
     'campus',
     'kursKod',
     'lokalnamn',
     'klassKod',
-]
+] as const)
+
+export type GroupByOption = (typeof groupByOptions)[number]
 
 export interface AvailableGroup {
-    property: (typeof GroupByOptions)[number]
+    property: GroupByOption
     values: {
         [k: string]: string
     }
@@ -73,7 +76,7 @@ export default class TimeEditAdapter extends Adapter {
         return calendar
     }
 
-    getExtras(url: URL): Promise<object | undefined> {
+    getExtras(url: URL): Promise<TimeEditUrlExtras | undefined> {
         return fetch(url)
             .then(response => {
                 if (!response.ok)
@@ -96,15 +99,15 @@ export default class TimeEditAdapter extends Adapter {
             .then(calendar => {
                 if (!calendar) return undefined
 
-                const groups: AvailableGroup[] = GroupByOptions.map(option => ({
+                const groups: AvailableGroup[] = groupByOptions.map(option => ({
                     property: option,
                     values: {},
                 }))
 
                 calendar.getEvents().map(event => {
                     const data = parseEventData(event)
-                    for (let i = 0; i < GroupByOptions.length; i++) {
-                        const property = GroupByOptions[i]
+                    for (let i = 0; i < groupByOptions.length; i++) {
+                        const property = groupByOptions[i]
                         if (data[property]) {
                             const key = prepareSetForComparison(data[property])
                             const prettyValues =
@@ -116,12 +119,20 @@ export default class TimeEditAdapter extends Adapter {
                     }
                 })
 
-                return {
+                const extras: TimeEditUrlExtras = {
                     groups: groups,
                 }
+
+                return extras
             })
     }
 }
+
+export interface TimeEditUrlExtras {
+    groups: AvailableGroup[]
+}
+
+export type TimeEditUrlResponse = UrlResponse<TimeEditUrlExtras>
 
 export function parseGroupBy(req: Request): number {
     const groupByString = req.query.group
@@ -180,10 +191,10 @@ export function getGroupSlicer(
     groupBy: number,
     allowedValues: Set<string>
 ): Slicer<EventGroup> {
-    if (groupBy >= GroupByOptions.length) {
+    if (groupBy >= groupByOptions.length) {
         throw new Error(`Unknown group by option ${groupBy}.`)
     }
-    const property = GroupByOptions[groupBy]
+    const property = groupByOptions[groupBy]
 
     /**
      * This hash function returns 1 for events that have any of the included
