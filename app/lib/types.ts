@@ -22,3 +22,17 @@ export interface Redirects {
 export interface CalendarNameResponse {
     name: string
 }
+
+export class ErrorResponse extends Error {
+    status: number
+    constructor(status: number, message: string) {
+        super(message)
+        this.status = status
+    }
+}
+
+export interface UrlResponse {
+    id: string
+    url: string
+    extra?: object
+}

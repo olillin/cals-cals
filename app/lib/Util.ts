@@ -23,3 +23,31 @@ export function getSafeFilename(calendarName: string): string {
 export function formatKebabCase(text: string): string {
     return capitalizeWords(text.replaceAll('-', ' '))
 }
+
+export function toCamelCase(text: string): string {
+    const words = text.split(' ')
+    return (
+        words[0].charAt(0).toLowerCase() +
+        words[0].slice(1) +
+        words
+            .slice(1)
+            .map(
+                word =>
+                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            )
+            .join('')
+    )
+}
+
+export function fromCamelCase(text: string): string {
+    if (text.length <= 1) return text.toUpperCase()
+    const words = text.split(/(?=[A-Z])/g).map((word, i) => {
+        if (i === 0) {
+            return word.charAt(0).toUpperCase() + word.substring(1)
+        } else {
+            return word.toLowerCase()
+        }
+    })
+
+    return words.join(' ')
+}

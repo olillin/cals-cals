@@ -1,7 +1,8 @@
 'use client'
 
-import { UrlResponse } from '@/app/lib/Adapter'
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { TimeEditUrlResponse } from '@/app/lib/timeedit'
+import { UrlResponse } from '@/app/lib/types'
+import { useEffect, useRef, useState } from 'react'
 import CalendarBuilderOutput from './CalendarBuilderOutput'
 
 export type AdapterChoice = 'timeedit'
@@ -11,12 +12,20 @@ export default function CalendarBuilder() {
         useState<AdapterChoice>('timeedit')
     const [inputUrl, setInputUrl] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [urlData, setUrlData] = useState<UrlResponse | null>(null)
 
-    const [urlData, setUrlData] = useState<Promise<UrlResponse<any>> | null>(
-        null
-    )
     useEffect(() => {
-        setUrlData(inputUrl ? fetchUrl(chosenAdapter, inputUrl) : null)
+        if (!inputUrl) return
+
+        fetchUrl(chosenAdapter, inputUrl)
+            .then(data => {
+                setUrlData(data)
+            })
+            .catch(reason => {
+                console.error(reason)
+                setInputUrl(null)
+                setError(String(reason).split(':')[1] ?? String(reason))
+            })
     }, [inputUrl])
 
     const input = useRef<HTMLInputElement>(null)
@@ -61,11 +70,14 @@ export default function CalendarBuilder() {
                 </span>
             )}
 
-            {urlData && (
-                <Suspense fallback={'Loading...'}>
-                    <CalendarBuilderOutput data={urlData} />
-                </Suspense>
-            )}
+            {inputUrl &&
+                (urlData ? (
+                    <CalendarBuilderOutput
+                        data={urlData as TimeEditUrlResponse}
+                    />
+                ) : (
+                    <span>Loading...</span>
+                ))}
         </div>
     )
 }
@@ -73,7 +85,7 @@ export default function CalendarBuilder() {
 function fetchUrl(
     adapter: AdapterChoice,
     inputUrl: string
-): Promise<UrlResponse<any>> {
+): Promise<UrlResponse> {
     return new Promise((resolve, reject) => {
         fetch(`/adapter/${adapter}/url?url=${inputUrl}`, {
             method: 'POST',

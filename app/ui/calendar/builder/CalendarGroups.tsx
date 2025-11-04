@@ -3,20 +3,23 @@ import {
     GroupByOption,
     groupByOptions,
     TimeEditUrlResponse,
-} from '@/app/lib/adapters/TimeEditAdapter'
+} from '@/app/lib/timeedit'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import CalendarUrl from '../../CalendarUrl'
 
 export default function CalendarGroups({
     data,
+    onClose,
 }: {
     data: TimeEditUrlResponse
+    onClose: () => void
 }) {
-    const [groupBy, setGroupBy] = useState<GroupByOption>(
-        getGroupByOptions(data.extra.groups)[0]
-    )
+    const [groupBy, setGroupBy] = useState(0)
     const [groups, setGroups] = useState<BuilderGroup[]>([])
+
+    const groupByOptions = getGroupByOptions(data.extra.groups)
+    const groupByProperty = groupByOptions[groupBy]
 
     useEffect(() => {
         setGroups([])
@@ -26,8 +29,12 @@ export default function CalendarGroups({
         const initialGroups: BuilderGroup[] = [
             {
                 includedValues: data.extra.groups.find(
-                    availableGroup => availableGroup.property === groupBy
+                    availableGroup =>
+                        availableGroup.property === groupByProperty
                 )!.values,
+            },
+            {
+                includedValues: {},
             },
         ]
         setGroups(initialGroups)
@@ -35,12 +42,45 @@ export default function CalendarGroups({
 
     return (
         <>
+            {groupByOptions.length > 1 && (
+                <GroupBySelector
+                    options={groupByOptions}
+                    currentGroupBy={groupBy}
+                    setGroupBy={newGroupBy => setGroupBy(newGroupBy)}
+                />
+            )}
+
             {groups.map((group, i) => (
                 <CalendarGroupContainer
+                    key={i}
                     groups={groups}
                     groupIndex={i}
                     baseUrl={data.url}
-                    groupBy={groupByOptions.indexOf(groupBy)}
+                    groupBy={groupBy}
+                    onMoveDown={
+                        i >= groups.length - 1
+                            ? undefined
+                            : (key: string) =>
+                                  setGroups(
+                                      moveGroupValue(groups, key, i, i + 1)
+                                  )
+                    }
+                    onMoveUp={
+                        i <= 0
+                            ? undefined
+                            : (key: string) =>
+                                  setGroups(
+                                      moveGroupValue(groups, key, i, i - 1)
+                                  )
+                    }
+                    onDelete={() => {
+                        const newGroups = removeGroup(groups, i)
+                        if (newGroups.length < 2) {
+                            onClose()
+                        } else {
+                            setGroups(newGroups)
+                        }
+                    }}
                 />
             ))}
 
@@ -48,7 +88,7 @@ export default function CalendarGroups({
                 id="add-group"
                 className="add-group"
                 onClick={() => {
-                    // TODO: Add new group
+                    setGroups(addGroup(groups))
                 }}
             >
                 Add group
@@ -79,6 +119,7 @@ export function GroupBySelector({
                     const selected = i === currentGroupBy
                     return (
                         <button
+                            key={i}
                             className={clsx({ selected: selected })}
                             disabled={selected}
                             aria-disabled={selected}
@@ -116,8 +157,8 @@ export function CalendarGroupContainer({
     const includedValues = Object.entries(group.includedValues)
     const url = createGroupUrl(baseUrl, group, groupBy)
 
-    const isTopGroup = groupIndex < 1
-    const isBottomGroup = groupIndex >= groups.length - 1
+    const moveUpDisabled = groupIndex < 1
+    const moveDownDisabled = groupIndex >= groups.length - 1
 
     return (
         <div className="calendar-builder-group">
@@ -141,16 +182,16 @@ export function CalendarGroupContainer({
                                     <button
                                         className="move-up"
                                         onClick={() => onMoveUp(key)}
-                                        disabled={isTopGroup}
-                                        aria-disabled={isTopGroup}
+                                        disabled={moveUpDisabled}
+                                        aria-disabled={moveUpDisabled}
                                     ></button>
                                 )}
                                 {onMoveDown && (
                                     <button
                                         className="move-down"
                                         onClick={() => onMoveDown(key)}
-                                        disabled={isBottomGroup}
-                                        aria-disabled={isBottomGroup}
+                                        disabled={moveDownDisabled}
+                                        aria-disabled={moveDownDisabled}
                                     ></button>
                                 )}
                             </li>
@@ -178,59 +219,47 @@ export function getGroupByOptions(
         .map(group => group.property)
 }
 
-function addGroup() {
-    if (!currentBuilderData) {
-        console.error('Unable to add calendar, no data to base off')
-        return
-    }
-    if (!currentBuilderData.extra.groups[usingGroup]) {
-        console.error(
-            `Unable to add calendar, grouping by non-existent group ${usingGroup}`
-        )
-        return
-    }
+function copyGroups(groups: BuilderGroup[]): BuilderGroup[] {
+    return groups.map(group => ({ ...group }))
+}
 
-    if (currentCalendarGroups.length === 0) {
-        currentCalendarGroups.push({
-            includedValues: Object.fromEntries(
-                Object.entries(
-                    currentBuilderData.extra.groups[usingGroup].values
-                )
-            ),
-        })
-    }
-    currentCalendarGroups.push({
-        includedValues: {},
+function addGroup(
+    groups: BuilderGroup[],
+    group: BuilderGroup = { includedValues: {} }
+): BuilderGroup[] {
+    const newGroups = copyGroups(groups)
+    newGroups.push(group)
+    return newGroups
+}
+
+function removeGroup(groups: BuilderGroup[], index: number): BuilderGroup[] {
+    if (groups.length <= 1) return []
+
+    // Copy groups without deleted group
+    const newGroups = copyGroups(groups)
+    newGroups.splice(index, 1)
+
+    // Reinsert values from deleted group
+    const oldGroup = groups[index]
+    const moveTo = index === 0 ? 0 : index - 1
+    Object.entries(oldGroup.includedValues).forEach(([key, prettyValue]) => {
+        newGroups[moveTo].includedValues[key] = prettyValue
     })
-    updateBuilder()
+
+    return newGroups
 }
 
-function removeGroup(i: number) {
-    if (currentCalendarGroups.length <= 2) {
-        // Delete all groups and return to ungrouped calendars
-        currentCalendarGroups.splice(0)
-    } else {
-        // Move values to new group
-        const oldGroup = currentCalendarGroups[i]
-        const moveTo = i === 0 ? 1 : i - 1
-        Object.entries(oldGroup.includedValues).forEach(
-            ([key, prettyValue]) => {
-                currentCalendarGroups[moveTo].includedValues[key] = prettyValue
-            }
-        )
-
-        // Delete just this group
-        currentCalendarGroups.splice(i, 1)
-    }
-
-    updateBuilder()
-}
-
-function moveGroupValue(key: string, fromGroup: number, toGroup: number) {
-    const prettyValue = currentCalendarGroups[fromGroup].includedValues[key]
-    delete currentCalendarGroups[fromGroup].includedValues[key]
-    currentCalendarGroups[toGroup].includedValues[key] = prettyValue
-    updateBuilder()
+function moveGroupValue(
+    groups: BuilderGroup[],
+    key: string,
+    fromGroup: number,
+    toGroup: number
+) {
+    const newGroups = copyGroups(groups)
+    const prettyValue = newGroups[fromGroup].includedValues[key]
+    delete newGroups[fromGroup].includedValues[key]
+    newGroups[toGroup].includedValues[key] = prettyValue
+    return newGroups
 }
 
 /**

@@ -1,35 +1,33 @@
-import { UrlResponse } from '@/app/lib/Adapter'
-import {
-    AvailableGroup,
-    TimeEditUrlResponse,
-} from '@/app/lib/adapters/TimeEditAdapter'
+'use client'
+
+import { AvailableGroup, TimeEditUrlResponse } from '@/app/lib/timeedit'
 import { useState } from 'react'
 import CalendarGroups, { getGroupByOptions } from './CalendarGroups'
+import CalendarUrl from '../../CalendarUrl'
 
-export default async function CalendarBuilderOutput({
+export default function CalendarBuilderOutput({
     data,
 }: {
-    data: UrlResponse<any> | Promise<UrlResponse<any>>
+    data: TimeEditUrlResponse
 }) {
     const [showGrouping, setShowGrouping] = useState(false)
 
-    const awaitedData = await data
-
     const canGroup: boolean =
-        !!awaitedData?.extra?.groups &&
-        getGroupByOptions(awaitedData.extra.groups as AvailableGroup[]).length >
-            0
+        !!data.extra.groups &&
+        getGroupByOptions(data.extra.groups as AvailableGroup[]).length > 0
 
     return (
         <div id="calendar-builder-output" className="calendar-builder-output">
             {showGrouping ? (
-                <CalendarGroups data={awaitedData as TimeEditUrlResponse} />
+                <CalendarGroups
+                    data={data as TimeEditUrlResponse}
+                    onClose={() => setShowGrouping(false)}
+                />
             ) : (
                 <>
-                    <div
-                        id="builder-calendars"
-                        className="builder-calendars"
-                    ></div>
+                    <div id="builder-calendars" className="builder-calendars">
+                        <CalendarUrl url={data.url} />
+                    </div>
 
                     {canGroup && (
                         <button

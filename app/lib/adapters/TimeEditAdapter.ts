@@ -1,27 +1,17 @@
-// import { Calendar, CalendarEvent, parseCalendar } from 'iamcal'
-import Adapter, { UrlResponse } from '../Adapter'
+import { Calendar, CalendarEvent, parseCalendar } from 'iamcal'
+import { NextRequest } from 'next/server'
+import Adapter from '../Adapter'
 import HashSlicer from '../slicers/HashSlicer'
 import Slicer, { EventGroup, useSlicer } from '../slicers/Slicer'
-
-// DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
-export const groupByOptions = (<T extends keyof TimeEditEventData>(
-    options: T[]
-): T[] => options)([
-    'activity',
-    'campus',
-    'kursKod',
-    'lokalnamn',
-    'klassKod',
-] as const)
-
-export type GroupByOption = (typeof groupByOptions)[number]
-
-export interface AvailableGroup {
-    property: GroupByOption
-    values: {
-        [k: string]: string
-    }
-}
+import {
+    AvailableGroup,
+    groupByOptions,
+    parseEventDataString,
+    shortenCourseCode,
+    TimeEditEventData,
+    TimeEditUrlExtras,
+} from '../timeedit'
+import { fromCamelCase } from '../Util'
 
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
@@ -61,8 +51,8 @@ export default class TimeEditAdapter extends Adapter {
         return id
     }
 
-    convertCalendar(calendar: Calendar, req?: Request): Calendar {
-        if (req?.query.group) {
+    convertCalendar(calendar: Calendar, req?: NextRequest): Calendar {
+        if (req?.nextUrl.searchParams.get('group')) {
             const groupBy = parseGroupBy(req)
             const allowedValues = parseAllowedValues(req)
             const slicer = getGroupSlicer(groupBy, allowedValues)
@@ -128,14 +118,8 @@ export default class TimeEditAdapter extends Adapter {
     }
 }
 
-export interface TimeEditUrlExtras {
-    groups: AvailableGroup[]
-}
-
-export type TimeEditUrlResponse = UrlResponse<TimeEditUrlExtras>
-
-export function parseGroupBy(req: Request): number {
-    const groupByString = req.query.group
+export function parseGroupBy(req: NextRequest): number {
+    const groupByString = req.nextUrl.searchParams.get('group')
     if (groupByString === undefined)
         throw new Error(
             "Unable to find property to group by. Missing query parameter 'group'"
@@ -165,8 +149,8 @@ export function parseGroupBy(req: Request): number {
  * @param req The request to parse.
  * @returns A set of allowed values.
  */
-export function parseAllowedValues(req: Request): Set<string> {
-    const serializedValues = req.query.gi
+export function parseAllowedValues(req: NextRequest): Set<string> {
+    const serializedValues = req.nextUrl.searchParams.get('gi')
     if (serializedValues === undefined)
         throw new Error(
             "Unable to get group index. Missing query parameter 'gi'"
@@ -386,99 +370,4 @@ export function parseEventData(event: CalendarEvent): TimeEditEventData {
     const location = event.getLocation()
     const sources = [summary, location].filter(s => s !== undefined)
     return parseEventDataString(...sources)
-}
-
-export function parseEventDataString(...strings: string[]): TimeEditEventData {
-    const dataPairs = strings
-        .flatMap(s =>
-            Array.from(
-                s.matchAll(
-                    /([^:.,\s][^:.,\n]*?): (.+?)(?=(?:[,.] )?(?:[^:.,\s][^:.,\n]*?: |$))/gm
-                )
-            )
-        )
-        .map(match => [toCamelCase(match[1].trim()), match[2].trim()])
-
-    const groupedData: TimeEditEventData = dataPairs.reduce<{
-        [k: string]: string[]
-    }>((acc, [key, value]) => {
-        if (!acc[key]) acc[key] = []
-        if (
-            !acc[key].includes(value) ||
-            key === 'lokalnamn' ||
-            key === 'campus'
-        ) {
-            acc[key].push(value)
-        }
-        return acc
-    }, {})
-
-    // Deduplicate rooms and compuses
-    const rooms = groupedData['lokalnamn']
-    const campuses = groupedData['campus']
-    if (campuses && new Set(campuses).size <= 1) {
-        campuses.splice(1)
-    } else if (rooms && campuses && rooms.length === campuses.length) {
-        const toRemove: number[] = []
-        for (let i = rooms.length - 1; i > 0; i--) {
-            for (let j = i - 1; j >= 0; j--) {
-                if (rooms[j] === rooms[i] && campuses[j] === campuses[i]) {
-                    toRemove.push(i)
-                    break
-                }
-            }
-        }
-        toRemove.forEach(i => {
-            rooms.splice(i, 1)
-            campuses.splice(i, 1)
-        })
-    }
-
-    return groupedData
-}
-
-export function toCamelCase(text: string): string {
-    const words = text.split(' ')
-    return (
-        words[0].charAt(0).toLowerCase() +
-        words[0].slice(1) +
-        words
-            .slice(1)
-            .map(
-                word =>
-                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            )
-            .join('')
-    )
-}
-
-export function fromCamelCase(text: string): string {
-    if (text.length <= 1) return text.toUpperCase()
-    const words = text.split(/(?=[A-Z])/g).map((word, i) => {
-        if (i === 0) {
-            return word.charAt(0).toUpperCase() + word.substring(1)
-        } else {
-            return word.toLowerCase()
-        }
-    })
-
-    return words.join(' ')
-}
-
-export interface TimeEditEventData {
-    [k: string]: string[] | undefined
-    activity?: string[]
-    klassNamn?: string[]
-    klassKod?: string[]
-    kursNamn?: string[]
-    kursKod?: string[]
-    titel?: string[]
-    lokalnamn?: string[]
-    kartlänk?: string[]
-    campus?: string[]
-    antalDatorer?: string[]
-}
-
-export function shortenCourseCode(code: string): string {
-    return code.split('_')[0]
 }

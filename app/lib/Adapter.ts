@@ -1,72 +1,73 @@
-// import { Calendar, parseCalendar } from 'iamcal'
+import { Calendar, parseCalendar } from 'iamcal'
 
-class ErrorResponse extends Error {
-    status: number
-    constructor(status: number, message: string) {
-        super(message)
-        this.status = status
-    }
-}
+import { NextRequest, NextResponse } from 'next/server'
+import { ErrorResponse, UrlResponse } from './types'
 
 abstract class Adapter {
-    /**
-     * Create an express router with routes for this adapter:
-     *
-     * - `GET /`: The route created by {@link createCalendarRoute}.
-     * - `POST /`: The route created by {@link createUrlRoute}.
-     *
-     * @returns An express router with the routes for this adapter.
-     */
-    createRouter(): Router {
-        const router = Router()
-
-        router.get('/', this.createCalendarRoute())
-        router.post('/url', this.createUrlRoute())
-
-        return router
-    }
-
     /**
      * Create a route which takes a query parameter 'id' and returns the
      * converted calendar from the service of this adapter.
      */
-    createCalendarRoute(timeout?: number): RequestHandler {
-        return async (req, res) => {
-            const id = req.query.id
+    createCalendarRoute(timeout?: number) {
+        return async (request: NextRequest) => {
+            const id = request.nextUrl.searchParams.get('id')
             if (!id) {
-                res.status(400).json({
-                    error: { message: "Missing required query parameter 'id'" },
-                })
-                return
+                return NextResponse.json(
+                    {
+                        error: {
+                            message: "Missing required query parameter 'id'",
+                        },
+                    },
+                    {
+                        status: 400,
+                    }
+                )
             }
 
-            let originalCalendar: Calendar | undefined =
+            let originalCalendar: Calendar | NextResponse =
                 await this.fetchCalendarFromId(String(id), timeout).catch(
                     error => {
                         const errorResponse = error as ErrorResponse
-                        res.status(errorResponse.status).json({
-                            error: { message: errorResponse.message },
-                        })
-                        return undefined
+                        return NextResponse.json(
+                            {
+                                error: { message: errorResponse.message },
+                            },
+                            {
+                                status: errorResponse.status,
+                            }
+                        )
                     }
                 )
-            if (!originalCalendar) return
+            if (originalCalendar instanceof NextResponse) {
+                return originalCalendar
+            }
 
             let convertedCalendar: Calendar
             try {
-                convertedCalendar = this.convertCalendar(originalCalendar, req)
+                convertedCalendar = this.convertCalendar(
+                    originalCalendar,
+                    request
+                )
             } catch (error) {
-                res.status(500).json({
-                    error: { message: `Failed to convert calendar: ${error}` },
-                })
-                return
+                return NextResponse.json(
+                    {
+                        error: {
+                            message: `Failed to convert calendar: ${error}`,
+                        },
+                    },
+                    {
+                        status: 500,
+                    }
+                )
             }
 
             const serializedConvertedCalendar = convertedCalendar.serialize()
 
-            res.setHeader('Content-Type', 'text/calendar').end(
-                serializedConvertedCalendar
-            )
+            return new NextResponse(serializedConvertedCalendar, {
+                headers: {
+                    'Content-Type': 'text/calendar',
+                },
+            })
         }
     }
 
@@ -120,55 +121,66 @@ abstract class Adapter {
      * Create a route which takes a query parameter 'url' and returns the
      * URL which will route the calendar through this adapter.
      */
-    createUrlRoute(): RequestHandler {
-        return async (req, res) => {
-            const originalUrl = req.query.url
+    createUrlRoute() {
+        return async (request: NextRequest) => {
+            const originalUrl = request.nextUrl.searchParams.get('url')
             if (!originalUrl) {
-                res.status(400).json({
-                    error: {
-                        message: "Missing required query parameter 'url'",
+                return NextResponse.json(
+                    {
+                        error: {
+                            message: "Missing required query parameter 'url'",
+                        },
                     },
-                })
-                return
+                    { status: 400 }
+                )
             }
             let id: string | undefined = undefined
             try {
                 id = this.getId(new URL(String(originalUrl)))
             } catch (error) {
-                res.status(400).json({
-                    error: {
-                        message: `Failed to extract id from URL: ${error instanceof Error ? error.message : error}`,
+                return NextResponse.json(
+                    {
+                        error: {
+                            message: `Failed to extract id from URL: ${error instanceof Error ? error.message : error}`,
+                        },
                     },
-                })
-                return
+                    {
+                        status: 400,
+                    }
+                )
             }
 
             let extra: object | undefined = undefined
             try {
                 extra = await this.getExtras(new URL(String(originalUrl)))
             } catch (error) {
-                res.status(500).json({
-                    error: {
-                        message: `Failed to get extra information about URL: ${error instanceof Error ? error.message : error}`,
+                return NextResponse.json(
+                    {
+                        error: {
+                            message: `Failed to get extra information about URL: ${error instanceof Error ? error.message : error}`,
+                        },
                     },
-                })
-                return
+                    {
+                        status: 500,
+                    }
+                )
             }
 
+            console.log(`Host: ${request.headers.get('host')} ${request.url}`)
             const adapterUrl = new URL(
-                'webcal://' +
-                    req.get('host') +
-                    req.originalUrl.replace(/\/url.*$/, '')
+                request.url
+                    .replace(/\/[^\/]*$/, '')
+                    .replace(/https?:\/\//, 'webcal://')
             )
             // Add id query parameter
             adapterUrl.search = '?id=' + encodeURIComponent(id)
 
             const response: UrlResponse = {
                 id: id,
-                url: adapterUrl,
+                url: adapterUrl.toString(),
                 ...(extra ? { extra: extra } : {}),
             }
-            res.status(200).json(response)
+            return NextResponse.json(response)
         }
     }
 
@@ -192,7 +204,7 @@ abstract class Adapter {
      * @param req The context of the request to get this calendar.
      * @returns The converted calendar
      */
-    abstract convertCalendar(calendar: Calendar, req?: Request): Calendar
+    abstract convertCalendar(calendar: Calendar, req?: NextRequest): Calendar
 
     /**
      * Provide extra information about the URL for this adapter.
@@ -205,9 +217,3 @@ abstract class Adapter {
 }
 
 export default Adapter
-
-export interface UrlResponse<ExtraData extends object> {
-    id: string
-    url: string
-    extra: ExtraData
-}
