@@ -1,7 +1,6 @@
 import {
     AvailableGroup,
     GroupByOption,
-    groupByOptions,
     TimeEditUrlResponse,
 } from '@/app/lib/timeedit'
 import clsx from 'clsx'
@@ -219,15 +218,17 @@ export function getGroupByOptions(
         .map(group => group.property)
 }
 
-function copyGroups(groups: BuilderGroup[]): BuilderGroup[] {
-    return groups.map(group => ({ ...group }))
+function cloneGroups(groups: BuilderGroup[]): BuilderGroup[] {
+    return groups.map<BuilderGroup>(group => ({
+        includedValues: { ...group.includedValues },
+    }))
 }
 
 function addGroup(
     groups: BuilderGroup[],
     group: BuilderGroup = { includedValues: {} }
 ): BuilderGroup[] {
-    const newGroups = copyGroups(groups)
+    const newGroups = cloneGroups(groups)
     newGroups.push(group)
     return newGroups
 }
@@ -236,7 +237,7 @@ function removeGroup(groups: BuilderGroup[], index: number): BuilderGroup[] {
     if (groups.length <= 1) return []
 
     // Copy groups without deleted group
-    const newGroups = copyGroups(groups)
+    const newGroups = cloneGroups(groups)
     newGroups.splice(index, 1)
 
     // Reinsert values from deleted group
@@ -255,7 +256,7 @@ function moveGroupValue(
     fromGroup: number,
     toGroup: number
 ) {
-    const newGroups = copyGroups(groups)
+    const newGroups = cloneGroups(groups)
     const prettyValue = newGroups[fromGroup].includedValues[key]
     delete newGroups[fromGroup].includedValues[key]
     newGroups[toGroup].includedValues[key] = prettyValue
