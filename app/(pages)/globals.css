@@ -366,8 +366,8 @@ input[type='checkbox'].partial {
     box-sizing: border-box;
 
     display: flex;
-    gap: 0.25em;
     border-radius: var(--border-radius);
+    background-color: #0a0a0a;
 }
 
 .group-by-selector > * {
@@ -375,14 +375,16 @@ input[type='checkbox'].partial {
     text-align: center;
     text-transform: capitalize;
     border-radius: 0;
-    border: none;
-    background: #0a0a0a;
+    border: 2px solid transparent;
 }
 
 .group-by-selector > .selected {
-    background-color: var(--selected-color);
-    box-shadow: var(--selected-color) 0 0 var(--glow-strength);
-    border-color: transparent;
+    box-shadow:
+        inset var(--selected-color) 0 0 var(--glow-strength),
+        var(--selected-color) 0 0 var(--glow-strength);
+    border-radius: var(--border-radius);
+    border-color: var(--selected-color);
+    color: var(--selected-color);
     z-index: 1;
 }
 

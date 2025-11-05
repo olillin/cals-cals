@@ -44,7 +44,7 @@ export default function CalendarGroups({
             {groupByOptions.length > 1 && (
                 <GroupBySelector
                     options={groupByOptions}
-                    currentGroupBy={groupBy}
+                    selected={groupBy}
                     setGroupBy={newGroupBy => setGroupBy(newGroupBy)}
                 />
             )}
@@ -98,11 +98,11 @@ export default function CalendarGroups({
 
 export function GroupBySelector({
     options,
-    currentGroupBy,
+    selected: currentGroupBy,
     setGroupBy,
 }: {
     options: GroupByOption[]
-    currentGroupBy: number
+    selected: number
     setGroupBy: (groupBy: number) => void
 }) {
     const optionCount = options.length
@@ -156,8 +156,8 @@ export function CalendarGroupContainer({
     const includedValues = Object.entries(group.includedValues)
     const url = createGroupUrl(baseUrl, group, groupBy)
 
-    const moveUpDisabled = groupIndex < 1
-    const moveDownDisabled = groupIndex >= groups.length - 1
+    const moveUpDisabled = !onMoveUp
+    const moveDownDisabled = !onMoveDown
 
     return (
         <div className="calendar-builder-group">
@@ -177,22 +177,20 @@ export function CalendarGroupContainer({
                         {includedValues.map(([key, prettyValue]) => (
                             <li key={key}>
                                 <span>{prettyValue}</span>
-                                {onMoveUp && (
-                                    <button
-                                        className="move-up"
-                                        onClick={() => onMoveUp(key)}
-                                        disabled={moveUpDisabled}
-                                        aria-disabled={moveUpDisabled}
-                                    ></button>
-                                )}
-                                {onMoveDown && (
-                                    <button
-                                        className="move-down"
-                                        onClick={() => onMoveDown(key)}
-                                        disabled={moveDownDisabled}
-                                        aria-disabled={moveDownDisabled}
-                                    ></button>
-                                )}
+                                <button
+                                    className="move-up"
+                                    onClick={onMoveUp && (() => onMoveUp(key))}
+                                    disabled={moveUpDisabled}
+                                    aria-disabled={moveUpDisabled}
+                                ></button>
+                                <button
+                                    className="move-down"
+                                    onClick={
+                                        onMoveDown && (() => onMoveDown(key))
+                                    }
+                                    disabled={moveDownDisabled}
+                                    aria-disabled={moveDownDisabled}
+                                ></button>
                             </li>
                         ))}
                     </ul>
