@@ -3,7 +3,7 @@ import {
     deepCopy,
     mergeCalendars,
     mergeCalendarsText,
-} from '../src/backend/Calendar'
+} from '../app/lib/Calendar'
 
 const EMPTY_CALENDAR = load('tests/resources/empty.ics')
 async function emptyCalendar() {

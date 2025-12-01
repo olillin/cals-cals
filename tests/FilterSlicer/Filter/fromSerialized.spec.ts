@@ -1,4 +1,4 @@
-import { Filter } from '../../../src/backend/slicers/FilterSlicer'
+import { Filter } from '../../../app/lib/slicers/FilterSlicer'
 
 it('parses the correct mode', () => {
     const filter = Filter.fromSerialized('1()')

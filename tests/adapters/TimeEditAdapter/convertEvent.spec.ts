@@ -1,7 +1,7 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
 import TimeEditAdapter, {
     convertEvent,
-} from '../../../src/backend/adapters/TimeEditAdapter'
+} from '../../../app/lib/adapters/TimeEditAdapter'
 
 let adapter: TimeEditAdapter
 let validEvent: CalendarEvent

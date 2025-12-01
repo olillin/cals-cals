@@ -1,7 +1,7 @@
 import {
     formatCourse,
     TimeEditEventData,
-} from '../../../src/backend/adapters/TimeEditAdapter'
+} from '../../../app/lib/adapters/TimeEditAdapter'
 
 it('follows the format "course name (course code)" when all data is present', () => {
     const data: TimeEditEventData = {

@@ -1,14 +1,33 @@
+/* @import 'tailwindcss'; */
+
 :root {
+    --background: #111111;
+    --foreground: #ffffff;
     --border-radius: 1.25em;
-    --selected-color: #00cdda;
-    --glow-strength: 1em;
+    --selected-color: #00edda;
+    --glow-strength: 0.5em;
 }
 
+/* @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+} */
+
+/* @media (prefers-color-scheme: dark) {
+    :root {
+        --background: #5a0a0a;
+        --foreground: #ededed;
+    }
+} */
+
 body {
-    width: 100vw;
-    background-color: #111;
-    color: #ffffff;
+    background: var(--background);
+    color: var(--foreground);
     font-family: sans-serif;
+
+    width: 100vw;
     overflow-x: hidden;
 }
 
@@ -83,6 +102,13 @@ input[type='checkbox']:checked {
     box-shadow: var(--selected-color) 0 0 var(--glow-strength) 0;
 }
 
+input[type='checkbox'].partial {
+    border-color: var(--selected-color);
+    box-shadow:
+        var(--selected-color) 0 0 var(--glow-strength) 0,
+        inset var(--selected-color) 0 0 var(--glow-strength) 0;
+}
+
 *[hidden] {
     display: none !important;
 }
@@ -113,6 +139,10 @@ input[type='checkbox']:checked {
     align-items: center;
     justify-content: start;
     gap: 0.5em;
+}
+
+.show-origin-section {
+    margin-block: 2.5em -0.5em;
 }
 
 .calendar-url {
@@ -324,7 +354,7 @@ input[type='checkbox']:checked {
     align-items: center;
     margin-block: 1.5em;
     gap: 1.25em;
-    
+
     & > label {
         text-align: right;
     }
@@ -336,8 +366,8 @@ input[type='checkbox']:checked {
     box-sizing: border-box;
 
     display: flex;
-    gap: 0.25em;
     border-radius: var(--border-radius);
+    background-color: #0a0a0a;
 }
 
 .group-by-selector > * {
@@ -345,14 +375,16 @@ input[type='checkbox']:checked {
     text-align: center;
     text-transform: capitalize;
     border-radius: 0;
-    border: none;
-    background: #0a0a0a;
+    border: 2px solid transparent;
 }
 
 .group-by-selector > .selected {
-    background-color: var(--selected-color);
-    box-shadow: var(--selected-color) 0 0 var(--glow-strength);
-    border-color: transparent;
+    box-shadow:
+        inset var(--selected-color) 0 0 var(--glow-strength),
+        var(--selected-color) 0 0 var(--glow-strength);
+    border-radius: var(--border-radius);
+    border-color: var(--selected-color);
+    color: var(--selected-color);
     z-index: 1;
 }
 
@@ -373,12 +405,12 @@ input[type='checkbox']:checked {
     }
 }
 
-@media screen and (max-width: 650px) {    
+@media screen and (max-width: 650px) {
     .group-by-selector {
         flex-flow: column nowrap;
         height: fit-content;
     }
-    
+
     .group-by-selector > *:nth-child(1) {
         border-top-left-radius: var(--border-radius);
         border-top-right-radius: var(--border-radius);
@@ -411,7 +443,7 @@ footer {
     flex-flow: column nowrap;
     gap: 1em;
     align-items: center;
-    
+
     & span {
         text-align: center;
     }
