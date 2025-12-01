@@ -3,7 +3,7 @@
 import { AvailableGroup, TimeEditUrlResponse } from '@/app/lib/timeedit'
 import { useState } from 'react'
 import CalendarGroups, { getGroupByOptions } from './CalendarGroups'
-import CalendarUrl from '../../CalendarUrl'
+import CalendarUrl from '../CalendarUrl'
 
 export default function CalendarBuilderOutput({
     data,

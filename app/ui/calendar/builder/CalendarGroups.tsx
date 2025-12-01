@@ -5,7 +5,7 @@ import {
 } from '@/app/lib/timeedit'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
-import CalendarUrl from '../../CalendarUrl'
+import CalendarUrl from '../CalendarUrl'
 
 export default function CalendarGroups({
     data,

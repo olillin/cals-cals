@@ -7,7 +7,7 @@ import pickerConfig from '@/data/picker.json'
 import { parseCalendar } from 'iamcal'
 import { headers } from 'next/headers'
 import { getCalendarFile } from '../(routes)/c/[calendarName]/route'
-import CalendarPicker from '../ui/CalendarPicker'
+import CalendarPicker from '../ui/calendar/picker/CalendarPicker'
 import { formatKebabCase } from '../lib/Util'
 
 export default async function Page() {
