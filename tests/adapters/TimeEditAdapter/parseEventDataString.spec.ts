@@ -7,11 +7,11 @@ it('groups strings correctly', () => {
         'Kurs kod: ABC123. Kurs namn: Lorem ipsum, Kurs kod: DEF456. Kurs namn: Foo spam, Activity: Föreläsning, Klass kod: KLASS-1. Klass namn: Rats'
     const data = parseEventDataString(summary)
 
-    expect(data.kursKod).toStrictEqual(['ABC123', 'DEF456'])
-    expect(data.kursNamn).toStrictEqual(['Lorem ipsum', 'Foo spam'])
+    expect(data.kurskod).toStrictEqual(['ABC123', 'DEF456'])
+    expect(data.kursnamn).toStrictEqual(['Lorem ipsum', 'Foo spam'])
     expect(data.activity).toStrictEqual(['Föreläsning'])
-    expect(data.klassKod).toStrictEqual(['KLASS-1'])
-    expect(data.klassNamn).toStrictEqual(['Rats'])
+    expect(data.klasskod).toStrictEqual(['KLASS-1'])
+    expect(data.klassnamn).toStrictEqual(['Rats'])
     expect(data).not.toHaveProperty('Kurs kod')
     expect(data).not.toHaveProperty('titel')
 })
@@ -67,3 +67,19 @@ it('returns an empty object for no input', () => {
     const data = parseEventDataString()
     expect(data).toStrictEqual({})
 })
+
+it('translates "aktivitet" to "activity"', () => {
+    const s = 'Aktivitet: Föreläsning'
+    const data = parseEventDataString(s)
+
+    expect(data.activity).toStrictEqual(['Föreläsning'])
+    expect(data).not.toHaveProperty('aktivitet')
+})
+
+it('can parse one word keys', () => {
+    const s = 'KursKod: Foo'
+    const data = parseEventDataString(s)
+
+    expect(data.kurskod).toStrictEqual(['Foo'])
+})
+
