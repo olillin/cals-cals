@@ -7,8 +7,8 @@ import {
 it('follows the format "activity: course name (course code)" when all data is present', () => {
     const data: TimeEditEventData = {
         activity: ['Föreläsning'],
-        kursNamn: ['Lorem ipsum'],
-        kursKod: ['ABC123'],
+        kursnamn: ['Lorem ipsum'],
+        kurskod: ['ABC123'],
     }
     const summary = formatSummary(data)
 
@@ -17,8 +17,8 @@ it('follows the format "activity: course name (course code)" when all data is pr
 
 it('follows the format "course name (course code)" when activity is absent', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['Lorem ipsum'],
-        kursKod: ['ABC123'],
+        kursnamn: ['Lorem ipsum'],
+        kurskod: ['ABC123'],
     }
     const summary = formatSummary(data)
 
@@ -28,7 +28,7 @@ it('follows the format "course name (course code)" when activity is absent', () 
 it('follows the format "activity: course name" when course code is present', () => {
     const data: TimeEditEventData = {
         activity: ['Föreläsning'],
-        kursNamn: ['Lorem ipsum'],
+        kursnamn: ['Lorem ipsum'],
     }
     const summary = formatSummary(data)
 
@@ -38,7 +38,7 @@ it('follows the format "activity: course name" when course code is present', () 
 it('follows the format "activity: course code" when course name is present', () => {
     const data: TimeEditEventData = {
         activity: ['Föreläsning'],
-        kursKod: ['ABC123'],
+        kurskod: ['ABC123'],
     }
     const summary = formatSummary(data)
 
@@ -56,7 +56,7 @@ it('follows the format "activity" when only activity is present', () => {
 
 it('follows the format "course name" when only course name is present', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['Lorem ipsum'],
+        kursnamn: ['Lorem ipsum'],
     }
     const summary = formatSummary(data)
 
@@ -65,7 +65,7 @@ it('follows the format "course name" when only course name is present', () => {
 
 it('follows the format "course code" when only course code is present', () => {
     const data: TimeEditEventData = {
-        kursKod: ['ABC123'],
+        kurskod: ['ABC123'],
     }
     const summary = formatSummary(data)
 
@@ -83,7 +83,7 @@ it('joins multiple activities', () => {
 
 it('joins multiple course codes', () => {
     const data: TimeEditEventData = {
-        kursKod: ['A', 'B'],
+        kurskod: ['A', 'B'],
     }
     const summary = formatSummary(data)
 
@@ -92,7 +92,7 @@ it('joins multiple course codes', () => {
 
 it('omits extra course names', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['A', 'B'],
+        kursnamn: ['A', 'B'],
     }
     const summary = formatSummary(data)
 
@@ -101,7 +101,7 @@ it('omits extra course names', () => {
 
 it('shortens course codes', () => {
     const data: TimeEditEventData = {
-        kursKod: ['ABC123_EXTRA_LONG_CODE456'],
+        kurskod: ['ABC123_EXTRA_LONG_CODE456'],
     }
     const summary = formatSummary(data)
 
@@ -110,8 +110,8 @@ it('shortens course codes', () => {
 
 it('uses "titel" if present', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['Lorem ipsum'],
-        kursKod: ['ABC123'],
+        kursnamn: ['Lorem ipsum'],
+        kurskod: ['ABC123'],
         titel: ['Spam'],
     }
     const summary = formatSummary(data)

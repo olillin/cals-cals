@@ -23,7 +23,7 @@
     "homepage": "https://cal.olillin.com",
     "dependencies": {
         "clsx": "^2.1.1",
-        "iamcal": "^3.0.3",
+        "iamcal": "^4.0.0",
         "next": "16.0.0",
         "react": "19.2.0",
         "react-dom": "19.2.0"

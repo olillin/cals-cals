@@ -13,6 +13,7 @@ import {
 } from '../timeedit'
 import { fromCamelCase } from '../Util'
 
+
 export default class TimeEditAdapter extends Adapter {
     createUrl(id: string): URL {
         const [category, filename] = id.split('.')
@@ -84,24 +85,27 @@ export default class TimeEditAdapter extends Adapter {
             })
             .then(text => {
                 if (!text) return undefined
-                return parseCalendar(text)
-            })
-            .then(calendar => {
-                if (!calendar) return undefined
+                let calendar: Calendar
+                try {
+                    calendar = parseCalendar(text)
+                } catch (e) {
+                    console.error(`Failed to parse TimeEdit calendar for extras, see calendar at '${url}'`)
+                    throw e
+                }
 
                 const groups: AvailableGroup[] = groupByOptions.map(option => ({
                     property: option,
                     values: {},
                 }))
 
-                calendar.getEvents().map(event => {
+                calendar.getEvents().forEach(event => {
                     const data = parseEventData(event)
                     for (let i = 0; i < groupByOptions.length; i++) {
                         const property = groupByOptions[i]
                         if (data[property]) {
                             const key = prepareSetForComparison(data[property])
                             const prettyValues =
-                                property === 'kursKod'
+                                property === 'kurskod'
                                     ? data[property].map(shortenCourseCode)
                                     : data[property]
                             groups[i].values[key] = prettyValues.join(', ')
@@ -267,7 +271,7 @@ export function formatDescription(
     const activityRow = data.activity ? `Aktivitet: ${data.activity[0]}` : null
     const course = formatCourse(data)
     const courseRow = course ? `Kurs: ${course}` : null
-    const classRow = data.klassKod ? 'Klass: ' + data.klassKod.join(', ') : null
+    const classRow = data.klasskod ? 'Klass: ' + data.klasskod.join(', ') : null
 
     const url =
         data.kartlänk ??
@@ -279,15 +283,15 @@ export function formatDescription(
 
     const knownKeys = [
         'activity',
-        'klassNamn',
-        'klassKod',
-        'kursNamn',
-        'kursKod',
+        'klassnamn',
+        'klasskod',
+        'kursnamn',
+        'kurskod',
         'titel',
         'lokalnamn',
         'kartlänk',
         'campus',
-        'antalDatorer',
+        'antaldatorer',
     ]
     const extraRows: string[] = []
     Object.entries(data).forEach(([key, value]) => {
@@ -349,8 +353,8 @@ export function formatLocation(
 }
 
 export function formatCourse(data: TimeEditEventData): string | null {
-    const courseNamePart = data.kursNamn ? data.kursNamn[0] : null
-    const joinedCourseCodes = data.kursKod
+    const courseNamePart = data.kursnamn ? data.kursnamn[0] : null
+    const joinedCourseCodes = data.kurskod
         ?.map(code => shortenCourseCode(code))
         .join(', ')
     const courseCodesPart = joinedCourseCodes
@@ -371,3 +375,4 @@ export function parseEventData(event: CalendarEvent): TimeEditEventData {
     const sources = [summary, location].filter(s => s !== undefined)
     return parseEventDataString(...sources)
 }
+

@@ -1,5 +1,4 @@
 import { UrlResponse } from './types'
-import { toCamelCase } from './Util'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const groupByOptions = (<T extends keyof TimeEditEventData>(
@@ -32,15 +31,15 @@ export interface TimeEditUrlResponse extends UrlResponse {
 export interface TimeEditEventData {
     [k: string]: string[] | undefined
     activity?: string[]
-    klassNamn?: string[]
-    klassKod?: string[]
-    kursNamn?: string[]
-    kursKod?: string[]
+    klassnamn?: string[]
+    klasskod?: string[]
+    kursnamn?: string[]
+    kurskod?: string[]
     titel?: string[]
     lokalnamn?: string[]
     kartlänk?: string[]
     campus?: string[]
-    antalDatorer?: string[]
+    antaldatorer?: string[]
 }
 
 export function parseEventDataString(...strings: string[]): TimeEditEventData {
@@ -52,7 +51,7 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
                 )
             )
         )
-        .map(match => [toCamelCase(match[1].trim()), match[2].trim()])
+        .map(match => [formatKey(match[1]), match[2].trim()])
 
     const groupedData: TimeEditEventData = dataPairs.reduce<{
         [k: string]: string[]
@@ -90,6 +89,12 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
     }
 
     return groupedData
+}
+
+export function formatKey(text: string): string {
+    const key = text.replaceAll(/\s/g, '').toLowerCase()
+    if (key === "aktivitet") return "activity"
+    return key
 }
 
 export function shortenCourseCode(code: string): string {

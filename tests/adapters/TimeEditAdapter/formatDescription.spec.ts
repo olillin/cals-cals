@@ -7,13 +7,13 @@ import {
 it('follows the format when all data is present', () => {
     const data: TimeEditEventData = {
         activity: ['Föreläsning'],
-        kursNamn: ['Lorem ipsum', 'dolor sit amet'],
-        kursKod: ['ABC123', 'DEF456'],
-        klassNamn: ['Foo', 'Spam'],
-        klassKod: ['KLASS-1', 'KLASS-2'],
+        kursnamn: ['Lorem ipsum', 'dolor sit amet'],
+        kurskod: ['ABC123', 'DEF456'],
+        klassnamn: ['Foo', 'Spam'],
+        klasskod: ['KLASS-1', 'KLASS-2'],
         lokalnamn: ['HA1'],
         campus: ['Johanneberg'],
-        antalDatorer: ['0'],
+        antaldatorer: ['0'],
         titel: ['Event title'],
         kartlänk: ['https://example.com'],
     }
@@ -29,10 +29,10 @@ Karta: https://example.com`
 
 it('omits activity when missing', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['Lorem ipsum', 'dolor sit amet'],
-        kursKod: ['ABC123', 'DEF456'],
-        klassNamn: ['Foo', 'Spam'],
-        klassKod: ['KLASS-1', 'KLASS-2'],
+        kursnamn: ['Lorem ipsum', 'dolor sit amet'],
+        kurskod: ['ABC123', 'DEF456'],
+        klassnamn: ['Foo', 'Spam'],
+        klasskod: ['KLASS-1', 'KLASS-2'],
         kartlänk: ['https://example.com'],
     }
     const description = formatDescription(data)
@@ -47,8 +47,8 @@ Karta: https://example.com`
 it('omits course when missing', () => {
     const data: TimeEditEventData = {
         activity: ['Föreläsning'],
-        klassNamn: ['Foo', 'Spam'],
-        klassKod: ['KLASS-1', 'KLASS-2'],
+        klassnamn: ['Foo', 'Spam'],
+        klasskod: ['KLASS-1', 'KLASS-2'],
         kartlänk: ['https://example.com'],
     }
     const description = formatDescription(data)
@@ -63,8 +63,8 @@ Karta: https://example.com`
 it('omits class when missing', () => {
     const data: TimeEditEventData = {
         activity: ['Föreläsning'],
-        kursNamn: ['Lorem ipsum', 'dolor sit amet'],
-        kursKod: ['ABC123', 'DEF456'],
+        kursnamn: ['Lorem ipsum', 'dolor sit amet'],
+        kurskod: ['ABC123', 'DEF456'],
         kartlänk: ['https://example.com'],
     }
     const description = formatDescription(data)
@@ -79,10 +79,10 @@ Karta: https://example.com`
 it('omits map when missing', () => {
     const data: TimeEditEventData = {
         activity: ['Föreläsning'],
-        kursNamn: ['Lorem ipsum', 'dolor sit amet'],
-        kursKod: ['ABC123', 'DEF456'],
-        klassNamn: ['Foo', 'Spam'],
-        klassKod: ['KLASS-1', 'KLASS-2'],
+        kursnamn: ['Lorem ipsum', 'dolor sit amet'],
+        kurskod: ['ABC123', 'DEF456'],
+        klassnamn: ['Foo', 'Spam'],
+        klasskod: ['KLASS-1', 'KLASS-2'],
     }
     const description = formatDescription(data)
 
@@ -121,18 +121,18 @@ it('does not use event URL property if "kartlänk" is present', () => {
 
 it('shows extra data at bottom', () => {
     const data: TimeEditEventData = {
-        unknownData: ['Lorem ipsum dolor sit amet'],
+        unknowndata: ['Lorem ipsum dolor sit amet'],
         extra: ['ABC'],
     }
 
     const description = formatDescription(data)
     expect(description).toBe(`Extra: ABC
-Unknown data: Lorem ipsum dolor sit amet`)
+Unknowndata: Lorem ipsum dolor sit amet`)
 })
 
 it('shortens course codes', () => {
     const data: TimeEditEventData = {
-        kursKod: ['ABC123_EXTRA_LONG_CODE456'],
+        kurskod: ['ABC123_EXTRA_LONG_CODE456'],
     }
     const description = formatDescription(data)
 

@@ -5,8 +5,8 @@ import {
 
 it('follows the format "course name (course code)" when all data is present', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['Lorem ipsum'],
-        kursKod: ['ABC123'],
+        kursnamn: ['Lorem ipsum'],
+        kurskod: ['ABC123'],
     }
     const course = formatCourse(data)
 
@@ -15,7 +15,7 @@ it('follows the format "course name (course code)" when all data is present', ()
 
 it('follows the format "course name" when only course name is present', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['Lorem ipsum'],
+        kursnamn: ['Lorem ipsum'],
     }
     const course = formatCourse(data)
 
@@ -24,7 +24,7 @@ it('follows the format "course name" when only course name is present', () => {
 
 it('follows the format "course code" when only course code is present', () => {
     const data: TimeEditEventData = {
-        kursKod: ['ABC123'],
+        kurskod: ['ABC123'],
     }
     const course = formatCourse(data)
 
@@ -33,7 +33,7 @@ it('follows the format "course code" when only course code is present', () => {
 
 it('joins multiple course codes', () => {
     const data: TimeEditEventData = {
-        kursKod: ['A', 'B'],
+        kurskod: ['A', 'B'],
     }
     const course = formatCourse(data)
 
@@ -42,7 +42,7 @@ it('joins multiple course codes', () => {
 
 it('omits extra course names', () => {
     const data: TimeEditEventData = {
-        kursNamn: ['A', 'B'],
+        kursnamn: ['A', 'B'],
     }
     const course = formatCourse(data)
 
@@ -51,7 +51,7 @@ it('omits extra course names', () => {
 
 it('shortens course codes', () => {
     const data: TimeEditEventData = {
-        kursKod: ['ABC123_EXTRA_LONG_CODE456'],
+        kurskod: ['ABC123_EXTRA_LONG_CODE456'],
     }
     const course = formatCourse(data)
 

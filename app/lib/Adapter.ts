@@ -154,10 +154,13 @@ abstract class Adapter {
             try {
                 extra = await this.getExtras(new URL(String(originalUrl)))
             } catch (error) {
+                const message = `Failed to get extra information about URL: ${error instanceof Error ? error.message : error}`
+                console.error(message)
+                console.error(error)
                 return NextResponse.json(
                     {
                         error: {
-                            message: `Failed to get extra information about URL: ${error instanceof Error ? error.message : error}`,
+                            message: message,
                         },
                     },
                     {
