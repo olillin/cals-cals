@@ -6,9 +6,9 @@ export const groupByOptions = (<T extends keyof TimeEditEventData>(
 ): T[] => options)([
     'activity',
     'campus',
-    'kursKod',
+    'kurskod',
     'lokalnamn',
-    'klassKod',
+    'klasskod',
 ] as const)
 
 export type GroupByOption = (typeof groupByOptions)[number]

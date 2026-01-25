@@ -113,6 +113,43 @@ input[type='checkbox'].partial {
     display: none !important;
 }
 
+/* Page navigation */
+nav {
+    flex: 1;
+    height: 4em;
+    box-sizing: border-box;
+
+    display: flex;
+    border-radius: var(--border-radius);
+    background-color: #0a0a0a;
+}
+
+nav > a {
+    color: var(--foreground);
+    flex: 1;
+    text-align: center;
+    vertical-align: center;
+    text-transform: capitalize;
+    text-decoration: none;
+    border-radius: 0;
+    border: 2px solid transparent;
+}
+
+nav > .selected {
+    box-shadow:
+        inset var(--selected-color) 0 0 var(--glow-strength),
+        var(--selected-color) 0 0 var(--glow-strength);
+    border-radius: var(--border-radius);
+    border-color: var(--selected-color);
+    color: var(--selected-color);
+    z-index: 1;
+}
+
+nav > a:focus {
+    color: var(--selected-color);
+    z-index: 2;
+}
+
 /* Calendar selector */
 .calendar-grid {
     display: grid;
