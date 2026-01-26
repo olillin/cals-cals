@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto'
-import { PickerCalendar } from './types'
+import { PickerCalendar } from './picker'
 
 export interface RenderedPickerCalendar extends PickerCalendar {
     displayName: string

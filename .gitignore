@@ -5,9 +5,8 @@ temp/
 
 # Calendar data
 data/*
-!data/$schema/
+!data/schema/
 !data/calendars/
-
 data/calendars/*
 !data/calendars/.gitkeep
 

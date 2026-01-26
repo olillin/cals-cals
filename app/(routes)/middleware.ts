@@ -1,11 +1,10 @@
-import redirectsConfig from '@/data/redirects.json'
 import { NextRequest, NextResponse } from 'next/server'
-import type { Redirects } from '@/app/lib/types'
+import { type Redirects, readRedirects} from '@/app/lib/redirects'
 
 // Redirects
-const redirects: Redirects = redirectsConfig.redirects
-
 export function middleware(request: NextRequest) {
+    const redirects = readRedirects()
+
     if (request.url in redirects) {
         const newUrl = redirects[request.url]
         NextResponse.redirect(newUrl, { status: 301 })

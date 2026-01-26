@@ -1,8 +1,10 @@
 import { mergeCalendars } from '@/app/lib/Calendar'
-import { Calendar, load, parseCalendar } from 'iamcal'
+import { Calendar, parseCalendar } from 'iamcal'
 import { NextRequest, NextResponse } from 'next/server'
-import pickerConfig from '@/data/picker.json'
+import { Picker, readPicker } from '@/app/lib/picker'
 import { getCalendarFile } from '@/app/(routes)/c/[calendarName]/route'
+
+const pickerConfig: Picker = readPicker()
 
 export async function GET(
     request: NextRequest,

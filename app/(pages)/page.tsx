@@ -2,15 +2,21 @@ import {
     RenderedPicker,
     RenderedPickerCalendar,
 } from '@/app/lib/RenderedCalendarTree'
-import { Picker } from '@/app/lib/types'
-import pickerConfig from '@/data/picker.json'
+import { Picker, readPicker } from '@/app/lib/picker'
 import { parseCalendar } from 'iamcal'
 import { headers } from 'next/headers'
 import { getCalendarFile } from '../(routes)/c/[calendarName]/route'
 import CalendarPicker from '../ui/calendar/picker/CalendarPicker'
 import { formatKebabCase } from '../lib/Util'
+import PickerUnavailable from '../ui/calendar/picker/PickerUnavailable'
+
 
 export default async function Page() {
+    const pickerConfig = readPicker()
+    if (pickerConfig === undefined) {
+        return (<PickerUnavailable />)
+    }
+
     const picker = await renderPicker(pickerConfig)
 
     const hostHeader = (await headers()).get('host')

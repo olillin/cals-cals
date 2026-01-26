@@ -128,11 +128,14 @@ nav > a {
     color: var(--foreground);
     flex: 1;
     text-align: center;
-    vertical-align: center;
     text-transform: capitalize;
     text-decoration: none;
     border-radius: 0;
     border: 2px solid transparent;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 nav > .selected {

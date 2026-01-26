@@ -1,6 +1,6 @@
 'use client'
 
-import { PickerCalendar } from '@/app/lib/types'
+import { PickerCalendar } from '@/app/lib/picker'
 import clsx from 'clsx'
 import React, { ReactNode } from 'react'
 import {

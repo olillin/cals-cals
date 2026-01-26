@@ -14,7 +14,7 @@ import {
     TreeSelectedState,
 } from '@/app/lib/RenderedCalendarTree'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { PickerCalendar } from '../../../lib/types'
+import { PickerCalendar } from '@/app/lib/picker'
 import CalendarTree from './CalendarTree'
 import CalendarUrl from '../CalendarUrl'
 import ErrorPage from '../../ErrorPage'
