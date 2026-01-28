@@ -55,7 +55,7 @@ abstract class Adapter {
 
             let convertedCalendar: Calendar
             try {
-                convertedCalendar = this.convertCalendar(originalCalendar, req)
+                convertedCalendar = await this.convertCalendar(originalCalendar, req)
             } catch (error) {
                 res.status(500).json({
                     error: { message: `Failed to convert calendar: ${error}` },
@@ -195,7 +195,7 @@ abstract class Adapter {
      * @param req The context of the request to get this calendar.
      * @returns The converted calendar
      */
-    abstract convertCalendar(calendar: Calendar, req?: Request): Calendar
+    abstract convertCalendar(calendar: Calendar, req?: Request): Calendar | Promise<Calendar>
 
     /**
      * Provide extra information about the URL for this adapter.
