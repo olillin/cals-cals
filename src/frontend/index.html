@@ -103,6 +103,14 @@
             <span id="calendar-builder-error" class="error"></span>
 
             <div id="calendar-builder-output" class="calendar-builder-output">
+                <span class="checkbox-field">
+                    <input
+                        type="checkbox"
+                        id="add-exams"
+                        checked="true"
+                        onchange="updateBuilder()" />
+                    <label>Add exams</label>
+                </span>
                 <div id="builder-calendars" class="builder-calendars"></div>
 
                 <button id="add-group" class="add-group" onclick="addGroup()"></button>

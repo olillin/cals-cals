@@ -2,6 +2,7 @@ let calendarUrlIn: HTMLInputElement
 let builderError: HTMLSpanElement
 let builderOutput: HTMLDivElement
 let calendarsOut: HTMLDivElement
+let addExamsToggle: HTMLInputElement
 let addCalendarButton: HTMLButtonElement
 
 type GroupByOption = 'activity' | 'campus' | 'kursKod' | 'lokalnamn'
@@ -42,6 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     calendarsOut = document.getElementById(
         'builder-calendars'
     ) as HTMLInputElement
+    addExamsToggle = document.getElementById(
+        'add-exams'
+    ) as HTMLInputElement
     addCalendarButton = document.getElementById(
         'add-group'
     ) as HTMLButtonElement
@@ -53,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault()
         }
     })
+    // TODO: Add compatability with grouping activity "Tentamen"
     builderOutput.hidden = true
 })
 
@@ -131,6 +136,8 @@ function updateBuilder() {
         currentBuilderData === undefined || currentBuilderData.url === ''
     if (currentBuilderData === undefined) return
 
+    const addExams: boolean = addExamsToggle.checked
+
     addCalendarButton.innerText =
         currentCalendarGroups.length === 0 ? 'Group events' : 'Add calendar'
 
@@ -138,7 +145,7 @@ function updateBuilder() {
     calendarsOut.innerHTML = ''
 
     if (currentCalendarGroups.length === 0) {
-        const url = currentBuilderData.url
+        const url = currentBuilderData.url + (addExams ? '&addExams=1' : '')
         const urlContainer = createUrlContainer(url)
         calendarsOut.appendChild(urlContainer)
     } else {
