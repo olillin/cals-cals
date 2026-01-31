@@ -113,7 +113,8 @@ abstract class Adapter {
             let extra: object | undefined = undefined
             try {
                 const url = new URL(String(originalUrl))
-                const patchedCalendar: Calendar = await fetchCalendar(url)
+                const originalCalendar: Calendar = await fetchCalendar(url)
+                const patchedCalendar: Calendar = await this.patchCalendar(originalCalendar, req)
                 extra = await this.getExtras(patchedCalendar)
             } catch (error) {
                 const message = `Failed to get extra information about URL: ${error instanceof Error ? error.message : error}`
@@ -133,7 +134,14 @@ abstract class Adapter {
                     req.originalUrl.replace(/\/url.*$/, '')
             )
             // Add id query parameter
-            adapterUrl.search = '?id=' + encodeURIComponent(id)
+            adapterUrl.searchParams.set('id', id)
+
+            const requestQuery = req.originalUrl.split('?')[1]
+            const requestParams = new URLSearchParams(requestQuery)
+            requestParams.delete('url')
+            requestParams.forEach((value, key) => {
+                adapterUrl.searchParams.set(key, value)
+            })
 
             res.status(200).json({
                 id: id,
@@ -183,40 +191,6 @@ abstract class Adapter {
      */
     getExtras(calendar: Calendar): object | undefined | Promise<object | undefined> {
         return undefined
-    }
-
-    /**
-     * Fetch and patch a calendar from a URL using this adapter.
-     * @param url The URL to fetch the calendar from.
-     * @returns The calendar after being patched.
-     * @see {@link patchCalendar}
-     */
-    async fetchAndPatch(url: URL): Promise<Calendar> {
-        return fetch(url)
-            .then(response => {
-                if (!response.ok)
-                    throw new Error(`Failed to fetch calendar from '${url}'`)
-                if (
-                    !response.headers
-                        .get('Content-Type')
-                        ?.includes('text/calendar')
-                )
-                    throw new Error(
-                        `Received non-calendar response from '${url}'`
-                    )
-
-                return response.text()
-            })
-            .then(text => {
-                let calendar: Calendar
-                try {
-                    calendar = parseCalendar(text)
-                } catch (e) {
-                    console.error(`Failed to parse calendar from '${url}'`)
-                    throw e
-                }
-                return this.patchCalendar(calendar)
-            })
     }
 }
 

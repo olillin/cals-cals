@@ -1,9 +1,9 @@
 import { Request } from 'express'
-import { Calendar, CalendarDateTime, CalendarEvent, parseCalendar } from 'iamcal'
+import { Calendar, CalendarEvent } from 'iamcal'
 import Adapter from '../Adapter'
 import HashSlicer from '../slicers/HashSlicer'
 import Slicer, { EventGroup, useSlicer } from '../slicers/Slicer'
-import { Exam, ExamLocation, searchExam } from 'chalmers-search-exam'
+import { Exam, searchExam } from 'chalmers-search-exam'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const GroupByOptions: (keyof TimeEditEventData)[] = [
@@ -60,21 +60,12 @@ export default class TimeEditAdapter extends Adapter {
         return id
     }
 
-    override async convertCalendar(calendar: Calendar, req?: Request): Promise<Calendar> {
-        if (req?.query.group) {
-            const groupBy = parseGroupBy(req)
-            const allowedValues = parseAllowedValues(req)
-            const slicer = getGroupSlicer(groupBy, allowedValues)
+    override async patchCalendar(calendar: Calendar, req?: Request): Promise<Calendar> {
+        if (!req?.query.addExams) return calendar
 
-            // Include only the group which has events with the included values
-            const mask = 0b10
-            useSlicer(calendar, slicer, mask)
-        }
-
-        // Convert all events and get course codes
         const courseCodeSets: string[][] = []
         calendar.getEvents().forEach(event => {
-            const eventData = convertEvent(event)
+            const eventData = parseEventData(event)
             const courseCodes = eventData.kurskod?.map(shortenCourseCode)
             if (courseCodes === undefined) return
 
@@ -93,12 +84,27 @@ export default class TimeEditAdapter extends Adapter {
             courseCodeSets.push(courseCodes)
         })
 
-        // Optionally add exam events
-        if (req?.query.addExams) {
-            const groupedCourseCodes = courseCodeSets.map(s => [...s])
-            const examEvents = await createExamEvents([...groupedCourseCodes])
-            calendar.addComponents(examEvents)
+        const groupedCourseCodes = courseCodeSets.map(s => [...s])
+        const examEvents = await createExamEvents([...groupedCourseCodes])
+        calendar.addComponents(examEvents)
+
+        return calendar
+    }
+
+    override async convertCalendar(calendar: Calendar, req?: Request): Promise<Calendar> {
+        if (req?.query.group) {
+            const groupBy = parseGroupBy(req)
+            const allowedValues = parseAllowedValues(req)
+            const slicer = getGroupSlicer(groupBy, allowedValues)
+
+            // Include only the group which has events with the included values
+            const mask = 0b10
+            useSlicer(calendar, slicer, mask)
         }
+
+        // Convert all events
+        calendar.getEvents().forEach(event => convertEvent(event))
+
         return calendar
     }
 
@@ -229,9 +235,8 @@ export function prepareSetForComparison(value: string[]): string {
 /**
  * Convert a TimeEdit calendar event to a better formatted version.
  * @param event The event from the TimeEdit calendar.
- * @returns The parsed event data from the original event.
  */
-export function convertEvent(event: CalendarEvent): TimeEditEventData {
+export function convertEvent(event: CalendarEvent) {
     const eventData = parseEventData(event)
 
     const summary = formatSummary(eventData, event)
@@ -254,8 +259,6 @@ export function convertEvent(event: CalendarEvent): TimeEditEventData {
     } else {
         event.removeLocation()
     }
-
-    return eventData
 }
 
 export function formatSummary(
@@ -602,10 +605,9 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
     const locationUrl = getExamLocationUrl(exam.location)
     return new CalendarEvent(exam.id, exam.updated, exam.start)
         .setEnd(exam.end)
-        .setLocation(exam.location)
-        .setSummary(`Tentamen: ${exam.name} (${exam.courseCodes.join(', ')})`)
-        .setDescription(`Hitta din tentasal: ${locationUrl}
-Registrering: ${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`)
+        .setLocation(`Campus: ${exam.location}`)
+        .setSummary(`Aktivitet: Tentamen. Kurskod: ${exam.courseCodes.join(', ')}. Kursnamn: ${exam.name}. Registrering: ${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`)
+        .setProperty('URL', locationUrl)
 }
 
 /** 

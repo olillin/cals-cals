@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault()
         }
     })
+    addExamsToggle.addEventListener('toggle', event => {
+        setBuilderUrl()
+    })
     // TODO: Add compatability with grouping activity "Tentamen"
     builderOutput.hidden = true
 })
@@ -67,12 +70,19 @@ function setBuilderUrl() {
     const chosenAdapter = 'timeedit'
 
     const oldUrl = calendarUrlIn.value.trim()
+
     if (!oldUrl) {
         builderError.innerText = 'Please enter a URL'
         return
     }
 
-    fetch(`/adapter/${chosenAdapter}/url?url=${oldUrl}`, {
+    const searchParams = new URLSearchParams(`url=${oldUrl}`)
+    const addExams: boolean = addExamsToggle.checked
+    if (addExams) {
+        searchParams.append('addExams', '1')
+    }
+
+    fetch(`/adapter/${chosenAdapter}/url?${searchParams}`, {
         method: 'POST',
     })
         .then(response => {
@@ -136,8 +146,6 @@ function updateBuilder() {
         currentBuilderData === undefined || currentBuilderData.url === ''
     if (currentBuilderData === undefined) return
 
-    const addExams: boolean = addExamsToggle.checked
-
     addCalendarButton.innerText =
         currentCalendarGroups.length === 0 ? 'Group events' : 'Add calendar'
 
@@ -145,7 +153,7 @@ function updateBuilder() {
     calendarsOut.innerHTML = ''
 
     if (currentCalendarGroups.length === 0) {
-        const url = currentBuilderData.url + (addExams ? '&addExams=1' : '')
+        const url = currentBuilderData.url
         const urlContainer = createUrlContainer(url)
         calendarsOut.appendChild(urlContainer)
     } else {
