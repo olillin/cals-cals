@@ -23,14 +23,14 @@ export interface AvailableGroup {
 
 
 export default class TimeEditAdapter extends Adapter {
-    createUrl(id: string): URL {
+    override createUrl(id: string): URL {
         const [category, filename] = id.split('.')
         return new URL(
             `https://cloud.timeedit.net/chalmers/web/${category}/${filename}.ics`
         )
     }
 
-    getId(url: URL): string {
+    override getId(url: URL): string {
         const urlPattern =
             /^(https|webcal):\/\/cloud\.timeedit\.net\/\w+\/web\/\w+\/[^\/]+\.ics$/
         if (!urlPattern.test(url.href)) {
@@ -60,7 +60,7 @@ export default class TimeEditAdapter extends Adapter {
         return id
     }
 
-    async convertCalendar(calendar: Calendar, req?: Request): Promise<Calendar> {
+    override async convertCalendar(calendar: Calendar, req?: Request): Promise<Calendar> {
         if (req?.query.group) {
             const groupBy = parseGroupBy(req)
             const allowedValues = parseAllowedValues(req)
@@ -94,7 +94,7 @@ export default class TimeEditAdapter extends Adapter {
         })
 
         // Optionally add exam events
-        if (req?.query.addExam) {
+        if (req?.query.addExams) {
             const groupedCourseCodes = courseCodeSets.map(s => [...s])
             const examEvents = await createExamEvents([...groupedCourseCodes])
             calendar.addComponents(examEvents)
@@ -102,56 +102,30 @@ export default class TimeEditAdapter extends Adapter {
         return calendar
     }
 
-    getExtras(url: URL): Promise<object | undefined> {
-        return fetch(url)
-            .then(response => {
-                if (!response.ok)
-                    throw new Error('Failed to fetch TimeEdit calendar')
-                if (
-                    !response.headers
-                        .get('Content-Type')
-                        ?.includes('text/calendar')
-                )
-                    throw new Error(
-                        'Received non-calendar response from TimeEdit'
-                    )
+    override getExtras(calendar: Calendar, req?: Request): object {
+        const groups: AvailableGroup[] = GroupByOptions.map(option => ({
+            property: option,
+            values: {},
+        }))
 
-                return response.text()
-            })
-            .then(text => {
-                if (!text) return undefined
-                let calendar: Calendar
-                try {
-                    calendar = parseCalendar(text)
-                } catch (e) {
-                    console.error(`Failed to parse TimeEdit calendar for extras, see calendar at '${url}'`)
-                    throw e
+        calendar.getEvents().forEach(event => {
+            const data = parseEventData(event)
+            for (let i = 0; i < GroupByOptions.length; i++) {
+                const property = GroupByOptions[i]
+                if (data[property]) {
+                    const key = prepareSetForComparison(data[property])
+                    const prettyValues =
+                        property === 'kurskod'
+                            ? data[property].map(shortenCourseCode)
+                            : data[property]
+                    groups[i].values[key] = prettyValues.join(', ')
                 }
+            }
+        })
 
-                const groups: AvailableGroup[] = GroupByOptions.map(option => ({
-                    property: option,
-                    values: {},
-                }))
-
-                calendar.getEvents().forEach(event => {
-                    const data = parseEventData(event)
-                    for (let i = 0; i < GroupByOptions.length; i++) {
-                        const property = GroupByOptions[i]
-                        if (data[property]) {
-                            const key = prepareSetForComparison(data[property])
-                            const prettyValues =
-                                property === 'kurskod'
-                                    ? data[property].map(shortenCourseCode)
-                                    : data[property]
-                            groups[i].values[key] = prettyValues.join(', ')
-                        }
-                    }
-                })
-
-                return {
-                    groups: groups,
-                }
-            })
+        return {
+            groups: groups,
+        }
     }
 }
 

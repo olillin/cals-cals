@@ -42,7 +42,7 @@ abstract class Adapter {
             }
 
             let originalCalendar: Calendar | undefined =
-                await this.fetchCalendarFromId(String(id), timeout).catch(
+                await fetchCalendar(this.createUrl(String(id)), timeout).catch(
                     error => {
                         const errorResponse = error as ErrorResponse
                         res.status(errorResponse.status).json({
@@ -53,9 +53,21 @@ abstract class Adapter {
                 )
             if (!originalCalendar) return
 
+            // Patch calendar
+            let patchedCalendar: Calendar
+            try {
+                patchedCalendar = await this.patchCalendar(originalCalendar, req)
+            } catch (error) {
+                res.status(500).json({
+                    error: { message: `Failed to patch calendar: ${error}` },
+                })
+                return
+            }
+
+            // Convert calendar
             let convertedCalendar: Calendar
             try {
-                convertedCalendar = await this.convertCalendar(originalCalendar, req)
+                convertedCalendar = await this.convertCalendar(patchedCalendar, req)
             } catch (error) {
                 res.status(500).json({
                     error: { message: `Failed to convert calendar: ${error}` },
@@ -69,52 +81,6 @@ abstract class Adapter {
                 serializedConvertedCalendar
             )
         }
-    }
-
-    async fetchCalendarFromId(
-        id: string,
-        timeoutMilliseconds: number = 5000
-    ): Promise<Calendar> {
-        const url = this.createUrl(String(id))
-
-        // Fetch with timeout
-        const timeoutPromise = new Promise<null>(resolve =>
-            setTimeout(() => {
-                resolve(null)
-            }, timeoutMilliseconds)
-        )
-        const fetchPromise = fetch(url)
-        const response = await Promise.race([timeoutPromise, fetchPromise])
-        if (response === null) {
-            // Fetch timed out
-            throw new ErrorResponse(504, `Calendar provider did not respond`)
-        }
-
-        if (!response.ok) {
-            throw new ErrorResponse(
-                502,
-                `Calendar provider gave not ok response`
-            )
-        }
-
-        const contentType = response.headers.get('Content-Type')
-        // If missing header, assume it is fine and fail while parsing in worst case
-        const isCalendar = contentType?.includes('text/calendar') ?? true
-        if (!isCalendar)
-            throw new ErrorResponse(
-                502,
-                `Response has invalid content type. Expected 'text/calendar' but got ${contentType}`
-            )
-
-        const calendarText = await response.text()
-        let calendar: Calendar | undefined = undefined
-        try {
-            calendar = await parseCalendar(calendarText)
-        } catch (error) {
-            throw new ErrorResponse(500, `Failed to parse calendar: ${error}`)
-        }
-
-        return calendar
     }
 
     /**
@@ -146,7 +112,9 @@ abstract class Adapter {
 
             let extra: object | undefined = undefined
             try {
-                extra = await this.getExtras(new URL(String(originalUrl)))
+                const url = new URL(String(originalUrl))
+                const patchedCalendar: Calendar = await fetchCalendar(url)
+                extra = await this.getExtras(patchedCalendar)
             } catch (error) {
                 const message = `Failed to get extra information about URL: ${error instanceof Error ? error.message : error}`
                 res.status(500).json({
@@ -191,20 +159,119 @@ abstract class Adapter {
 
     /**
      * Convert a calendar according to the rules of this adapter.
-     * @param calendar The original calendar from the URL.
+     * @param calendar The calendar from the URL which may have been patched.
      * @param req The context of the request to get this calendar.
-     * @returns The converted calendar
+     * @returns The converted calendar.
+     * @see {@link patchCalendar}
      */
     abstract convertCalendar(calendar: Calendar, req?: Request): Calendar | Promise<Calendar>
 
     /**
-     * Provide extra information about the URL for this adapter.
-     * @param url The URL to the calendar.
+     * Patch a calendar before getting extra information about it.
+     * @param calendar The original calendar.
+     * @param req The context of the request to get this calendar.
+     * @returns The patched calendar.
+     */
+    patchCalendar(calendar: Calendar, req?: Request): Calendar | Promise<Calendar> {
+        return calendar
+    }
+
+    /**
+     * Provide extra information about a calendar relevant for this adapter.
+     * @param calendar The parsed calendar.
      * @returns The extra information as a JSON-serializable object, or undefined if no extra information is available.
      */
-    getExtras(url: URL): object | undefined | Promise<object | undefined> {
+    getExtras(calendar: Calendar): object | undefined | Promise<object | undefined> {
         return undefined
     }
+
+    /**
+     * Fetch and patch a calendar from a URL using this adapter.
+     * @param url The URL to fetch the calendar from.
+     * @returns The calendar after being patched.
+     * @see {@link patchCalendar}
+     */
+    async fetchAndPatch(url: URL): Promise<Calendar> {
+        return fetch(url)
+            .then(response => {
+                if (!response.ok)
+                    throw new Error(`Failed to fetch calendar from '${url}'`)
+                if (
+                    !response.headers
+                        .get('Content-Type')
+                        ?.includes('text/calendar')
+                )
+                    throw new Error(
+                        `Received non-calendar response from '${url}'`
+                    )
+
+                return response.text()
+            })
+            .then(text => {
+                let calendar: Calendar
+                try {
+                    calendar = parseCalendar(text)
+                } catch (e) {
+                    console.error(`Failed to parse calendar from '${url}'`)
+                    throw e
+                }
+                return this.patchCalendar(calendar)
+            })
+    }
 }
+
+/**
+ * Fetch and parse a calendar from a URL.
+ * @param url The URL to fetch from.
+ * @param timeoutMilliseconds How long to wait before timing out the fetch.
+ * @retuns The parsed calendar.
+ * @throws If the fetch fails.
+ * @throws If the request does not return a calendar.
+ * @throws If the parse fails.
+ */
+async function fetchCalendar(
+    url: URL,
+    timeoutMilliseconds: number = 5000
+): Promise<Calendar> {
+    // Fetch with timeout
+    const timeoutPromise = new Promise<null>(resolve =>
+        setTimeout(() => {
+            resolve(null)
+        }, timeoutMilliseconds)
+    )
+    const fetchPromise = fetch(url)
+    const response = await Promise.race([timeoutPromise, fetchPromise])
+    if (response === null) {
+        // Fetch timed out
+        throw new ErrorResponse(504, `Calendar provider did not respond`)
+    }
+
+    if (!response.ok) {
+        throw new ErrorResponse(
+            502,
+            `Calendar provider gave not ok response`
+        )
+    }
+
+    const contentType = response.headers.get('Content-Type')
+    // If missing header, assume it is fine and fail while parsing in worst case
+    const isCalendar = contentType?.includes('text/calendar') ?? true
+    if (!isCalendar)
+        throw new ErrorResponse(
+            502,
+            `Response has invalid content type. Expected 'text/calendar' but got ${contentType}`
+        )
+
+    const calendarText = await response.text()
+    let calendar: Calendar | undefined = undefined
+    try {
+        calendar = parseCalendar(calendarText)
+    } catch (error) {
+        throw new ErrorResponse(500, `Failed to parse calendar: ${error}`)
+    }
+
+    return calendar
+}
+
 
 export default Adapter
