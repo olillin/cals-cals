@@ -14,9 +14,10 @@ export default function Page() {
             <details>
                 <summary>Where do I find the URL?</summary>
                 <p>
-                    Go to your TimeEdit schedule and click the "Subscribe"
-                    ("Prenumerera") button near the top right of the schedule.
-                    Copy the URL from the dialog that appears.
+                    Go to your TimeEdit schedule and click the
+                    &quot;Subscribe&quot; (&quot;Prenumerera&quot;) button near
+                    the top right of the schedule. Copy the URL from the dialog
+                    that appears.
                 </p>
             </details>
 

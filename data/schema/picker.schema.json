@@ -4,31 +4,32 @@
     "properties": {
         "calendars": {
             "type": "array",
+            "description": "The calendars in the picker.",
             "items": {
                 "type": "object",
                 "properties": {
                     "filename": {
                         "type": "string",
-                        "description": "The filename of this calendar in /c/",
+                        "description": "The filename of the calendar in `data/calendars/`.",
                         "pattern": ".+\\.ics$"
                     },
                     "id": {
                         "type": "integer",
-                        "description": "Which bit in a merged calendar id that this calendar corresponds to, from least significant. An id of -1 means that this calendar is always hidden and cannot be merged",
+                        "description": "Which bit in a merged calendar bitmask that the calendar corresponds to, from least significant. An id of -1 means that the calendar is always hidden and cannot be merged.",
                         "minimum": -1
                     },
                     "order": {
                         "type": "integer",
-                        "description": "How to order this calendar, lower numbers are shown first",
+                        "description": "The position in the picker relative to other calendars, lower numbers are shown first.",
                         "default": 0
                     },
                     "category": {
                         "type": "string",
-                        "description": "The heading of this calendar. Subheadings can be added seperated by /"
+                        "description": "The category of the calendar. Subcategories are delimited by `/`."
                     },
                     "hidden": {
                         "type": "boolean",
-                        "description": "If true, this calendar will not be shown in the picker, but can still be used in the URL",
+                        "description": "If true, the calendar will not be shown in the picker, but is still served in /c and can be merged.",
                         "default": false
                     }
                 },

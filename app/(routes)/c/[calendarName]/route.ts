@@ -1,14 +1,15 @@
 'use server'
 
-import { getSafeFilename } from '@/app/lib/Util'
+import { getSafeFilename } from '@/app/lib/util'
 import { promises as fs } from 'fs'
 import { NextRequest, NextResponse } from 'next/server'
 import path from 'path'
 
+// eslint-disable-next-line jsdoc/require-jsdoc
 export async function GET(
-    request: NextRequest,
+    _request: NextRequest,
     { params }: { params: Promise<{ calendarName: string }> }
-) {
+): Promise<NextResponse> {
     const { calendarName } = await params
 
     const safeFilename = getSafeFilename(calendarName)
@@ -23,7 +24,7 @@ export async function GET(
                 'Cache-Control': 'no-store, max-age=0',
             },
         })
-    } catch (err) {
+    } catch {
         return NextResponse.json(
             { error: { message: 'Not found' } },
             { status: 404 }
@@ -31,15 +32,18 @@ export async function GET(
     }
 }
 
-export async function getCalendarFile(safeFilename: string): Promise<string> {
+/**
+ * Read a calendar file from `/data/calendars`.
+ * @param filename The name of the calendar, does not need the file extension.
+ * @returns The content of the file.
+ */
+export async function getCalendarFile(filename: string): Promise<string> {
+    const safeFilename = getSafeFilename(filename)
     const filePath = path.join(
         process.cwd(),
         'data',
         'calendars',
         `${safeFilename}`
     )
-
-    const fileContents = await fs.readFile(filePath, 'utf8')
-
-    return fileContents
+    return fs.readFile(filePath, 'utf8')
 }

@@ -4,7 +4,7 @@ import {
     TimeEditUrlResponse,
 } from '@/app/lib/timeedit'
 import clsx from 'clsx'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import CalendarUrl from '../CalendarUrl'
 
 export default function CalendarGroups({
@@ -19,10 +19,6 @@ export default function CalendarGroups({
 
     const groupByOptions = getGroupByOptions(data.extra.groups)
     const groupByProperty = groupByOptions[groupBy]
-
-    useEffect(() => {
-        setGroups([])
-    }, [groupBy])
 
     if (groups.length === 0) {
         const initialGroups: BuilderGroup[] = [
@@ -45,7 +41,10 @@ export default function CalendarGroups({
                 <GroupBySelector
                     options={groupByOptions}
                     selected={groupBy}
-                    setGroupBy={newGroupBy => setGroupBy(newGroupBy)}
+                    setGroupBy={newGroupBy => {
+                        setGroupBy(newGroupBy)
+                        setGroups([])
+                    }}
                 />
             )}
 

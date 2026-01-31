@@ -1,15 +1,26 @@
-import { mergeCalendars } from '@/app/lib/Calendar'
-import { Calendar, parseCalendar } from 'iamcal'
+import { mergeCalendars } from '@/app/lib/merge'
+import { parseCalendar } from 'iamcal'
 import { NextRequest, NextResponse } from 'next/server'
 import { Picker, readPicker } from '@/app/lib/picker'
 import { getCalendarFile } from '@/app/(routes)/c/[calendarName]/route'
 
-const pickerConfig: Picker = readPicker()
-
+// eslint-disable-next-line jsdoc/require-jsdoc
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ bitmask: string }> }
-) {
+): Promise<NextResponse> {
+    const pickerConfig: Picker | undefined = readPicker()
+    if (pickerConfig === undefined) {
+        return NextResponse.json(
+            {
+                error: {
+                    message: 'Service unavailable, picker is not configured',
+                },
+            },
+            { status: 503 }
+        )
+    }
+
     const appendOriginName = !['false', '0', 'f'].includes(
         String(
             request.nextUrl.searchParams.get('origin') ?? false
@@ -50,23 +61,14 @@ export async function GET(
     }
 
     const calendars = await Promise.all(
-        calendarNames.map(
-            name =>
-                new Promise<Calendar>((resolve, reject) => {
-                    try {
-                        return getCalendarFile(name)
-                            .then(content => parseCalendar(content))
-                            .then(resolve)
-                            .catch(reject)
-                    } catch (reason) {
-                        reject(reason)
-                    }
-                })
+        calendarNames.map(name =>
+            getCalendarFile(name).then(content => parseCalendar(content))
         )
     )
 
-    const mergedCalendar = (
-        await mergeCalendars(calendars, appendOriginName)
+    const mergedCalendar = mergeCalendars(
+        calendars,
+        appendOriginName
     ).serialize()
 
     return new NextResponse(mergedCalendar, {
@@ -78,6 +80,11 @@ export async function GET(
     })
 }
 
-export function dec2bin(dec: number) {
+/**
+ * Convert a decimal number to binary.
+ * @param dec The decimal number.
+ * @returns The binary as a string of 1s and 0s.
+ */
+export function dec2bin(dec: number): string {
     return (dec >>> 0).toString(2)
 }

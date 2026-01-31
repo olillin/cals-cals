@@ -35,7 +35,7 @@ export default function RootLayout({
             <body className="antialiased">
                 <main>
                     <section className="introduction">
-                        <h1>Welcome to Cal's cals!</h1>
+                        <h1>Welcome to Cal&apos;s cals!</h1>
                         <p>
                             A better calendar experience at Chalmers, made and
                             maintained by&nbsp;

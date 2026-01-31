@@ -1,23 +1,21 @@
 'use server'
 
 import { getCalendarFile } from '@/app/(routes)/c/[calendarName]/route'
-import { CalendarNameResponse } from '@/app/lib/types'
-import { getSafeFilename } from '@/app/lib/Util'
+import { CalendarNameResponse } from '@/app/lib/responses'
 import { parseCalendar } from 'iamcal'
 import { NextRequest, NextResponse } from 'next/server'
 
+// eslint-disable-next-line jsdoc/require-jsdoc
 export async function GET(
-    request: NextRequest,
+    _request: NextRequest,
     { params }: { params: Promise<{ calendarName: string }> }
-) {
+): Promise<NextResponse> {
     const { calendarName } = await params
-
-    const safeFilename = getSafeFilename(calendarName)
 
     let fileContents: string
     try {
-        fileContents = await getCalendarFile(safeFilename)
-    } catch (err) {
+        fileContents = await getCalendarFile(calendarName)
+    } catch {
         return NextResponse.json(
             {
                 error: { message: 'Not found' },
@@ -28,9 +26,9 @@ export async function GET(
 
     let parsedCalendarName: string | undefined
     try {
-        const calendar = await parseCalendar(fileContents)
+        const calendar = parseCalendar(fileContents)
         parsedCalendarName = calendar.getCalendarName()
-    } catch (err) {
+    } catch {
         return NextResponse.json(
             {
                 error: {

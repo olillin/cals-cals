@@ -11,7 +11,7 @@ export default function PageNavigation() {
             <Link
                 href={'/'}
                 className={clsx({
-                    selected: pathname === "/",
+                    selected: pathname === '/',
                 })}
             >
                 Calendar picker
@@ -19,7 +19,7 @@ export default function PageNavigation() {
             <Link
                 href={'/builder'}
                 className={clsx({
-                    selected: pathname === "/builder",
+                    selected: pathname === '/builder',
                 })}
             >
                 Calendar builder

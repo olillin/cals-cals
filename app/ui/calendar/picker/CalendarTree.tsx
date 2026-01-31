@@ -1,5 +1,3 @@
-'use client'
-
 import { PickerCalendar } from '@/app/lib/picker'
 import clsx from 'clsx'
 import React, { ReactNode } from 'react'
@@ -7,7 +5,7 @@ import {
     RenderedCalendarTree,
     RenderedPickerCalendar,
     TreeSelectedState,
-} from '../../../lib/RenderedCalendarTree'
+} from '@/app/lib/calendarTree'
 import {} from './CalendarPicker'
 
 export default function CalendarTree({

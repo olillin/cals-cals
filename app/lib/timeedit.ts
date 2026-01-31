@@ -1,4 +1,6 @@
-import { UrlResponse } from './types'
+import { CalendarEvent } from 'iamcal'
+import { UrlResponse } from './responses'
+import { capitalize } from './util'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const groupByOptions = (<T extends keyof TimeEditEventData>(
@@ -11,6 +13,7 @@ export const groupByOptions = (<T extends keyof TimeEditEventData>(
     'klasskod',
 ] as const)
 
+/** An option to group calendar events by. */
 export type GroupByOption = (typeof groupByOptions)[number]
 
 export interface AvailableGroup {
@@ -42,6 +45,25 @@ export interface TimeEditEventData {
     antaldatorer?: string[]
 }
 
+/**
+ * Parse the TimeEdit event data from an event.
+ * @param event The event from TimeEdit.
+ * @returns The event data parsed from the event.
+ */
+export function parseEventData(event: CalendarEvent): TimeEditEventData {
+    const summary = event.getSummary()
+    const location = event.getLocation()
+    const sources = [summary, location].filter(s => s !== undefined)
+    return parseEventDataString(...sources)
+}
+
+/**
+ * Parse the TimeEdit event data from text.
+ * @param strings One or more strings to parse in TimeEdit format.
+ * @returns The event data parsed from the string(s).
+ * @example
+ * parseEventDataString("Activity: Lab. Campus: Johanneberg")
+ */
 export function parseEventDataString(...strings: string[]): TimeEditEventData {
     const dataPairs = strings
         .flatMap(s =>
@@ -70,33 +92,199 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
     // Deduplicate rooms and compuses
     const rooms = groupedData['lokalnamn']
     const campuses = groupedData['campus']
-    if (campuses && new Set(campuses).size <= 1) {
+    if (campuses !== undefined && new Set(campuses).size <= 1) {
         campuses.splice(1)
-    } else if (rooms && campuses && rooms.length === campuses.length) {
-        const toRemove: number[] = []
-        for (let i = rooms.length - 1; i > 0; i--) {
-            for (let j = i - 1; j >= 0; j--) {
-                if (rooms[j] === rooms[i] && campuses[j] === campuses[i]) {
-                    toRemove.push(i)
-                    break
-                }
+    }
+    if (
+        rooms === undefined ||
+        campuses === undefined ||
+        rooms.length !== campuses.length
+    ) {
+        return groupedData
+    }
+
+    // Delete all duplicate room and campus pairs from the end
+    const toRemove: number[] = []
+    for (let i = rooms.length - 1; i > 0; i--) {
+        for (let j = i - 1; j >= 0; j--) {
+            if (rooms[j] === rooms[i] && campuses[j] === campuses[i]) {
+                toRemove.push(i)
+                break
             }
         }
-        toRemove.forEach(i => {
-            rooms.splice(i, 1)
-            campuses.splice(i, 1)
-        })
     }
+    toRemove.forEach(i => {
+        rooms.splice(i, 1)
+        campuses.splice(i, 1)
+    })
 
     return groupedData
 }
 
+/**
+ * Format a key in TimeEdit event data.
+ * @param text The key to format.
+ * @returns The formatted key.
+ */
 export function formatKey(text: string): string {
     const key = text.replaceAll(/\s/g, '').toLowerCase()
-    if (key === "aktivitet") return "activity"
+    if (key === 'aktivitet') return 'activity'
     return key
 }
 
+/**
+ * Shorten the course code by removing the course occasion code.
+ * @param code The long course code.
+ * @returns The sortened course code.
+ */
 export function shortenCourseCode(code: string): string {
     return code.split('_')[0]
+}
+
+/**
+ * Create an event summary from TimeEdit event data.
+ * @param data The parsed event data.
+ * @param context The original event as context.
+ * @returns The event summary or null if there is no summary.
+ */
+export function createEventSummary(
+    data: TimeEditEventData,
+    context?: CalendarEvent
+): string | null {
+    if (data.titel) {
+        return data.titel.join(', ')
+    }
+
+    const coursePart = formatCourse(data)
+    const activityPart = data.activity
+        ? `${data.activity.join(', ')}${coursePart !== null ? ':' : ''}`
+        : null
+
+    const summary = [activityPart, coursePart]
+        .filter(part => part !== null)
+        .join(' ')
+
+    return summary === '' ? (context?.getSummary() ?? null) : summary
+}
+
+/**
+ * Create an event description from TimeEdit event data.
+ * @param data The parsed event data.
+ * @param context The original event as context.
+ * @returns The event description or null if there is no description.
+ */
+export function createEventDescription(
+    data: TimeEditEventData,
+    context?: CalendarEvent
+): string | null {
+    const activityRow = data.activity ? `Aktivitet: ${data.activity[0]}` : null
+    const course = formatCourse(data)
+    const courseRow = course ? `Kurs: ${course}` : null
+    const classRow = data.klasskod ? 'Klass: ' + data.klasskod.join(', ') : null
+
+    const url =
+        data.kartlänk ??
+        (context?.hasProperty('URL')
+            ? [context.getProperty('URL')!.value]
+            : null)
+
+    const mapRow = url ? 'Karta: ' + url.join(', ') : null
+
+    const knownKeys = [
+        'activity',
+        'klassnamn',
+        'klasskod',
+        'kursnamn',
+        'kurskod',
+        'titel',
+        'lokalnamn',
+        'kartlänk',
+        'campus',
+        'antaldatorer',
+    ]
+    const extraRows: string[] = []
+    Object.entries(data).forEach(([key, value]) => {
+        if (knownKeys.includes(key)) return
+        extraRows.push(`${capitalize(key)}: ${value?.join(', ')}`)
+    })
+    extraRows.sort()
+
+    const description = [activityRow, courseRow, classRow, mapRow, ...extraRows]
+        .filter(row => row !== null)
+        .join('\n')
+
+    return description === ''
+        ? (context?.getDescription() ?? null)
+        : description
+}
+
+/**
+ * Create an event location from TimeEdit event data.
+ * @param data The parsed event data.
+ * @param context The original event as context.
+ * @returns The event location or null if there is no location.
+ */
+export function createEventLocation(
+    data: TimeEditEventData,
+    context?: CalendarEvent
+): string | null {
+    if (data.titel && data.titel[0].includes('utanför Hubben')) {
+        return 'Utanför Hubben'
+    }
+
+    const rooms = data.lokalnamn
+    const campuses = data.campus
+
+    // Edge cases for incomplete data
+    if (!rooms || !campuses) {
+        if (rooms) return rooms.join(', ')
+        if (campuses) return campuses.join(', ')
+        return context?.getLocation() ?? null
+    }
+
+    if (rooms.length !== campuses.length) {
+        // Array lengths are mismatched. Campus of each room cannot be inferred with confidence.
+        const uniqueCampuses: string[] = []
+        campuses.forEach(campus => {
+            if (!uniqueCampuses.includes(campus)) uniqueCampuses.push(campus)
+        })
+        return `${rooms.join(', ')} (${uniqueCampuses.join(', ')})`
+    }
+
+    // Group rooms by campus
+    const groupedRooms: { [k: string]: string[] } = {}
+    const orderedCampuses: string[] = []
+    rooms.forEach((room, i) => {
+        const campus = campuses[i] ?? campuses[0]
+        if (!groupedRooms[campus]) groupedRooms[campus] = []
+        groupedRooms[campus].push(room)
+
+        if (!orderedCampuses.includes(campus)) orderedCampuses.push(campus)
+    })
+
+    return orderedCampuses
+        .map(campus => groupedRooms[campus].join(', ') + ` (${campus})`)
+        .join('. ')
+}
+
+/**
+ * Format information about the course from TimeEdit event data.
+ * @param data The event data.
+ * @returns The course information or null if there is none.
+ */
+export function formatCourse(data: TimeEditEventData): string | null {
+    const courseNamePart = data.kursnamn ? data.kursnamn[0] : null
+    const joinedCourseCodes = data.kurskod
+        ?.map(code => shortenCourseCode(code))
+        .join(', ')
+    const courseCodesPart = joinedCourseCodes
+        ? courseNamePart
+            ? `(${joinedCourseCodes})`
+            : joinedCourseCodes
+        : null
+    const course = [courseNamePart, courseCodesPart]
+        .filter(part => part !== null)
+        .join(' ')
+
+    return course === '' ? null : course
 }

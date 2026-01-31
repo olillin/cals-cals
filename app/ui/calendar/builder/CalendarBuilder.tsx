@@ -1,15 +1,13 @@
 'use client'
 
 import { TimeEditUrlResponse } from '@/app/lib/timeedit'
-import { UrlResponse } from '@/app/lib/types'
+import { UrlResponse } from '@/app/lib/responses'
 import { useEffect, useRef, useState } from 'react'
 import CalendarBuilderOutput from './CalendarBuilderOutput'
 
 export type AdapterChoice = 'timeedit'
 
 export default function CalendarBuilder() {
-    const [chosenAdapter, setChosenAdapter] =
-        useState<AdapterChoice>('timeedit')
     const [inputUrl, setInputUrl] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [urlData, setUrlData] = useState<UrlResponse | null>(null)
@@ -17,7 +15,7 @@ export default function CalendarBuilder() {
     useEffect(() => {
         if (!inputUrl) return
 
-        fetchUrl(chosenAdapter, inputUrl)
+        fetchUrl('timeedit', inputUrl)
             .then(data => {
                 setUrlData(data)
             })

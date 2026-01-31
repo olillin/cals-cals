@@ -1,26 +1,35 @@
-import {
-    RenderedPicker,
-    RenderedPickerCalendar,
-} from '@/app/lib/RenderedCalendarTree'
+import { RenderedPicker, RenderedPickerCalendar } from '@/app/lib/calendarTree'
 import { Picker, readPicker } from '@/app/lib/picker'
 import { parseCalendar } from 'iamcal'
 import { headers } from 'next/headers'
 import { getCalendarFile } from '../(routes)/c/[calendarName]/route'
 import CalendarPicker from '../ui/calendar/picker/CalendarPicker'
-import { formatKebabCase } from '../lib/Util'
+import { formatKebabCase } from '@/app/lib/util'
 import PickerUnavailable from '../ui/calendar/picker/PickerUnavailable'
-
+import { buildTree, RenderedCalendarTree } from '../lib/calendarTree'
+import ErrorPage from '../ui/ErrorPage'
 
 export default async function Page() {
     const pickerConfig = readPicker()
     if (pickerConfig === undefined) {
-        return (<PickerUnavailable />)
+        return <PickerUnavailable />
     }
 
     const picker = await renderPicker(pickerConfig)
 
     const hostHeader = (await headers()).get('host')
     const urlBase = 'webcal://' + (hostHeader ?? 'cal.olillin.com')
+
+    // Load picker tree
+    let tree: RenderedCalendarTree | null
+    try {
+        const calendars = picker.calendars
+        tree = buildTree(calendars)
+    } catch (error) {
+        console.error('Failed to build picker tree, see error below.')
+        console.log(error)
+        tree = null
+    }
 
     return (
         <section className="calendar-picker">
@@ -33,7 +42,13 @@ export default async function Page() {
                 in your calendar application of choice.
             </p>
 
-            <CalendarPicker picker={picker} urlBase={urlBase} />
+            {tree !== null ? (
+                <CalendarPicker initialTree={tree} urlBase={urlBase} />
+            ) : (
+                <ErrorPage>
+                    Failed to load calendar picker, try again later
+                </ErrorPage>
+            )}
         </section>
     )
 }

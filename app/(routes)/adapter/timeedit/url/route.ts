@@ -1,6 +1,6 @@
 'use server'
 
-import TimeEditAdapter from '@/app/lib/adapters/TimeEditAdapter'
+import TimeEditAdapter from '@/app/lib/adapter/TimeEditAdapter'
 
 const timeedit = new TimeEditAdapter()
 

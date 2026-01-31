@@ -1,59 +1,30 @@
 'use client'
 
 import {
-    buildTree,
     cloneTree,
     getSelectedCalendars,
     getTreeCalendars,
     getTrees,
     propagateSelectionUp,
     RenderedCalendarTree,
-    RenderedPicker,
     RenderedPickerCalendar,
     selectAll,
     TreeSelectedState,
-} from '@/app/lib/RenderedCalendarTree'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+} from '@/app/lib/calendarTree'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { PickerCalendar } from '@/app/lib/picker'
 import CalendarTree from './CalendarTree'
 import CalendarUrl from '../CalendarUrl'
-import ErrorPage from '../../ErrorPage'
-import { CalendarTreeSkeleton } from '../../skeletons'
 
 export default function CalendarPicker({
-    picker,
+    initialTree,
     urlBase,
 }: {
-    picker: RenderedPicker
+    initialTree: RenderedCalendarTree
     urlBase: string
 }) {
-    const [tree, setTree] = useState<RenderedCalendarTree | null>(null)
-    const [error, setError] = useState(false)
+    const [tree, setTree] = useState<RenderedCalendarTree>(initialTree)
     const [showOrigin, setShowOrigin] = useState(true)
-
-    // Load picker tree
-    useEffect(() => {
-        try {
-            const calendars = picker.calendars
-            setTree(buildTree(calendars))
-        } catch (error) {
-            console.error('Failed to build picker tree, see error below.')
-            console.log(error)
-            setError(true)
-        }
-    }, [picker])
-
-    if (error) {
-        return (
-            <ErrorPage>
-                Failed to load calendar picker, try again later
-            </ErrorPage>
-        )
-    }
-
-    if (!tree) {
-        return <CalendarTreeSkeleton />
-    }
 
     const selectedCalendars = getSelectedCalendars(tree)
     const showOriginCheckbox = selectedCalendars.length >= 2
@@ -94,7 +65,7 @@ export default function CalendarPicker({
 
 function selectCalendar(
     treeCopy: RenderedCalendarTree,
-    setTree: Dispatch<SetStateAction<RenderedCalendarTree | null>>
+    setTree: Dispatch<SetStateAction<RenderedCalendarTree>>
 ) {
     return (selectedCalendar: RenderedPickerCalendar) => {
         if (!treeCopy) return
@@ -113,7 +84,7 @@ function selectCalendar(
 
 function selectTree(
     treeCopy: RenderedCalendarTree,
-    setTree: Dispatch<SetStateAction<RenderedCalendarTree | null>>
+    setTree: Dispatch<SetStateAction<RenderedCalendarTree>>
 ) {
     return (selectedTree: RenderedCalendarTree) => {
         if (!treeCopy) return

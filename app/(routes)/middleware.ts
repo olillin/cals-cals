@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { type Redirects, readRedirects} from '@/app/lib/redirects'
+import { readRedirects } from '@/app/lib/redirects'
 
-// Redirects
-export function middleware(request: NextRequest) {
+// eslint-disable-next-line jsdoc/require-jsdoc
+export function middleware(request: NextRequest): NextResponse {
     const redirects = readRedirects()
 
     if (request.url in redirects) {

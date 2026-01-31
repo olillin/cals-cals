@@ -4,7 +4,7 @@
     "properties": {
         "redirects": {
             "type": "object",
-            "description": "Multiple redirects, where each key is the path to redirect from and the value the redirected path",
+            "description": "A mapping of redirects, where each key is the path to redirect from and the value the destination path",
             "additionalProperties": {
                 "type": "string"
             }
