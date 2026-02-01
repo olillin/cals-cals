@@ -41,7 +41,7 @@ export default function CalendarTree({
             )}
 
             {/* Calendar buttons */}
-            <div className="grid grid-cols-auto gap-4">
+            <div className="calendar-grid">
                 {sortedCalendars.map(calendar => (
                     <CalendarButton
                         calendar={calendar}
@@ -104,13 +104,19 @@ export function SelectAllButton({
                 }
             }}
         >
-            <input
-                type="checkbox"
-                className={clsx({
-                    partial: selected === TreeSelectedState.PARTIAL,
+            <button
+                className={clsx('false-checkbox', {
+                    mixed: selected === TreeSelectedState.PARTIAL,
+                    checked: isChecked,
                 })}
-                checked={isChecked}
-                readOnly
+                role="checkbox"
+                aria-label="Select all"
+                aria-checked={selected === TreeSelectedState.FULL
+                    ? 'true'
+                    : selected === TreeSelectedState.PARTIAL
+                        ? 'mixed'
+                        : 'false'
+                }
             />
             <label className="no-select">Select all</label>
         </span>
@@ -132,9 +138,8 @@ export function CalendarButton({
         <button
             data-calendar-id={calendar.id.toString()}
             data-calendar-filename={calendar.filename}
-            className={clsx('border-2 border-foreground', {
-                'border-glow duration-(--duration-glow-on)': selected,
-                'duration-(--duration-glow-off)': !selected,
+            className={clsx('calendar-item', {
+                'selected': selected,
             })}
             onClick={onClick}
         >

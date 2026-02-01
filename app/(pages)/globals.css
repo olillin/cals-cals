@@ -81,11 +81,13 @@ button {
     cursor: pointer;
 }
 
-input[type='checkbox'] {
+.false-checkbox,
+input[type=checkbox] {
     -webkit-appearance: none; /* For WebKit browsers */
     -moz-appearance: none; /* For Firefox */
     appearance: none;
     margin: 0;
+    padding: 0;
     vertical-align: middle;
     width: 1.5em;
     height: 1.5em;
@@ -96,17 +98,23 @@ input[type='checkbox'] {
     transition-duration: 0.3s;
 }
 
-input[type='checkbox']:checked {
+.false-checkbox.checked,
+input[type=checkbox]:checked {
     background-color: var(--selected-color);
     border-color: var(--selected-color);
     box-shadow: var(--selected-color) 0 0 var(--glow-strength) 0;
 }
 
-input[type='checkbox'].partial {
+.false-checkbox.mixed,
+input[type='checkbox'].mixed {
     border-color: var(--selected-color);
     box-shadow:
         var(--selected-color) 0 0 var(--glow-strength) 0,
         inset var(--selected-color) 0 0 var(--glow-strength) 0;
+}
+
+label {
+    cursor: text;
 }
 
 *[hidden] {
@@ -199,12 +207,18 @@ nav > a:focus {
     color: #fff;
 }
 
+.calendar-url,
+.calendar-url * {
+    cursor: copy;
+}
+
 .calendar-url input {
     background: none;
     border: none;
     padding: 0;
     margin: 0;
     color: inherit;
+    outline: none;
 }
 
 .copy-calendar-url {
@@ -214,9 +228,8 @@ nav > a:focus {
     margin: 0;
     border-radius: 0;
     border: none;
-    cursor: pointer;
     background-color: transparent;
-    background-image: url('/icons/copy.png');
+    background-image: url('/symbols/copy.png');
     background-position: center;
     background-size: contain;
 }
@@ -309,7 +322,7 @@ nav > a:focus {
     border: none;
     border-radius: 0;
 
-    background: url('/icons/close.png');
+    background: url('/symbols/close.png');
     background-size: 100%;
 
     padding: 0;
@@ -344,7 +357,7 @@ nav > a:focus {
     border: none;
     border-radius: 0;
 
-    background: url('/icons/down.png');
+    background: url('/symbols/down.png');
     background-size: 100%;
 
     padding: 0;
@@ -356,7 +369,7 @@ nav > a:focus {
     border: none;
     border-radius: 0;
 
-    background: url('/icons/up.png');
+    background: url('/symbols/up.png');
     background-size: 100%;
 
     padding: 0;
@@ -465,6 +478,7 @@ nav > a:focus {
 /* Generic rules */
 summary {
     font-weight: bold;
+    cursor: pointer;
 }
 
 details {
@@ -494,7 +508,7 @@ footer {
     content: '';
     height: 1.2em;
     width: 1.2em;
-    background: transparent url('/icons/pixelnheart.png') no-repeat;
+    background: transparent url('/symbols/pixelnheart.png') no-repeat;
     background-size: 1em;
     background-position: bottom;
 

@@ -3,27 +3,27 @@
 import Link from 'next/link'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
+import { ReactNode } from 'react'
 
 export default function PageNavigation() {
-    const pathname = usePathname()
     return (
         <nav>
-            <Link
-                href={'/'}
-                className={clsx({
-                    selected: pathname === '/',
-                })}
-            >
+            <NavigationLink href={'/'}>
                 Calendar picker
-            </Link>
-            <Link
-                href={'/builder'}
-                className={clsx({
-                    selected: pathname === '/builder',
-                })}
-            >
+            </NavigationLink>
+            <NavigationLink href={'/builder'}>
                 Calendar builder
-            </Link>
+            </NavigationLink>
         </nav>
+    )
+}
+
+function NavigationLink({href, children}: {href: string, children: ReactNode}) {
+    const pathname = usePathname()
+    const selected: boolean = pathname === href
+    return (
+        selected
+            ? <a className="selected">{children}</a>
+            : <Link href={href}>{children}</Link>
     )
 }
