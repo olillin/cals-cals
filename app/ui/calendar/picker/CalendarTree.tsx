@@ -111,11 +111,12 @@ export function SelectAllButton({
                 })}
                 role="checkbox"
                 aria-label="Select all"
-                aria-checked={selected === TreeSelectedState.FULL
-                    ? 'true'
-                    : selected === TreeSelectedState.PARTIAL
-                        ? 'mixed'
-                        : 'false'
+                aria-checked={
+                    selected === TreeSelectedState.FULL
+                        ? 'true'
+                        : selected === TreeSelectedState.PARTIAL
+                          ? 'mixed'
+                          : 'false'
                 }
             />
             <label className="no-select">Select all</label>
@@ -139,7 +140,7 @@ export function CalendarButton({
             data-calendar-id={calendar.id.toString()}
             data-calendar-filename={calendar.filename}
             className={clsx('calendar-item', {
-                'selected': selected,
+                selected: selected,
             })}
             onClick={onClick}
         >

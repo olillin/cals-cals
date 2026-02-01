@@ -82,7 +82,7 @@ button {
 }
 
 .false-checkbox,
-input[type=checkbox] {
+input[type='checkbox'] {
     -webkit-appearance: none; /* For WebKit browsers */
     -moz-appearance: none; /* For Firefox */
     appearance: none;
@@ -99,7 +99,7 @@ input[type=checkbox] {
 }
 
 .false-checkbox.checked,
-input[type=checkbox]:checked {
+input[type='checkbox']:checked {
     background-color: var(--selected-color);
     border-color: var(--selected-color);
     box-shadow: var(--selected-color) 0 0 var(--glow-strength) 0;

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
             {
                 url: '/media.png',
                 alt: "Cal's cals banner",
-            }
+            },
         ],
     },
     twitter: {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
             {
                 url: '/media.png',
                 alt: "Cal's cals banner",
-            }
+            },
         ],
     },
     icons: {

@@ -22,9 +22,9 @@ export default function CalendarUrl({ url }: { url: string }) {
 
     return (
         <span
-        className="calendar-url"
-        id="calendar-url-section"
-        onClick={copyUrl}
+            className="calendar-url"
+            id="calendar-url-section"
+            onClick={copyUrl}
         >
             <input
                 ref={input}
@@ -36,9 +36,7 @@ export default function CalendarUrl({ url }: { url: string }) {
             <span ref={copyNotice} className="copy-notice">
                 <span className="no-select">Copied!</span>
             </span>
-            <button
-                className="copy-calendar-url"
-            ></button>
+            <button className="copy-calendar-url"></button>
         </span>
     )
 }

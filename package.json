@@ -8,7 +8,8 @@
         "build": "next build",
         "start": "next start",
         "test": "vitest",
-        "format": "prettier . --write -l",
+        "format": "prettier . --write --list-different",
+        "checkformat": "prettier . --check",
         "lint": "eslint"
     },
     "repository": {
