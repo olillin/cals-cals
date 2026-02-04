@@ -1,6 +1,6 @@
 {
     "name": "cals-cals",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Calendar website for better calendars at Chalmers",
     "scripts": {
         "clean": "rimraf ./dist",
@@ -25,7 +25,7 @@
     "homepage": "https://cal.olillin.com",
     "dependencies": {
         "express": "^4.21.1",
-        "iamcal": "^3.1.0",
+        "iamcal": "^4.0.0",
         "rimraf": "^6.0.1",
         "typescript": "^5.5.4",
         "webcal-adapter": "file:"
