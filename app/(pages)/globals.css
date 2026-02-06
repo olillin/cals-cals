@@ -3,8 +3,12 @@
 :root {
     --background: #111111;
     --foreground: #ffffff;
+    --primary-color: #00edda;
+    --on-primary-color: #111111;
+    --primary-container: #006159;
+    --on-primary-container: #ffffff;
+
     --border-radius: 1.25em;
-    --selected-color: #00edda;
     --glow-strength: 0.5em;
 }
 
@@ -29,23 +33,29 @@ body {
 
     width: 100vw;
     overflow-x: hidden;
+    margin: 0;
 }
 
 main {
-    margin-block: 8em;
+    margin-block: 6em;
+}
+
+.center-column {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-block: 2em 8em;
+    position: relative;
 }
 
 @media screen and (min-width: 800px) {
-    main,
-    footer {
+    .center-column {
         width: 700px;
         margin-inline: auto;
     }
 }
 
 @media screen and (max-width: 800px) {
-    main,
-    footer {
+    .center-column {
         width: auto;
         margin-inline: 2em;
     }
@@ -100,17 +110,17 @@ input[type='checkbox'] {
 
 .false-checkbox.checked,
 input[type='checkbox']:checked {
-    background-color: var(--selected-color);
-    border-color: var(--selected-color);
-    box-shadow: var(--selected-color) 0 0 var(--glow-strength) 0;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: var(--primary-color) 0 0 var(--glow-strength) 0;
 }
 
 .false-checkbox.mixed,
 input[type='checkbox'].mixed {
-    border-color: var(--selected-color);
+    border-color: var(--primary-color);
     box-shadow:
-        var(--selected-color) 0 0 var(--glow-strength) 0,
-        inset var(--selected-color) 0 0 var(--glow-strength) 0;
+        var(--primary-color) 0 0 var(--glow-strength) 0,
+        inset var(--primary-color) 0 0 var(--glow-strength) 0;
 }
 
 label {
@@ -148,16 +158,16 @@ nav > a {
 
 nav > .selected {
     box-shadow:
-        inset var(--selected-color) 0 0 var(--glow-strength),
-        var(--selected-color) 0 0 var(--glow-strength);
+        inset var(--primary-color) 0 0 var(--glow-strength),
+        var(--primary-color) 0 0 var(--glow-strength);
     border-radius: var(--border-radius);
-    border-color: var(--selected-color);
-    color: var(--selected-color);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
     z-index: 1;
 }
 
 nav > a:focus {
-    color: var(--selected-color);
+    color: var(--primary-color);
     z-index: 2;
 }
 
@@ -173,11 +183,11 @@ nav > a:focus {
 }
 
 .calendar-item.selected {
-    border-color: var(--selected-color);
+    border-color: var(--primary-color);
     box-shadow:
-        inset var(--selected-color) 0 0 var(--glow-strength) 0,
-        var(--selected-color) 0 0 var(--glow-strength) 0;
-    color: var(--selected-color);
+        inset var(--primary-color) 0 0 var(--glow-strength) 0,
+        var(--primary-color) 0 0 var(--glow-strength) 0;
+    color: var(--primary-color);
     transition-duration: 0.5s;
 }
 
@@ -433,16 +443,16 @@ nav > a:focus {
 
 .group-by-selector > .selected {
     box-shadow:
-        inset var(--selected-color) 0 0 var(--glow-strength),
-        var(--selected-color) 0 0 var(--glow-strength);
+        inset var(--primary-color) 0 0 var(--glow-strength),
+        var(--primary-color) 0 0 var(--glow-strength);
     border-radius: var(--border-radius);
-    border-color: var(--selected-color);
-    color: var(--selected-color);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
     z-index: 1;
 }
 
 .group-by-selector > button:focus {
-    color: var(--selected-color);
+    color: var(--primary-color);
     z-index: 2;
 }
 
@@ -475,6 +485,94 @@ nav > a:focus {
     }
 }
 
+/* Update notice */
+.update-notice {
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    border-radius: var(--border-radius);
+    padding: 1.5em 1.5em 0.5em;
+    position: relative;
+
+    &.closed {
+        cursor: pointer;
+    }
+}
+
+.update-notice .notice-title {
+    display: block;
+    margin-right: 2em;
+}
+
+.update-notice .notice-body {
+    margin-block: 1em;
+}
+
+.update-notice.closed .notice-body {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    gap: 2em;
+}
+
+.update-notice.closed p {
+    margin-block: 0;
+}
+
+.update-notice.closed p {
+    white-space: nowrap;
+    overflow: hidden;
+
+    /* Fade end of text */
+    background: linear-gradient(
+        to right,
+        var(--on-primary-container) 50%,
+        transparent 100%
+    );
+    background-clip: text;
+    /* Safari/Chrome prefix (required for older versions) */
+    -webkit-background-clip: text;
+    /* Make the text itself transparent so the gradient shows through */
+    color: transparent;
+}
+
+.update-notice.closed .read-more {
+    display: block;
+    font-weight: bold;
+    margin-top: 2em;
+    /* font-style: italic; */
+    margin-right: 0.5em;
+}
+
+.close-button-container {
+    cursor: default;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3.5em;
+    height: 3.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-button {
+    position: absolute;
+    bottom: 0.5em;
+    left: 0.5em;
+
+    cursor: pointer;
+    box-sizing: border-box;
+    border: none;
+    padding: 0;
+    height: 1em;
+    width: 1em;
+    padding: 1em;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0;
+}
+
 /* Generic rules */
 summary {
     font-weight: bold;
@@ -486,21 +584,23 @@ details {
 }
 
 a {
-    color: var(--selected-color);
+    color: var(--primary-color);
 }
 
 footer {
-    margin-top: 5em;
-    margin-bottom: 2em;
+    position: absolute;
+    height: 4em;
+    bottom: 2em;
+    width: 100%;
 
     display: flex;
     flex-flow: column nowrap;
     gap: 1em;
     align-items: center;
+}
 
-    & span {
-        text-align: center;
-    }
+footer > span {
+    text-align: center;
 }
 
 .pixelnheart::after {

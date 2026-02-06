@@ -48,13 +48,33 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="antialiased">
-                <UpdateNotice />
-                <main>
-                    <section className="introduction">
-                        <h1>Welcome to Cal&apos;s cals!</h1>
-                        <p>
-                            A better calendar experience at Chalmers, created
-                            and maintained by&nbsp;
+                <div className="center-column">
+                    <UpdateNotice />
+                    <main>
+                        <section className="introduction">
+                            <h1>Welcome to Cal&apos;s cals!</h1>
+                            <p>
+                                A better calendar experience at Chalmers,
+                                created and maintained by&nbsp;
+                                <a
+                                    href="https://wiki.chalmers.it/Cal"
+                                    target="_blank"
+                                >
+                                    Cal
+                                </a>
+                                .
+                            </p>
+                        </section>
+
+                        <PageNavivgation />
+
+                        {children}
+                    </main>
+
+                    <footer>
+                        <span>
+                            Made with <span className="pixelnheart"></span>{' '}
+                            by&nbsp;
                             <a
                                 href="https://wiki.chalmers.it/Cal"
                                 target="_blank"
@@ -62,33 +82,19 @@ export default function RootLayout({
                                 Cal
                             </a>
                             .
-                        </p>
-                    </section>
-
-                    <PageNavivgation />
-
-                    {children}
-                </main>
-
-                <footer>
-                    <span>
-                        Made with <span className="pixelnheart"></span> by&nbsp;
-                        <a href="https://wiki.chalmers.it/Cal" target="_blank">
-                            Cal
-                        </a>
-                        .
-                    </span>
-                    <span>
-                        Is something wrong or could be improved?&nbsp;
-                        <a
-                            href="https://github.com/olillin/cals-cals/issues"
-                            target="_blank"
-                        >
-                            Leave an issue on GitHub
-                        </a>
-                        !
-                    </span>
-                </footer>
+                        </span>
+                        <span>
+                            Is something wrong or could be improved?&nbsp;
+                            <a
+                                href="https://github.com/olillin/cals-cals/issues"
+                                target="_blank"
+                            >
+                                Leave an issue on GitHub
+                            </a>
+                            !
+                        </span>
+                    </footer>
+                </div>
             </body>
         </html>
     )
