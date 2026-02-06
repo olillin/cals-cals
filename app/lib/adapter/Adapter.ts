@@ -187,12 +187,9 @@ abstract class Adapter {
                 )
             }
 
-            console.log(`Host: ${request.headers.get('host')} ${request.url}`)
-            const adapterUrl = new URL(
-                request.url
-                    .replace(/\/[^/]*$/, '')
-                    .replace(/https?:\/\//, 'webcal://')
-            )
+            const host = request.headers.get('host') ?? 'cal.olillin.com'
+            const path = request.nextUrl.pathname.replace(/\/[^/]*$/, '')
+            const adapterUrl = new URL('webcal://' + host + path)
             // Add id query parameter
             adapterUrl.search = '?id=' + encodeURIComponent(id)
 
