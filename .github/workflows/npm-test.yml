@@ -1,18 +1,70 @@
-# This workflow will run tests using node
+# This workflow builds, tests, lints and checks formatting using Node.js and pnpm
 
-name: Test Node.js Package
+name: Node.js CI
 
 on:
     push:
+
+env:
+    NODE_VERSION: 20
 
 jobs:
     build:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+            - name: Install Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v4
               with:
-                  node-version: 20
-            - run: npm ci -D
-            - run: npm run build
-            - run: npm test
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: pnpm
+            - name: Install pnpm dependencies
+              run: pnpm install
+            - run: pnpm build
+    test:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+            - name: Install Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: pnpm
+            - name: Install pnpm dependencies
+              run: pnpm install
+            - run: pnpm test
+    lint:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+            - name: Install Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: pnpm
+            - name: Install pnpm dependencies
+              run: pnpm install
+            - run: pnpm lint
+    check-format:
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+            - name: Install Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: pnpm
+            - name: Install pnpm dependencies
+              run: pnpm install
+            - run: pnpm checkformat

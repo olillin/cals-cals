@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "calendars": {
+            "type": "array",
+            "description": "The calendars in the picker.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "filename": {
+                        "type": "string",
+                        "description": "The filename of the calendar in `data/calendars/`.",
+                        "pattern": ".+\\.ics$"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "description": "Which bit in a merged calendar bitmask that the calendar corresponds to, from least significant. An id of -1 means that the calendar is always hidden and cannot be merged.",
+                        "minimum": -1
+                    },
+                    "order": {
+                        "type": "integer",
+                        "description": "The position in the picker relative to other calendars, lower numbers are shown first.",
+                        "default": 0
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "The category of the calendar. Subcategories are delimited by `/`."
+                    },
+                    "hidden": {
+                        "type": "boolean",
+                        "description": "If true, the calendar will not be shown in the picker, but is still served in /c and can be merged.",
+                        "default": false
+                    }
+                },
+                "required": ["filename", "id"]
+            }
+        }
+    },
+    "required": ["calendars"]
+}
