@@ -1,4 +1,5 @@
 import PageNavivgation from '@/app/ui/PageNavigation'
+import UpdateNotice from '@/app/ui/UpdateNotice'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
@@ -47,6 +48,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="antialiased">
+                <UpdateNotice />
                 <main>
                     <section className="introduction">
                         <h1>Welcome to Cal&apos;s cals!</h1>
