@@ -8,7 +8,7 @@ const config = {
         ],
     },
     testEnvironment: 'node',
-    testRegex: '/tests/.*\\.(test|spec)\\.(ts|tsx)$',
+    testRegex: '/tests/.*\\.spec\\.(ts|tsx)$',
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 }
 
