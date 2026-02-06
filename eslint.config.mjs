@@ -6,7 +6,6 @@ import nextVitals from 'eslint-config-next/core-web-vitals'
 import nextTs from 'eslint-config-next/typescript'
 import { fileURLToPath } from 'node:url'
 import { includeIgnoreFile } from '@eslint/compat'
-import globals from 'globals'
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
 
@@ -27,7 +26,6 @@ const eslintConfig = defineConfig([
     {
         files: ['**/*.ts'],
         languageOptions: {
-            globals: globals.node,
             parserOptions: {
                 project: ['./tsconfig.json', './tsconfig.test.json'],
                 tsconfigRootDir: import.meta.dirname,

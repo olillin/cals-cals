@@ -1,4 +1,4 @@
-# This workflow will run tests using node
+# This workflow runs tests using Node.js and pnpm
 
 name: Test Node.js Package
 
@@ -10,11 +10,15 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
-            - run: npm ci -D
-            - run: npm run build
-            - run: npm test
-            - run: npm run lint
-            - run: npm run checkformat
+            - run: pnpm install
+            - run: pnpm build
+            - run: pnpm test
+            - run: pnpm lint
+            - run: pnpm checkformat
