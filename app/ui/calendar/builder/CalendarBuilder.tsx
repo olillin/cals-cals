@@ -11,14 +11,17 @@ export default function CalendarBuilder() {
     const [inputUrl, setInputUrl] = useState<string | null>(null)
     const [addExams, setAddExams] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
-    const [urlData, setUrlData] = useState<UrlResponse | null>(null)
+    const [urlData, setUrlData] = useState<TimeEditUrlResponse | null>(null)
 
     useEffect(() => {
         if (!inputUrl) return
 
-        fetchUrl('timeedit', inputUrl, addExams)
+        const params = addExams
+            ? new URLSearchParams([['addExams', '1']])
+            : undefined
+        fetchAdapterUrl('timeedit', inputUrl, params)
             .then(data => {
-                setUrlData(data)
+                setUrlData(data as TimeEditUrlResponse)
             })
             .catch(reason => {
                 console.error(reason)
@@ -33,6 +36,7 @@ export default function CalendarBuilder() {
         if (!value || value.trim() === '') {
             setError('Please enter a URL')
         } else {
+            setUrlData(null)
             setError(null)
             setInputUrl(value)
         }
@@ -40,24 +44,23 @@ export default function CalendarBuilder() {
 
     return (
         <div>
+            <div className="calendar-builder-options">
+                <h3>Options</h3>
+                <span className="checkbox-field">
+                    <input
+                        type="checkbox"
+                        id="add-exams"
+                        name="add-exams"
+                        defaultChecked={true}
+                        onChange={event => {
+                            setUrlData(null)
+                            setAddExams(event.target.checked)
+                        }}
+                    />
+                    <label htmlFor="add-exams">Add exams (tentamen)</label>
+                </span>
+            </div>
             <span className="calendar-builder-input">
-                <div>
-                    <h3>Options</h3>
-                    <div>
-                        <span className="checkbox-field">
-                            <input
-                                type="checkbox"
-                                id="add-exams"
-                                name="add-exams"
-                                defaultChecked={true}
-                                onChange={event => {
-                                    setAddExams(event.target.checked)
-                                }}
-                            />
-                            <label htmlFor="add-exams">Add exams</label>
-                        </span>
-                    </div>
-                </div>
                 <div>
                     <label htmlFor="calendar-builder-input-url">
                         TimeEdit Calendar URL
@@ -88,9 +91,7 @@ export default function CalendarBuilder() {
 
             {inputUrl &&
                 (urlData ? (
-                    <CalendarBuilderOutput
-                        data={urlData as TimeEditUrlResponse}
-                    />
+                    <CalendarBuilderOutput data={urlData} />
                 ) : (
                     <span>Loading...</span>
                 ))}
@@ -98,17 +99,14 @@ export default function CalendarBuilder() {
     )
 }
 
-function fetchUrl(
+function fetchAdapterUrl(
     adapter: AdapterChoice,
     inputUrl: string,
-    addExams: boolean = false
+    params?: URLSearchParams
 ): Promise<UrlResponse> {
     return new Promise((resolve, reject) => {
-        const searchParams = new URLSearchParams()
-        searchParams.append('url', inputUrl)
-        if (addExams) {
-            searchParams.append('addExams', '1')
-        }
+        const searchParams = new URLSearchParams(params)
+        searchParams.set('url', inputUrl)
 
         fetch(`/adapter/${adapter}/url?${searchParams.toString()}`, {
             method: 'POST',
