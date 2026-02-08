@@ -1,4 +1,4 @@
-import { Calendar, CalendarEvent, parseCalendar } from 'iamcal'
+import { Calendar, CalendarEvent } from 'iamcal'
 import { NextRequest } from 'next/server'
 import Adapter from './Adapter'
 import HashSlicer from '../slicer/HashSlicer'
@@ -8,6 +8,7 @@ import {
     createEventDescription,
     createEventLocation,
     createEventSummary,
+    createExamEvents,
     groupByOptions,
     parseEventData,
     shortenCourseCode,
@@ -15,14 +16,14 @@ import {
 } from '../timeedit'
 
 export default class TimeEditAdapter extends Adapter {
-    createUrl(id: string): URL {
+    override createUrl(id: string): URL {
         const [category, filename] = id.split('.')
         return new URL(
             `https://cloud.timeedit.net/chalmers/web/${category}/${filename}.ics`
         )
     }
 
-    getId(url: URL): string {
+    override getId(url: URL): string {
         const urlPattern =
             /^(https|webcal):\/\/cloud\.timeedit\.net\/\w+\/web\/\w+\/[^/]+\.ics$/
         if (!urlPattern.test(url.href)) {
@@ -52,7 +53,47 @@ export default class TimeEditAdapter extends Adapter {
         return id
     }
 
-    convertCalendar(calendar: Calendar, req?: NextRequest): Calendar {
+    override async patchCalendar(
+        calendar: Calendar,
+        req?: NextRequest
+    ): Promise<Calendar> {
+        const addExams =
+            req !== undefined &&
+            !['0', 'false', 'f'].includes(
+                req.nextUrl.searchParams.get('addExams') ?? '0'
+            )
+        if (!addExams) return calendar
+
+        const courseCodeSets: string[][] = []
+        calendar.getEvents().forEach(event => {
+            const eventData = parseEventData(event)
+            const courseCodes = eventData.kurskod?.map(shortenCourseCode)
+            if (courseCodes === undefined) return
+
+            for (const courseCodeSet of courseCodeSets) {
+                for (const courseCode of courseCodes) {
+                    if (courseCodeSet.includes(courseCode)) {
+                        courseCodes.forEach(c => {
+                            if (!courseCodeSet.includes(c))
+                                courseCodeSet.push(c)
+                        })
+                        return
+                    }
+                }
+            }
+            // New course code set
+            courseCodeSets.push(courseCodes)
+        })
+
+        const groupedCourseCodes = courseCodeSets.map(s => [...s])
+        const examEvents = await createExamEvents([...groupedCourseCodes])
+        console.log(examEvents[0].serialize())
+        calendar.addComponents(examEvents)
+
+        return calendar
+    }
+
+    override convertCalendar(calendar: Calendar, req?: NextRequest): Calendar {
         if (req?.nextUrl.searchParams.get('group')) {
             const groupBy = parseGroupBy(req)
             const allowedValues = parseAllowedValues(req)
@@ -67,60 +108,32 @@ export default class TimeEditAdapter extends Adapter {
         return calendar
     }
 
-    getExtras(url: URL): Promise<TimeEditUrlExtras | undefined> {
-        return fetch(url)
-            .then(response => {
-                if (!response.ok)
-                    throw new Error('Failed to fetch TimeEdit calendar')
-                if (
-                    !response.headers
-                        .get('Content-Type')
-                        ?.includes('text/calendar')
-                )
-                    throw new Error(
-                        'Received non-calendar response from TimeEdit'
-                    )
+    override getExtras(calendar: Calendar): TimeEditUrlExtras {
+        const groups: AvailableGroup[] = groupByOptions.map(option => ({
+            property: option,
+            values: {},
+        }))
 
-                return response.text()
-            })
-            .then(text => {
-                if (!text) return undefined
-                let calendar: Calendar
-                try {
-                    calendar = parseCalendar(text)
-                } catch (e) {
-                    console.error(
-                        `Failed to parse TimeEdit calendar for extras, see calendar at '${url}'`
-                    )
-                    throw e
+        calendar.getEvents().forEach(event => {
+            const data = parseEventData(event)
+            for (let i = 0; i < groupByOptions.length; i++) {
+                const property = groupByOptions[i]
+                if (data[property]) {
+                    const key = prepareSetForComparison(data[property])
+                    const prettyValues =
+                        property === 'kurskod'
+                            ? data[property].map(shortenCourseCode)
+                            : data[property]
+                    groups[i].values[key] = prettyValues.join(', ')
                 }
+            }
+        })
 
-                const groups: AvailableGroup[] = groupByOptions.map(option => ({
-                    property: option,
-                    values: {},
-                }))
+        const extras: TimeEditUrlExtras = {
+            groups: groups,
+        }
 
-                calendar.getEvents().forEach(event => {
-                    const data = parseEventData(event)
-                    for (let i = 0; i < groupByOptions.length; i++) {
-                        const property = groupByOptions[i]
-                        if (data[property]) {
-                            const key = prepareSetForComparison(data[property])
-                            const prettyValues =
-                                property === 'kurskod'
-                                    ? data[property].map(shortenCourseCode)
-                                    : data[property]
-                            groups[i].values[key] = prettyValues.join(', ')
-                        }
-                    }
-                })
-
-                const extras: TimeEditUrlExtras = {
-                    groups: groups,
-                }
-
-                return extras
-            })
+        return extras
     }
 }
 

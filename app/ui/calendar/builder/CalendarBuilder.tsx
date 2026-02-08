@@ -9,13 +9,14 @@ export type AdapterChoice = 'timeedit'
 
 export default function CalendarBuilder() {
     const [inputUrl, setInputUrl] = useState<string | null>(null)
+    const [addExams, setAddExams] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
     const [urlData, setUrlData] = useState<UrlResponse | null>(null)
 
     useEffect(() => {
         if (!inputUrl) return
 
-        fetchUrl('timeedit', inputUrl)
+        fetchUrl('timeedit', inputUrl, addExams)
             .then(data => {
                 setUrlData(data)
             })
@@ -24,7 +25,7 @@ export default function CalendarBuilder() {
                 setInputUrl(null)
                 setError(String(reason).split(':')[1] ?? String(reason))
             })
-    }, [inputUrl])
+    }, [inputUrl, addExams])
 
     const input = useRef<HTMLInputElement>(null)
     function updateInputUrl() {
@@ -40,6 +41,23 @@ export default function CalendarBuilder() {
     return (
         <div>
             <span className="calendar-builder-input">
+                <div>
+                    <h3>Options</h3>
+                    <div>
+                        <span className="checkbox-field">
+                            <input
+                                type="checkbox"
+                                id="add-exams"
+                                name="add-exams"
+                                defaultChecked={true}
+                                onChange={event => {
+                                    setAddExams(event.target.checked)
+                                }}
+                            />
+                            <label htmlFor="add-exams">Add exams</label>
+                        </span>
+                    </div>
+                </div>
                 <div>
                     <label htmlFor="calendar-builder-input-url">
                         TimeEdit Calendar URL
@@ -82,10 +100,17 @@ export default function CalendarBuilder() {
 
 function fetchUrl(
     adapter: AdapterChoice,
-    inputUrl: string
+    inputUrl: string,
+    addExams: boolean = false
 ): Promise<UrlResponse> {
     return new Promise((resolve, reject) => {
-        fetch(`/adapter/${adapter}/url?url=${inputUrl}`, {
+        const searchParams = new URLSearchParams()
+        searchParams.append('url', inputUrl)
+        if (addExams) {
+            searchParams.append('addExams', '1')
+        }
+
+        fetch(`/adapter/${adapter}/url?${searchParams.toString()}`, {
             method: 'POST',
         }).then(response => {
             if (response.ok) {
@@ -93,8 +118,7 @@ function fetchUrl(
                 return
             }
 
-            console.error('Failed to fetch adapter URL:')
-            console.error(response)
+            console.error('Failed to fetch adapter URL:\n', response)
 
             return response
                 .json()

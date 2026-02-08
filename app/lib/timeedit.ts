@@ -1,6 +1,7 @@
 import { CalendarEvent } from 'iamcal'
-import { UrlResponse } from './responses'
+import type { UrlResponse } from './responses'
 import { capitalize } from './util'
+import { searchExam, type Exam } from 'chalmers-search-exam'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const groupByOptions = (<T extends keyof TimeEditEventData>(
@@ -287,4 +288,152 @@ export function formatCourse(data: TimeEditEventData): string | null {
         .join(' ')
 
     return course === '' ? null : course
+}
+
+/**
+ * Create exams events from a list of course codes.
+ *
+ * Exams with multiple course codes will be de-duplicated. If the course has
+ * multiple exams they will all be included.
+ *
+ * @param courseCodes The course codes for all events to create.
+ * @returns The converted events.
+ */
+export async function createExamEvents(
+    groupedCourseCodes: string[][]
+): Promise<CalendarEvent[]> {
+    const exams = await findExams(groupedCourseCodes.flat())
+    const multiExams = deDuplicateExams(exams, groupedCourseCodes)
+    const events = multiExams.map(createExamEvent)
+    return events
+}
+
+/**
+ * An exam that may have several courses attached.
+ */
+export interface MultiExam extends Exam {
+    courseCodes: string[]
+}
+
+/**
+ * Finds all exams for a set of course codes.
+ *
+ * If an error occurs while searching all other exams will be returned.
+ * @param courseCodes The courses to find exams for.
+ * @returns A list of exams.
+ */
+export async function findExams(courseCodes: string[]): Promise<Exam[]> {
+    return (
+        await Promise.all(
+            courseCodes.map(async courseCode => {
+                return searchExam(courseCode).catch(reason => {
+                    console.error(
+                        `Failed to get exam for ${courseCode}: ${reason}`
+                    )
+                    return null
+                })
+            })
+        )
+    )
+        .flat()
+        .filter(maybeExam => maybeExam !== null)
+}
+
+/**
+ * Join duplicate exams for the same course into one multi-exam.
+ * @param exams The exams to deduplicate.
+ * @param groupedCourseCodes Lists of course codes that belong to the same course, must not contain duplicates.
+ * @returns The de-duplicated multi-exams.
+ */
+export function deDuplicateExams(
+    exams: Exam[],
+    groupedCourseCodes: string[][]
+): MultiExam[] {
+    // Create a map to easily look up which other course codes are in a group.
+    const courseCodeMap = new Map<string, string[]>()
+    groupedCourseCodes.forEach(courseCodeGroup => {
+        courseCodeGroup.forEach(courseCode => {
+            courseCodeMap.set(courseCode, courseCodeGroup)
+        })
+    })
+
+    const multiExamMap = new Map<string, MultiExam[]>()
+    const multiExams: MultiExam[] = []
+    exams.forEach(exam => {
+        const courseCodes = courseCodeMap.get(exam.courseCode)
+        let multiExam: MultiExam
+        if (courseCodes === undefined) {
+            multiExam = Object.assign({ courseCodes: [exam.courseCode] }, exam)
+        } else {
+            multiExam = Object.assign({ courseCodes: courseCodes }, exam)
+        }
+
+        const key = courseCodes !== undefined ? courseCodes[0] : exam.courseCode
+        const list = multiExamMap.get(key)
+        if (list === undefined) {
+            multiExamMap.set(key, [multiExam])
+            multiExams.push(multiExam)
+            return
+        }
+
+        const alreadyAdded =
+            list.filter(
+                m =>
+                    m.id === multiExam.id ||
+                    m.start.toISOString() === multiExam.start.toISOString()
+            ).length > 0
+        if (!alreadyAdded) {
+            list.push(multiExam)
+            multiExams.push(multiExam)
+        }
+    })
+
+    return multiExams
+}
+
+const baseExamScheduleUrl: string =
+    'https://cloud.timeedit.net/chalmers/web/public'
+const johannebergExamScheduleUrl: string = baseExamScheduleUrl + '/ri1Q4.html'
+const lindholmenExamScheduleUrl: string = baseExamScheduleUrl + '/ri1Q3.html'
+
+export function getExamLocationUrl(location: string): string {
+    const atJohanneberg = location.toLowerCase().includes('johanneberg')
+    const atLindholmen = location.toLowerCase().includes('lindholmen')
+    if (atJohanneberg && !atLindholmen) {
+        return johannebergExamScheduleUrl
+    } else if (atLindholmen && !atJohanneberg) {
+        return lindholmenExamScheduleUrl
+    } else {
+        return baseExamScheduleUrl
+    }
+}
+
+export function isoDateString(date: Date): string {
+    return (
+        date.getFullYear() +
+        '-' +
+        date.getMonth().toString().padStart(2, '0') +
+        '-' +
+        date.getDate().toString().padStart(2, '0')
+    )
+}
+
+export function createExamEvent(exam: MultiExam): CalendarEvent {
+    const locationUrl = getExamLocationUrl(exam.location)
+    return new CalendarEvent(exam.id, exam.updated, exam.start)
+        .setEnd(exam.end)
+        .setLocation(`Campus: ${exam.location}`)
+        .setSummary(
+            `Aktivitet: Tentamen. Kurskod: ${exam.courseCodes.join(', ')}. Kursnamn: ${exam.name}. Registrering: ${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`
+        )
+        .setProperty('URL', locationUrl)
+}
+
+/**
+ * Create a pair of events for the start and end of the registration period.
+ * @param The exam to create events from.
+ * @returns The two events at the start and end of the registration period.
+ */
+export function createExamRegisterEvents(exam: Exam): CalendarEvent[] {
+    return []
 }
