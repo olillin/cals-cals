@@ -10,8 +10,8 @@
                 "properties": {
                     "filename": {
                         "type": "string",
-                        "description": "The filename of the calendar in `data/calendars/`.",
-                        "pattern": ".+\\.ics$"
+                        "description": "The filename of the calendar in `data/calendars/` or a URL to a calendar.",
+                        "pattern": "^([^:]+\\.ics|https:\\/\\/.+)$"
                     },
                     "id": {
                         "type": "integer",

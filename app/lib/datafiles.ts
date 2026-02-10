@@ -42,7 +42,9 @@ export function readDataFileJson(file: string, schema: string): object {
     const fileText = readFileSync(filePath, { encoding: 'utf8' })
     const fileJson = JSON.parse(fileText) as object
 
-    const hash = crypto.createHash('sha256').update(fileText).digest('hex')
+    const fileHash = crypto.createHash('sha256').update(fileText).digest('hex')
+    const schemaHash = crypto.createHash('sha256').update(fileText).digest('hex')
+    const hash = fileHash + schemaHash
 
     const key = file + ';' + schema
     if (jsonDataHash.get(key) === hash) {
