@@ -285,6 +285,10 @@ nav > a:focus {
     color: #ff4c4c;
 }
 
+.calendar-builder-options {
+    margin-block: 3em 2em;
+}
+
 .calendar-builder-input {
     display: flex;
     gap: 2em;
