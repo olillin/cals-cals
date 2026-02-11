@@ -1,5 +1,5 @@
 import { CalendarEvent } from 'iamcal'
-import type { UrlResponse } from './responses'
+import type { Concrete, UrlResponse } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 
@@ -311,8 +311,24 @@ export async function createExamEvents(
 /**
  * An exam that may have several courses attached.
  */
-export interface MultiExam extends Exam {
+export interface MultiExam extends Concrete<Exam> {
     courseCodes: string[]
+}
+
+/**
+ * Check if an exam has all optional properties.
+ * @param exam The exam to check
+ * @returns Whether the exam has all optional properties.
+ */
+export function isConcreteExam(exam: Exam): exam is Concrete<Exam> {
+    const hasUndefined = [
+        exam.start,
+        exam.end,
+        exam.duration,
+        exam.registrationStart,
+        exam.registrationEnd,
+    ].includes(undefined)
+    return !hasUndefined
 }
 
 /**
@@ -322,7 +338,9 @@ export interface MultiExam extends Exam {
  * @param courseCodes The courses to find exams for.
  * @returns A list of exams.
  */
-export async function findExams(courseCodes: string[]): Promise<Exam[]> {
+export async function findExams(
+    courseCodes: string[]
+): Promise<Concrete<Exam>[]> {
     return (
         await Promise.all(
             courseCodes.map(async courseCode => {
@@ -336,7 +354,7 @@ export async function findExams(courseCodes: string[]): Promise<Exam[]> {
         )
     )
         .flat()
-        .filter(maybeExam => maybeExam !== null)
+        .filter(maybeExam => maybeExam !== null && isConcreteExam(maybeExam))
 }
 
 /**
@@ -346,7 +364,7 @@ export async function findExams(courseCodes: string[]): Promise<Exam[]> {
  * @returns The de-duplicated multi-exams.
  */
 export function deDuplicateExams(
-    exams: Exam[],
+    exams: Concrete<Exam>[],
     groupedCourseCodes: string[][]
 ): MultiExam[] {
     // Create a map to easily look up which other course codes are in a group.
