@@ -7,7 +7,7 @@ import { it, expect } from 'vitest'
 
 it('follows the format "activity: course name (course code)" when all data is present', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
         kursnamn: ['Lorem ipsum'],
         kurskod: ['ABC123'],
     }
@@ -28,7 +28,7 @@ it('follows the format "course name (course code)" when activity is absent', () 
 
 it('follows the format "activity: course name" when course code is present', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
         kursnamn: ['Lorem ipsum'],
     }
     const summary = createEventSummary(data)
@@ -38,7 +38,7 @@ it('follows the format "activity: course name" when course code is present', () 
 
 it('follows the format "activity: course code" when course name is present', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
         kurskod: ['ABC123'],
     }
     const summary = createEventSummary(data)
@@ -48,7 +48,7 @@ it('follows the format "activity: course code" when course name is present', () 
 
 it('follows the format "activity" when only activity is present', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
     }
     const summary = createEventSummary(data)
 
@@ -75,7 +75,7 @@ it('follows the format "course code" when only course code is present', () => {
 
 it('joins multiple activities', () => {
     const data: TimeEditEventData = {
-        activity: ['A', 'B'],
+        aktivitet: ['A', 'B'],
     }
     const summary = createEventSummary(data)
 

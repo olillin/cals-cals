@@ -513,11 +513,9 @@ nav > a:focus {
     gap: 2em;
 }
 
-.update-notice.closed p {
+.update-notice.closed .notice-body > :nth-child(1) {
     margin-block: 0;
-}
 
-.update-notice.closed p {
     white-space: nowrap;
     overflow: hidden;
 
@@ -532,6 +530,10 @@ nav > a:focus {
     -webkit-background-clip: text;
     /* Make the text itself transparent so the gradient shows through */
     color: transparent;
+}
+
+.update-notice.closed .notice-body > *:not(:nth-child(1), .read-more) {
+    display: none;
 }
 
 .update-notice.closed .read-more {

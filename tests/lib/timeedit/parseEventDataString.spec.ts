@@ -8,7 +8,7 @@ it('groups strings correctly', () => {
 
     expect(data.kurskod).toStrictEqual(['ABC123', 'DEF456'])
     expect(data.kursnamn).toStrictEqual(['Lorem ipsum', 'Foo spam'])
-    expect(data.activity).toStrictEqual(['Föreläsning'])
+    expect(data.aktivitet).toStrictEqual(['Föreläsning'])
     expect(data.klasskod).toStrictEqual(['KLASS-1'])
     expect(data.klassnamn).toStrictEqual(['Rats'])
     expect(data).not.toHaveProperty('Kurs kod')
@@ -67,12 +67,60 @@ it('returns an empty object for no input', () => {
     expect(data).toStrictEqual({})
 })
 
-it('translates "aktivitet" to "activity"', () => {
-    const s = 'Aktivitet: Föreläsning'
+it('translates "activity" to "aktivitet"', () => {
+    const s = 'Activity: Föreläsning'
     const data = parseEventDataString(s)
 
-    expect(data.activity).toStrictEqual(['Föreläsning'])
-    expect(data).not.toHaveProperty('aktivitet')
+    expect(data.aktivitet).toStrictEqual(['Föreläsning'])
+    expect(data).not.toHaveProperty('activity')
+})
+
+it('translates "classcode" to "klasskod"', () => {
+    const s = 'Class code: Foo'
+    const data = parseEventDataString(s)
+
+    expect(data.klasskod).toStrictEqual(['Foo'])
+    expect(data).not.toHaveProperty('classcode')
+})
+
+it('translates "name" to "klassnamn"', () => {
+    const s = 'Name: Foo'
+    const data = parseEventDataString(s)
+
+    expect(data.klassnamn).toStrictEqual(['Foo'])
+    expect(data).not.toHaveProperty('name')
+})
+
+it('translates "coursecode" to "kurskod"', () => {
+    const s = 'Course code: Foo'
+    const data = parseEventDataString(s)
+
+    expect(data.kurskod).toStrictEqual(['Foo'])
+    expect(data).not.toHaveProperty('coursecode')
+})
+
+it('translates "coursename" to "kursnamn"', () => {
+    const s = 'Course name: Foo'
+    const data = parseEventDataString(s)
+
+    expect(data.kursnamn).toStrictEqual(['Foo'])
+    expect(data).not.toHaveProperty('coursename')
+})
+
+it('translates "room" to "lokalnamn"', () => {
+    const s = 'Room: Foo'
+    const data = parseEventDataString(s)
+
+    expect(data.lokalnamn).toStrictEqual(['Foo'])
+    expect(data).not.toHaveProperty('room')
+})
+
+it('translates "maplink" to "kartlänk"', () => {
+    const s = 'Map link: Foo'
+    const data = parseEventDataString(s)
+
+    expect(data.kartlänk).toStrictEqual(['Foo'])
+    expect(data).not.toHaveProperty('maplink')
 })
 
 it('can parse one word keys', () => {

@@ -2,13 +2,23 @@
 
 import Image from 'next/image'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 export default function UpdateNotice() {
-    const title = 'Update v2.0 is here!'
-    const body =
-        "Cal's cals has been rewritten using Next.js, finally ending the long feature freeze. Expect new exciting features soon!"
-
+    const title: string = 'Update v2.0 is here!'
+    const body: ReactNode = (
+        <>
+            <p>
+                Cal&apos;s cals has been rewritten using Next.js, finally ending
+                the long feature freeze. Expect new exciting features soon!
+            </p>
+            <strong>v2.0.2</strong>
+            <p>
+                The TimeEdit adapter has been fixed after TimeEdit changed their
+                calendar format again. Sorry for the inconvenience.
+            </p>
+        </>
+    )
     const [closed, setClosed] = useState(true)
     const [hidden, setHidden] = useState(false)
 
@@ -28,7 +38,7 @@ export default function UpdateNotice() {
                 <CloseButton onClick={() => setHidden(true)} />
             </div>
             <div className="notice-body">
-                <p>{body}</p>
+                {body}
                 {closed && <span className="read-more">Read more</span>}
             </div>
         </div>

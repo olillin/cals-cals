@@ -1,6 +1,6 @@
 {
     "name": "cals-cals",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Calendar website for better calendars at Chalmers",
     "private": true,
     "scripts": {
