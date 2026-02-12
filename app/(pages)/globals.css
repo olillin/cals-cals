@@ -513,7 +513,7 @@ nav > a:focus {
     gap: 2em;
 }
 
-.update-notice.closed .notice-body>:nth-child(1) {
+.update-notice.closed .notice-body > :nth-child(1) {
     margin-block: 0;
 
     white-space: nowrap;
@@ -532,7 +532,7 @@ nav > a:focus {
     color: transparent;
 }
 
-.update-notice.closed .notice-body>*:not(:nth-child(1), .read-more) {
+.update-notice.closed .notice-body > *:not(:nth-child(1), .read-more) {
     display: none;
 }
 

@@ -9,8 +9,8 @@ export default function UpdateNotice() {
     const body: ReactNode = (
         <>
             <p>
-                Cal's cals has been rewritten using Next.js, finally ending the
-                long feature freeze. Expect new exciting features soon!
+                Cal&apos;s cals has been rewritten using Next.js, finally ending
+                the long feature freeze. Expect new exciting features soon!
             </p>
             <strong>v2.0.2</strong>
             <p>
