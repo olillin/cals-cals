@@ -6,7 +6,7 @@ import { capitalize } from './util'
 export const groupByOptions = (<T extends keyof TimeEditEventData>(
     options: T[]
 ): T[] => options)([
-    'activity',
+    'aktivitet',
     'campus',
     'kurskod',
     'lokalnamn',
@@ -33,7 +33,7 @@ export interface TimeEditUrlResponse extends UrlResponse {
 
 export interface TimeEditEventData {
     [k: string]: string[] | undefined
-    activity?: string[]
+    aktivitet?: string[]
     klassnamn?: string[]
     klasskod?: string[]
     kursnamn?: string[]
@@ -121,6 +121,19 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
     return groupedData
 }
 
+const keyAlias = new Map<
+    keyof TimeEditEventData & string,
+    keyof TimeEditEventData & string
+>()
+keyAlias.set('activity', 'aktivitet')
+keyAlias.set('coursecode', 'kurskod')
+keyAlias.set('coursename', 'kursnamn')
+keyAlias.set('computers', 'antaldatorer')
+keyAlias.set('maplink', 'kartlänk')
+keyAlias.set('classcode', 'klasskod')
+keyAlias.set('name', 'klassnamn')
+keyAlias.set('room', 'lokalnamn')
+
 /**
  * Format a key in TimeEdit event data.
  * @param text The key to format.
@@ -128,8 +141,7 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
  */
 export function formatKey(text: string): string {
     const key = text.replaceAll(/\s/g, '').toLowerCase()
-    if (key === 'aktivitet') return 'activity'
-    return key
+    return keyAlias.get(key) ?? key
 }
 
 /**
@@ -156,8 +168,8 @@ export function createEventSummary(
     }
 
     const coursePart = formatCourse(data)
-    const activityPart = data.activity
-        ? `${data.activity.join(', ')}${coursePart !== null ? ':' : ''}`
+    const activityPart = data.aktivitet
+        ? `${data.aktivitet.join(', ')}${coursePart !== null ? ':' : ''}`
         : null
 
     const summary = [activityPart, coursePart]
@@ -177,7 +189,9 @@ export function createEventDescription(
     data: TimeEditEventData,
     context?: CalendarEvent
 ): string | null {
-    const activityRow = data.activity ? `Aktivitet: ${data.activity[0]}` : null
+    const activityRow = data.aktivitet
+        ? `Aktivitet: ${data.aktivitet[0]}`
+        : null
     const course = formatCourse(data)
     const courseRow = course ? `Kurs: ${course}` : null
     const classRow = data.klasskod ? 'Klass: ' + data.klasskod.join(', ') : null
@@ -191,7 +205,7 @@ export function createEventDescription(
     const mapRow = url ? 'Karta: ' + url.join(', ') : null
 
     const knownKeys = [
-        'activity',
+        'aktivitet',
         'klassnamn',
         'klasskod',
         'kursnamn',

@@ -6,12 +6,12 @@ const time = new CalendarDateTime('20250919T120000')
 
 it('uses summary and location as sources', () => {
     const validEvent = new CalendarEvent('', time, time)
-        .setSummary('Activity: A')
+        .setSummary('Aktivitet: A')
         .setLocation('Lokalnamn: B')
 
     const data = parseEventData(validEvent)
 
-    expect(data).toHaveProperty('activity')
+    expect(data).toHaveProperty('aktivitet')
     expect(data).toHaveProperty('lokalnamn')
 })
 
