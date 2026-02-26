@@ -58,11 +58,20 @@ export default class TimeEditAdapter extends Adapter {
         req?: NextRequest
     ): Promise<Calendar> {
         const addExams =
-            req !== undefined &&
-            !['0', 'false', 'f'].includes(
-                req.nextUrl.searchParams.get('addExams') ?? '0'
+            req == undefined ||
+            !['1', 'true', 't'].includes(
+                req.nextUrl.searchParams.get('noExam') ?? '0'
             )
-        if (!addExams) return calendar
+
+        const addExamRegistrations =
+            req == undefined ||
+            !['1', 'true', 't'].includes(
+                req.nextUrl.searchParams.get('noExamReg') ?? '0'
+            )
+
+        if (!addExams && !addExamRegistrations) {
+            return calendar
+        }
 
         const courseCodeSets: string[][] = []
         calendar.getEvents().forEach(event => {
@@ -86,9 +95,23 @@ export default class TimeEditAdapter extends Adapter {
         })
 
         const groupedCourseCodes = courseCodeSets.map(s => [...s])
-        const examEvents = await createExamEvents([...groupedCourseCodes])
-        console.log(examEvents[0].serialize())
-        calendar.addComponents(examEvents)
+        if (addExams) {
+            const examEvents = await createExamEvents([...groupedCourseCodes])
+
+            // TODO: REMOVE DEBUG LOG
+            console.log(examEvents[0].serialize())
+
+            calendar.addComponents(examEvents)
+        }
+
+        if (addExamRegistrations) {
+            const examRegEvents = await createExamRegistrationEvents([...groupedCourseCodes])
+            //
+            // TODO: REMOVE DEBUG LOG
+            console.log(examRegEvents[0].serialize())
+
+            calendar.addComponents(examRegEvents)
+        }
 
         return calendar
     }
