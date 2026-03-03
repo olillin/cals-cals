@@ -93,7 +93,9 @@ export default class TimeEditAdapter extends Adapter {
             const examEvents = await createExamEvents([...groupedCourseCodes])
 
             // TODO: REMOVE DEBUG LOG
-            console.log(examEvents[0].serialize())
+            if (examEvents.length > 0) {
+                console.log(examEvents[0].serialize())
+            }
 
             calendar.addComponents(examEvents)
         }
