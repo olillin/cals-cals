@@ -17,7 +17,7 @@
         "url": "git+https://github.com/olillin/cals-cals.git"
     },
     "author": "Oli <oli@olillin.com>",
-    "license": "MIT",
+    "license": "AGPL-3.0-or-later",
     "bugs": {
         "url": "https://github.com/olillin/cals-cals/issues"
     },
