@@ -7,7 +7,7 @@ import { it, expect } from 'vitest'
 
 it('follows the format when all data is present', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
         kursnamn: ['Lorem ipsum', 'dolor sit amet'],
         kurskod: ['ABC123', 'DEF456'],
         klassnamn: ['Foo', 'Spam'],
@@ -47,7 +47,7 @@ Karta: https://example.com`
 
 it('omits course when missing', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
         klassnamn: ['Foo', 'Spam'],
         klasskod: ['KLASS-1', 'KLASS-2'],
         kartlänk: ['https://example.com'],
@@ -63,7 +63,7 @@ Karta: https://example.com`
 
 it('omits class when missing', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
         kursnamn: ['Lorem ipsum', 'dolor sit amet'],
         kurskod: ['ABC123', 'DEF456'],
         kartlänk: ['https://example.com'],
@@ -79,7 +79,7 @@ Karta: https://example.com`
 
 it('omits map when missing', () => {
     const data: TimeEditEventData = {
-        activity: ['Föreläsning'],
+        aktivitet: ['Föreläsning'],
         kursnamn: ['Lorem ipsum', 'dolor sit amet'],
         kurskod: ['ABC123', 'DEF456'],
         klassnamn: ['Foo', 'Spam'],
