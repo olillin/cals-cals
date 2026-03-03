@@ -123,6 +123,18 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
 }
 
 /**
+ * Serialize TimeEdit event data into a string.
+ * @param eventData The data to serialize.
+ * @returns The serialized event data.
+ */
+export function serializeEventData(eventData: TimeEditEventData): string {
+    return Object.entries(eventData).flatMap(([key, values]) => {
+        if (values == undefined) return null
+        return values.map(value => `${key}: ${value}`)
+    }).filter(x => x != null).join(". ")
+}
+
+/**
  * Format a key in TimeEdit event data.
  * @param text The key to format.
  * @returns The formatted key.
@@ -291,13 +303,12 @@ export function formatCourse(data: TimeEditEventData): string | null {
 }
 
 /**
- * Create exams events from a list of course codes.
+ * Create exams events from a list of grouped course codes.
  *
- * Exams with multiple course codes will be de-duplicated. If the course has
- * multiple exams they will all be included.
- *
- * @param courseCodes The course codes for all events to create.
- * @returns The converted events.
+ * Exams with course codes in the same group will be de-duplicated. If the
+ * course has multiple exams they will all be included.
+ * @param groupedCourseCodes The course codes for all events to create.
+ * @returns Events for all exams found.
  */
 export async function createExamEvents(
     groupedCourseCodes: string[][]
@@ -436,14 +447,21 @@ export function isoDateString(date: Date): string {
     )
 }
 
+/**
+ * Create a TimeEdit style 
+ */
 export function createExamEvent(exam: MultiExam): CalendarEvent {
     const locationUrl = getExamLocationUrl(exam.location)
+    const data: TimeEditEventData = {
+        aktivitet: ["Tentamen"],
+        kurskod: exam.courseCodes,
+        kursnamn: [exam.name],
+        registrering: [`${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`],
+    }
     return new CalendarEvent(exam.id, exam.updated, exam.start)
         .setEnd(exam.end)
         .setLocation(`Campus: ${exam.location}`)
-        .setSummary(
-            `Aktivitet: Tentamen. ${exam.courseCodes.map(code => `Kurskod: ${code}`).join('. ')}. Kursnamn: ${exam.name}. Registrering: ${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`
-        )
+        .setSummary(serializeEventData(data))
         .setProperty('URL', locationUrl)
 }
 
