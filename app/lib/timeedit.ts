@@ -1,4 +1,4 @@
-import { CalendarDate, CalendarEvent } from 'iamcal'
+import { CalendarEvent } from 'iamcal'
 import type { Concrete, UrlResponse } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
@@ -447,44 +447,3 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         .setProperty('URL', locationUrl)
 }
 
-export interface ExamRegistrationGroup {
-    date: CalendarDate
-    isRegistrationStart: boolean
-    exams: {
-        name: string
-        courseCodes: string[]
-        inst: number
-    }[]
-}
-
-/**
- * Create an event for the start or end of the registration period.
- * @param registrationGroup The registration group to create the event from.
- * @returns The event with information about the registration group.
- * @throws {Error} If there are no exams in the group.
- */
-export function createExamRegistrationEvent(registrationGroup: ExamRegistrationGroup): CalendarEvent {
-    if (registrationGroup.exams.length === 0) {
-        throw new Error('Exams cannot be empty')
-    }
-
-    const verb = registrationGroup.isRegistrationStart ? 'öppnar' : 'stänger'
-    const summary = `Tentamen anmälan ${verb}: ${registrationGroup.exams.flatMap(({courseCodes}) => courseCodes).join(', ')}`
-
-    const examList = registrationGroup.exams.map(exam => {
-        const type = exam.inst === 0 ? 'Ordinarie tentamen' : `Omtenta`
-        return `• ${type}: ${exam.name} (${exam.courseCodes.join(', ')})`
-    }).join('\n')
-
-    const description = `Anmäl dig på Ladok: https://student.ladok.se/student
- 
-Anmälan till tentor ${verb}:
- 
-${examList}`
-
-    const uid = registrationGroup.date.getValue() + 'S' + Number(registrationGroup.isRegistrationStart)
-    return new CalendarEvent(uid, new Date(), registrationGroup.date)
-        .setSummary(summary)
-        .setDescription(description)
-        .setLocation('Ladok')
-}

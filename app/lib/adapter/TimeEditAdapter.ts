@@ -63,13 +63,7 @@ export default class TimeEditAdapter extends Adapter {
                 req.nextUrl.searchParams.get('noExam') ?? '0'
             )
 
-        const addExamRegistrations =
-            req == undefined ||
-            !['1', 'true', 't'].includes(
-                req.nextUrl.searchParams.get('noExamReg') ?? '0'
-            )
-
-        if (!addExams && !addExamRegistrations) {
+        if (!addExams) {
             return calendar
         }
 
@@ -102,15 +96,6 @@ export default class TimeEditAdapter extends Adapter {
             console.log(examEvents[0].serialize())
 
             calendar.addComponents(examEvents)
-        }
-
-        if (addExamRegistrations) {
-            const examRegEvents = await createExamRegistrationEvents([...groupedCourseCodes])
-            //
-            // TODO: REMOVE DEBUG LOG
-            console.log(examRegEvents[0].serialize())
-
-            calendar.addComponents(examRegEvents)
         }
 
         return calendar

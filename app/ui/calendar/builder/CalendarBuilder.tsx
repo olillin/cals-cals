@@ -10,7 +10,6 @@ export type AdapterChoice = 'timeedit'
 export default function CalendarBuilder() {
     const [inputUrl, setInputUrl] = useState<string | null>(null)
     const [addExams, setAddExams] = useState<boolean>(true)
-    const [addExamRegistrations, setAddExamRegistrations] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
     const [urlData, setUrlData] = useState<TimeEditUrlResponse | null>(null)
 
@@ -19,7 +18,6 @@ export default function CalendarBuilder() {
 
         const params = new URLSearchParams([
             addExams == false ? ['noExam', '1'] : undefined,
-            addExamRegistrations == false ? ['noExamReg', '1'] : undefined,
         ].filter(entry => entry != undefined))
 
         fetchAdapterUrl('timeedit', inputUrl, params.size > 0 ? params : undefined)
@@ -31,7 +29,7 @@ export default function CalendarBuilder() {
                 setInputUrl(null)
                 setError(String(reason).split(':')[1] ?? String(reason))
             })
-    }, [inputUrl, addExams, addExamRegistrations])
+    }, [inputUrl, addExams])
 
     const input = useRef<HTMLInputElement>(null)
     function updateInputUrl() {
@@ -61,19 +59,6 @@ export default function CalendarBuilder() {
                         }}
                     />
                     <label htmlFor="add-exams">Add exams (tentamen)</label>
-                </span>
-                <span className="checkbox-field">
-                    <input
-                        type="checkbox"
-                        id="add-exam-registrations"
-                        name="add-exam-registrations"
-                        defaultChecked={true}
-                        onChange={event => {
-                            setUrlData(null)
-                            setAddExamRegistrations(event.target.checked)
-                        }}
-                    />
-                    <label htmlFor="add-exam-registrations">Add exam registration start/end</label>
                 </span>
             </div>
             <span className="calendar-builder-input">
