@@ -44,6 +44,8 @@ export interface TimeEditEventData {
     kartlänk?: string[]
     campus?: string[]
     antaldatorer?: string[]
+    // Extra not from TimeEdit
+    examurl?: string[]
 }
 
 /**
@@ -134,6 +136,7 @@ keyAlias.set('maplink', 'kartlänk')
 keyAlias.set('classcode', 'klasskod')
 keyAlias.set('name', 'klassnamn')
 keyAlias.set('room', 'lokalnamn')
+keyAlias.set('title', 'titel')
 
 /**
  * Serialize TimeEdit event data into a string.
@@ -218,6 +221,9 @@ export function createEventDescription(
             ? [context.getProperty('URL')!.value]
             : null)
 
+    const examUrlRow = data.examurl
+        ? 'Hitta din tentamen: ' + data.examurl.join(', ')
+        : null
     const mapRow = url ? 'Karta: ' + url.join(', ') : null
 
     const knownKeys = [
@@ -231,6 +237,7 @@ export function createEventDescription(
         'kartlänk',
         'campus',
         'antaldatorer',
+        'examurl',
     ]
     const extraRows: string[] = []
     Object.entries(data).forEach(([key, value]) => {
@@ -239,10 +246,18 @@ export function createEventDescription(
     })
     extraRows.sort()
 
-    const description = [activityRow, courseRow, classRow, mapRow, ...extraRows]
+    const description = [
+        activityRow,
+        courseRow,
+        classRow,
+        examUrlRow,
+        mapRow,
+        ...extraRows,
+    ]
         .filter(row => row !== null)
         .join('\n')
 
+    console.log(description)
     return description === ''
         ? (context?.getDescription() ?? null)
         : description
@@ -487,6 +502,7 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         aktivitet: ['Tentamen'],
         kurskod: exam.courseCodes,
         kursnamn: [exam.name],
+        examurl: [locationUrl],
         registrering: [
             `${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`,
         ],
@@ -495,5 +511,4 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         .setEnd(exam.end)
         .setLocation(`Campus: ${exam.location}`)
         .setSummary(serializeEventData(data))
-        .setProperty('URL', locationUrl)
 }

@@ -89,16 +89,10 @@ export default class TimeEditAdapter extends Adapter {
         })
 
         const groupedCourseCodes = courseCodeSets.map(s => [...s])
-        if (addExams) {
-            const examEvents = await createExamEvents([...groupedCourseCodes])
 
-            // TODO: REMOVE DEBUG LOG
-            if (examEvents.length > 0) {
-                console.log(examEvents[0].serialize())
-            }
-
-            calendar.addComponents(examEvents)
-        }
+        const examEvents = await createExamEvents([...groupedCourseCodes])
+        console.log(examEvents)
+        calendar.addComponents(examEvents)
 
         return calendar
     }
@@ -277,6 +271,7 @@ export function convertEvent(event: CalendarEvent): void {
 
     // Description
     const description = createEventDescription(eventData, event)
+    console.log('DESC for', eventData, description)
     if (description) {
         event.setDescription(description)
     } else {
@@ -290,4 +285,5 @@ export function convertEvent(event: CalendarEvent): void {
     } else {
         event.removeLocation()
     }
+    console.log(event)
 }
