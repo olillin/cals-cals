@@ -2,7 +2,7 @@ import { createExamEvents } from '../../../app/lib/timeedit'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 import { it, expect, vi } from 'vitest'
 
-vi.mock(import('chalmers-search-exam'), () => {
+vi.mock(import('chalmers-search-exam'), async () => {
     const mockExam = (courseCode: string): Exam => ({
         name: 'Objektorienterad programmering och design',
         updated: new Date('2026-01-27T11:00:00.000Z'),
@@ -24,14 +24,15 @@ vi.mock(import('chalmers-search-exam'), () => {
         isDigital: false,
     })
 
-    const originalModule = vi.importActual('chalmers-search-exam')
+    const originalModule = await vi.importActual('chalmers-search-exam')
     return {
         __esModule: true,
         ...originalModule,
-        searchExam: vi.fn((query: string) => Promise.resolve([mockExam(query)])),
+        searchExam: vi.fn((query: string) =>
+            Promise.resolve([mockExam(query)])
+        ),
     }
 })
-
 
 it('returns no events for no course codes', async () => {
     const events = await createExamEvents([])
@@ -62,4 +63,3 @@ it('does not deduplicate events in separate groups', async () => {
     expect(events).toHaveLength(2)
     expect(searchExam).toBeCalled()
 })
-

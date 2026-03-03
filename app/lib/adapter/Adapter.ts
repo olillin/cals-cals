@@ -60,7 +60,8 @@ abstract class Adapter {
                 return NextResponse.json(
                     {
                         error: {
-                            message: `Failed to patch calendar: ${error}`,
+                            message:
+                                'Failed to patch calendar: ' + String(error),
                         },
                     },
                     { status: 500 }
@@ -218,7 +219,7 @@ abstract class Adapter {
             const searchParams = new URLSearchParams()
             searchParams.append('id', id)
             // Add other search parameters
-            const excludedSearchParams: Set<String> = new Set(['url'])
+            const excludedSearchParams: Set<string> = new Set(['url'])
             const originalSearchParams = request.nextUrl.searchParams
             console.log(originalSearchParams)
             for (const [name, value] of originalSearchParams) {
@@ -259,7 +260,7 @@ abstract class Adapter {
      * @param calendar The calendar from the URL which may have been patched.
      * @param req The context of the request to get this calendar.
      * @returns The converted calendar.
-     * @see {@link patchCalendar}
+     * @see {@link this.patchCalendar}
      */
     abstract convertCalendar(
         calendar: Calendar,
@@ -272,9 +273,9 @@ abstract class Adapter {
      * @param req The context of the request to get this calendar.
      * @returns The patched calendar.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     patchCalendar(
         calendar: Calendar,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         req?: NextRequest
     ): Calendar | Promise<Calendar> {
         return calendar
@@ -285,8 +286,8 @@ abstract class Adapter {
      * @param calendar The parsed to the calendar.
      * @returns The extra information as a JSON-serializable object, or undefined if no extra information is available.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getExtras(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         calendar: Calendar
     ): object | undefined | Promise<object | undefined> {
         return undefined

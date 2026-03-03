@@ -16,11 +16,17 @@ export default function CalendarBuilder() {
     useEffect(() => {
         if (!inputUrl) return
 
-        const params = new URLSearchParams([
-            addExams == false ? ['noExam', '1'] : undefined,
-        ].filter(entry => entry != undefined))
+        const params = new URLSearchParams(
+            [addExams == false ? ['noExam', '1'] : undefined].filter(
+                entry => entry != undefined
+            )
+        )
 
-        fetchAdapterUrl('timeedit', inputUrl, params.size > 0 ? params : undefined)
+        fetchAdapterUrl(
+            'timeedit',
+            inputUrl,
+            params.size > 0 ? params : undefined
+        )
             .then(data => {
                 setUrlData(data as TimeEditUrlResponse)
             })

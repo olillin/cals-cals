@@ -128,10 +128,13 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
  * @returns The serialized event data.
  */
 export function serializeEventData(eventData: TimeEditEventData): string {
-    return Object.entries(eventData).flatMap(([key, values]) => {
-        if (values == undefined) return null
-        return values.map(value => `${key}: ${value}`)
-    }).filter(x => x != null).join(". ")
+    return Object.entries(eventData)
+        .flatMap(([key, values]) => {
+            if (values == undefined) return null
+            return values.map(value => `${capitalize(key)}: ${value}`)
+        })
+        .filter(x => x != null)
+        .join('. ')
 }
 
 /**
@@ -328,7 +331,7 @@ export interface MultiExam extends Concrete<Exam> {
 
 /**
  * Check if an exam has all optional properties.
- * @param exam The exam to check
+ * @param exam The exam to check.
  * @returns Whether the exam has all optional properties.
  */
 export function isConcreteExam(exam: Exam): exam is Concrete<Exam> {
@@ -422,9 +425,16 @@ export function deDuplicateExams(
 
 const baseExamScheduleUrl: string =
     'https://cloud.timeedit.net/chalmers/web/public'
-export const johannebergExamScheduleUrl: string = baseExamScheduleUrl + '/ri1Q4.html'
-export const lindholmenExamScheduleUrl: string = baseExamScheduleUrl + '/ri1Q3.html'
+export const johannebergExamScheduleUrl: string =
+    baseExamScheduleUrl + '/ri1Q4.html'
+export const lindholmenExamScheduleUrl: string =
+    baseExamScheduleUrl + '/ri1Q3.html'
 
+/**
+ * Get the URL to the exam location based on campus.
+ * @param location The location from the exam search.
+ * @returns The URL to look up the precise exam location.
+ */
 export function getExamLocationUrl(location: string): string {
     const atJohanneberg = location.toLowerCase().includes('johanneberg')
     const atLindholmen = location.toLowerCase().includes('lindholmen')
@@ -437,6 +447,11 @@ export function getExamLocationUrl(location: string): string {
     }
 }
 
+/**
+ * Format a date in ISO format as YYYY-MM-DD.
+ * @param date The date to format.
+ * @returns The formatted date.
+ */
 export function isoDateString(date: Date): string {
     return (
         date.getFullYear() +
@@ -448,15 +463,19 @@ export function isoDateString(date: Date): string {
 }
 
 /**
- * Create a TimeEdit style 
+ * Create an event for an exam.
+ * @param exam The exam to create an event for.
+ * @returns The event in TimeEdit format.
  */
 export function createExamEvent(exam: MultiExam): CalendarEvent {
     const locationUrl = getExamLocationUrl(exam.location)
     const data: TimeEditEventData = {
-        aktivitet: ["Tentamen"],
+        aktivitet: ['Tentamen'],
         kurskod: exam.courseCodes,
         kursnamn: [exam.name],
-        registrering: [`${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`],
+        registrering: [
+            `${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`,
+        ],
     }
     return new CalendarEvent(exam.id, exam.updated, exam.start)
         .setEnd(exam.end)
@@ -464,4 +483,3 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         .setSummary(serializeEventData(data))
         .setProperty('URL', locationUrl)
 }
-
