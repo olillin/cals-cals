@@ -221,15 +221,12 @@ abstract class Adapter {
             // Add other search parameters
             const excludedSearchParams: Set<string> = new Set(['url'])
             const originalSearchParams = request.nextUrl.searchParams
-            console.log(originalSearchParams)
             for (const [name, value] of originalSearchParams) {
-                console.log([name, value])
                 if (!excludedSearchParams.has(name)) {
                     searchParams.append(name, value)
                 }
             }
 
-            console.log(searchParams)
             adapterUrl.search = searchParams.toString()
 
             const response: UrlResponse = {

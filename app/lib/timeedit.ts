@@ -257,7 +257,6 @@ export function createEventDescription(
         .filter(row => row !== null)
         .join('\n')
 
-    console.log(description)
     return description === ''
         ? (context?.getDescription() ?? null)
         : description
