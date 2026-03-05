@@ -1,5 +1,3 @@
-'use client'
-
 import { AvailableGroup, TimeEditUrlResponse } from '@/app/lib/timeedit'
 import { useState } from 'react'
 import CalendarGroups, { getGroupByOptions } from './CalendarGroups'

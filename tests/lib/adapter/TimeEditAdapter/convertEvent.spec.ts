@@ -34,9 +34,9 @@ it('mutates description', () => {
 })
 
 it('adds description if missing', () => {
-    validEvent.removeDescription()
-    convertEvent(validEvent)
-    expect(validEvent.getDescription()).not.toBeUndefined()
+    const event = new CalendarEvent('', time, time).setSummary(summary)
+    convertEvent(event)
+    expect(event.getDescription()).not.toBeUndefined()
 })
 
 it('mutates location', () => {

@@ -1,6 +1,7 @@
 import { CalendarEvent } from 'iamcal'
-import { UrlResponse } from './responses'
+import type { Concrete, UrlResponse } from './responses'
 import { capitalize } from './util'
+import { searchExam, type Exam } from 'chalmers-search-exam'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const groupByOptions = (<T extends keyof TimeEditEventData>(
@@ -43,6 +44,8 @@ export interface TimeEditEventData {
     kartlänk?: string[]
     campus?: string[]
     antaldatorer?: string[]
+    // Extra not from TimeEdit
+    examurl?: string[]
 }
 
 /**
@@ -133,6 +136,22 @@ keyAlias.set('maplink', 'kartlänk')
 keyAlias.set('classcode', 'klasskod')
 keyAlias.set('name', 'klassnamn')
 keyAlias.set('room', 'lokalnamn')
+keyAlias.set('title', 'titel')
+
+/**
+ * Serialize TimeEdit event data into a string.
+ * @param eventData The data to serialize.
+ * @returns The serialized event data.
+ */
+export function serializeEventData(eventData: TimeEditEventData): string {
+    return Object.entries(eventData)
+        .flatMap(([key, values]) => {
+            if (values == undefined) return null
+            return values.map(value => `${capitalize(key)}: ${value}`)
+        })
+        .filter(x => x != null)
+        .join('. ')
+}
 
 /**
  * Format a key in TimeEdit event data.
@@ -202,6 +221,9 @@ export function createEventDescription(
             ? [context.getProperty('URL')!.value]
             : null)
 
+    const examUrlRow = data.examurl
+        ? 'Hitta din tentamen: ' + data.examurl.join(', ')
+        : null
     const mapRow = url ? 'Karta: ' + url.join(', ') : null
 
     const knownKeys = [
@@ -215,6 +237,7 @@ export function createEventDescription(
         'kartlänk',
         'campus',
         'antaldatorer',
+        'examurl',
     ]
     const extraRows: string[] = []
     Object.entries(data).forEach(([key, value]) => {
@@ -223,7 +246,14 @@ export function createEventDescription(
     })
     extraRows.sort()
 
-    const description = [activityRow, courseRow, classRow, mapRow, ...extraRows]
+    const description = [
+        activityRow,
+        courseRow,
+        classRow,
+        examUrlRow,
+        mapRow,
+        ...extraRows,
+    ]
         .filter(row => row !== null)
         .join('\n')
 
@@ -301,4 +331,184 @@ export function formatCourse(data: TimeEditEventData): string | null {
         .join(' ')
 
     return course === '' ? null : course
+}
+
+/**
+ * Create exams events from a list of grouped course codes.
+ *
+ * Exams with course codes in the same group will be de-duplicated. If the
+ * course has multiple exams they will all be included.
+ * @param groupedCourseCodes The course codes for all events to create.
+ * @returns Events for all exams found.
+ */
+export async function createExamEvents(
+    groupedCourseCodes: string[][]
+): Promise<CalendarEvent[]> {
+    const exams = await findExams(groupedCourseCodes.flat())
+    const multiExams = deDuplicateExams(exams, groupedCourseCodes)
+    const events = multiExams.map(exam => createExamEvent(exam))
+    return events
+}
+
+/**
+ * An exam that may have several courses attached.
+ */
+export interface MultiExam extends Concrete<Exam> {
+    courseCodes: string[]
+}
+
+/**
+ * Check if an exam has all optional properties.
+ * @param exam The exam to check.
+ * @returns Whether the exam has all optional properties.
+ */
+export function isConcreteExam(exam: Exam): exam is Concrete<Exam> {
+    const hasUndefined = [
+        exam.start,
+        exam.end,
+        exam.duration,
+        exam.registrationStart,
+        exam.registrationEnd,
+    ].includes(undefined)
+    return !hasUndefined
+}
+
+/**
+ * Finds all exams for a set of course codes.
+ *
+ * If an error occurs while searching all other exams will be returned.
+ * @param courseCodes The courses to find exams for.
+ * @returns A list of exams.
+ */
+export async function findExams(
+    courseCodes: string[]
+): Promise<Concrete<Exam>[]> {
+    return (
+        await Promise.all(
+            courseCodes.map(async courseCode => {
+                return searchExam(courseCode).catch(reason => {
+                    console.error(
+                        `Failed to get exam for ${courseCode}: ${reason}`
+                    )
+                    return null
+                })
+            })
+        )
+    )
+        .flat()
+        .filter(maybeExam => maybeExam !== null && isConcreteExam(maybeExam))
+}
+
+/**
+ * Join duplicate exams for the same course into one multi-exam.
+ * @param exams The exams to deduplicate.
+ * @param groupedCourseCodes Lists of course codes that belong to the same course, must not contain duplicates.
+ * @returns The de-duplicated multi-exams.
+ */
+export function deDuplicateExams(
+    exams: Concrete<Exam>[],
+    groupedCourseCodes: string[][]
+): MultiExam[] {
+    // Create a map to easily look up which other course codes are in a group.
+    const courseCodeMap = new Map<string, string[]>()
+    groupedCourseCodes.forEach(courseCodeGroup => {
+        courseCodeGroup.forEach(courseCode => {
+            courseCodeMap.set(courseCode, courseCodeGroup)
+        })
+    })
+
+    const multiExamMap = new Map<string, MultiExam[]>()
+    const multiExams: MultiExam[] = []
+    exams.forEach(exam => {
+        const courseCodes = courseCodeMap.get(exam.courseCode)
+        let multiExam: MultiExam
+        if (courseCodes === undefined) {
+            multiExam = Object.assign({ courseCodes: [exam.courseCode] }, exam)
+        } else {
+            multiExam = Object.assign({ courseCodes: courseCodes }, exam)
+        }
+
+        const key = courseCodes !== undefined ? courseCodes[0] : exam.courseCode
+        const list = multiExamMap.get(key)
+        if (list === undefined) {
+            multiExamMap.set(key, [multiExam])
+            multiExams.push(multiExam)
+            return
+        }
+
+        const alreadyAdded =
+            list.filter(
+                m =>
+                    m.id === multiExam.id ||
+                    m.start.toISOString() === multiExam.start.toISOString()
+            ).length > 0
+        if (!alreadyAdded) {
+            list.push(multiExam)
+            multiExams.push(multiExam)
+        }
+    })
+
+    return multiExams
+}
+
+const baseExamScheduleUrl: string =
+    'https://cloud.timeedit.net/chalmers/web/public'
+export const johannebergExamScheduleUrl: string =
+    baseExamScheduleUrl + '/ri1Q4.html'
+export const lindholmenExamScheduleUrl: string =
+    baseExamScheduleUrl + '/ri1Q3.html'
+
+/**
+ * Get the URL to the exam location based on campus.
+ * @param location The location from the exam search.
+ * @returns The URL to look up the precise exam location.
+ */
+export function getExamLocationUrl(location: string): string {
+    const atJohanneberg = location.toLowerCase().includes('johanneberg')
+    const atLindholmen = location.toLowerCase().includes('lindholmen')
+    if (atJohanneberg && !atLindholmen) {
+        return johannebergExamScheduleUrl
+    } else if (atLindholmen && !atJohanneberg) {
+        return lindholmenExamScheduleUrl
+    } else {
+        return baseExamScheduleUrl
+    }
+}
+
+/**
+ * Format a date in ISO format as YYYY-MM-DD in Sweden.
+ * @param date The date to format.
+ * @returns The formatted date.
+ */
+export function isoDateStringSweden(date: Date): string {
+    return new Intl.DateTimeFormat('sv-SE', {
+        timeZone: 'Europe/Stockholm',
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).format(date)
+}
+
+/**
+ * Create an event for an exam.
+ * @param exam The exam to create an event for.
+ * @returns The event in TimeEdit format.
+ */
+export function createExamEvent(exam: MultiExam): CalendarEvent {
+    const locationUrl = getExamLocationUrl(exam.location)
+    const data: TimeEditEventData = {
+        aktivitet: ['Tentamen'],
+        kurskod: exam.courseCodes,
+        kursnamn: [exam.name],
+        examurl: [locationUrl],
+        registrering: [
+            `${isoDateStringSweden(exam.registrationStart)} - ${isoDateStringSweden(exam.registrationEnd)}`,
+        ],
+    }
+    return new CalendarEvent(exam.id, exam.updated, exam.start)
+        .setEnd(exam.end)
+        .setLocation(`Campus: ${exam.location}`)
+        .setSummary(serializeEventData(data))
+        .setDescription('')
 }

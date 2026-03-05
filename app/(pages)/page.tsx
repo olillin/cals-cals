@@ -26,8 +26,7 @@ export default async function Page() {
         const calendars = picker.calendars
         tree = buildTree(calendars)
     } catch (error) {
-        console.error('Failed to build picker tree, see error below.')
-        console.log(error)
+        console.error('Failed to build picker tree, see error below.\n', error)
         tree = null
     }
 

@@ -49,10 +49,29 @@ abstract class Adapter {
                 return originalCalendar
             }
 
+            // Patch calendar
+            let patchedCalendar: Calendar
+            try {
+                patchedCalendar = await this.patchCalendar(
+                    originalCalendar,
+                    request
+                )
+            } catch (error) {
+                return NextResponse.json(
+                    {
+                        error: {
+                            message:
+                                'Failed to patch calendar: ' + String(error),
+                        },
+                    },
+                    { status: 500 }
+                )
+            }
+
             let convertedCalendar: Calendar
             try {
-                convertedCalendar = this.convertCalendar(
-                    originalCalendar,
+                convertedCalendar = await this.convertCalendar(
+                    patchedCalendar,
                     request
                 )
             } catch (error) {
@@ -170,7 +189,13 @@ abstract class Adapter {
 
             let extra: object | undefined = undefined
             try {
-                extra = await this.getExtras(new URL(String(originalUrl)))
+                const url = new URL(String(originalUrl))
+                const originalCalendar: Calendar = await this.fetchCalendar(url)
+                const patchedCalendar: Calendar = await this.patchCalendar(
+                    originalCalendar,
+                    request
+                )
+                extra = await this.getExtras(patchedCalendar)
             } catch (error) {
                 const message = `Failed to get extra information about URL: ${error instanceof Error ? error.message : String(error)}`
                 console.error(message)
@@ -191,7 +216,18 @@ abstract class Adapter {
             const path = request.nextUrl.pathname.replace(/\/[^/]*$/, '')
             const adapterUrl = new URL('webcal://' + host + path)
             // Add id query parameter
-            adapterUrl.search = '?id=' + encodeURIComponent(id)
+            const searchParams = new URLSearchParams()
+            searchParams.append('id', id)
+            // Add other search parameters
+            const excludedSearchParams: Set<string> = new Set(['url'])
+            const originalSearchParams = request.nextUrl.searchParams
+            for (const [name, value] of originalSearchParams) {
+                if (!excludedSearchParams.has(name)) {
+                    searchParams.append(name, value)
+                }
+            }
+
+            adapterUrl.search = searchParams.toString()
 
             const response: UrlResponse = {
                 id: id,
@@ -218,19 +254,39 @@ abstract class Adapter {
 
     /**
      * Convert a calendar according to the rules of this adapter.
-     * @param calendar The original calendar from the URL.
+     * @param calendar The calendar from the URL which may have been patched.
      * @param req The context of the request to get this calendar.
      * @returns The converted calendar.
+     * @see {@link this.patchCalendar}
      */
-    abstract convertCalendar(calendar: Calendar, req?: NextRequest): Calendar
+    abstract convertCalendar(
+        calendar: Calendar,
+        req?: NextRequest
+    ): Calendar | Promise<Calendar>
 
     /**
-     * Provide extra information about the URL for this adapter.
-     * @param url The URL to the calendar.
+     * Patch a calendar before getting extra information about it.
+     * @param calendar The original calendar.
+     * @param req The context of the request to get this calendar.
+     * @returns The patched calendar.
+     */
+    patchCalendar(
+        calendar: Calendar,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        req?: NextRequest
+    ): Calendar | Promise<Calendar> {
+        return calendar
+    }
+
+    /**
+     * Provide extra information about a calendar relevant for this adapter.
+     * @param calendar The parsed to the calendar.
      * @returns The extra information as a JSON-serializable object, or undefined if no extra information is available.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getExtras(url: URL): object | undefined | Promise<object | undefined> {
+    getExtras(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        calendar: Calendar
+    ): object | undefined | Promise<object | undefined> {
         return undefined
     }
 }

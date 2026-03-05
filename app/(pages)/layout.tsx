@@ -1,4 +1,5 @@
 import PageNavivgation from '@/app/ui/PageNavigation'
+import PageFooter from '@/app/ui/PageFooter'
 import UpdateNotice from '@/app/ui/UpdateNotice'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
@@ -71,29 +72,7 @@ export default function RootLayout({
                         {children}
                     </main>
 
-                    <footer>
-                        <span>
-                            Made with <span className="pixelnheart"></span>{' '}
-                            by&nbsp;
-                            <a
-                                href="https://wiki.chalmers.it/Cal"
-                                target="_blank"
-                            >
-                                Cal
-                            </a>
-                            .
-                        </span>
-                        <span>
-                            Is something wrong or could be improved?&nbsp;
-                            <a
-                                href="https://github.com/olillin/cals-cals/issues"
-                                target="_blank"
-                            >
-                                Leave an issue on GitHub
-                            </a>
-                            !
-                        </span>
-                    </footer>
+                    <PageFooter />
                 </div>
             </body>
         </html>

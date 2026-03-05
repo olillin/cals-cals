@@ -129,3 +129,23 @@ it('can parse one word keys', () => {
 
     expect(data.kurskod).toStrictEqual(['Foo'])
 })
+
+it('does not split values with commas', () => {
+    const s = 'Kurskod: Foo, Spam. Kursnamn: Lorem ipsum'
+    const data = parseEventDataString(s)
+
+    expect(data).toStrictEqual({
+        kurskod: ['Foo, Spam'],
+        kursnamn: ['Lorem ipsum'],
+    })
+})
+
+it('does not split values with periods', () => {
+    const s = 'Kurskod: Foo. Spam. Kursnamn: Lorem ipsum'
+    const data = parseEventDataString(s)
+
+    expect(data).toStrictEqual({
+        kurskod: ['Foo. Spam'],
+        kursnamn: ['Lorem ipsum'],
+    })
+})

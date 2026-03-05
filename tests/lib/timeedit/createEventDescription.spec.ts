@@ -140,6 +140,15 @@ it('shortens course codes', () => {
     expect(description).toBe('Kurs: ABC123')
 })
 
+it('formats exam URLs correctly', () => {
+    const data: TimeEditEventData = {
+        examurl: ['ABC123'],
+    }
+    const description = createEventDescription(data)
+
+    expect(description).toBe('Hitta din tentamen: ABC123')
+})
+
 it('returns null for no data', () => {
     const data: TimeEditEventData = {}
     const description = createEventDescription(data)
@@ -157,4 +166,17 @@ it('falls back to original event description for no data', () => {
     const description = createEventDescription(data, event)
 
     expect(description).toBe('Foo')
+})
+
+it('returns null for no data and no orignal event description', () => {
+    const data: TimeEditEventData = {}
+    const event = new CalendarEvent(
+        '',
+        new CalendarDateTime('20250101T120000'),
+        new CalendarDateTime('20250101T120000')
+    )
+
+    const description = createEventDescription(data, event)
+
+    expect(description).toBeNull()
 })
