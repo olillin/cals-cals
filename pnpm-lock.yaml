@@ -24,8 +24,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       iamcal:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^4.1.0
+        version: 4.1.0
       next:
         specifier: ^16.1.6
         version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1638,8 +1638,8 @@ packages:
   html-entities@2.6.0:
     resolution: {integrity: sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==}
 
-  iamcal@4.0.0:
-    resolution: {integrity: sha512-4D37vLpqlrlYbJyxpI8ao2jQtcNnnDW/qspdVAgBKdE+fbipJ1/lfGZgVr4hqjkPEjUpW1A1pCUX0NOplGazjg==}
+  iamcal@4.1.0:
+    resolution: {integrity: sha512-QSQE611eJlh5wiVTmPC+8uVVK0Bp8JLNHIYJiBM9Ib614zdcU7kPQPLlxJtfiI3Cd1JOaaAk3t5gzj3jkBHbPw==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -2314,6 +2314,10 @@ packages:
   tapable@2.3.0:
     resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
     engines: {node: '>=6'}
+
+  timezones-ical-library@2.1.2:
+    resolution: {integrity: sha512-VW7gTRzrveUNdLaztWKlsgHRn1eagubRA/HHembnrh9xYDtDRwRWN+zWcNIE3QM+TpXikSJLp/jwxYQv7IJJvg==}
+    engines: {node: '>=22.20.0', npm: '>=10.9.3'}
 
   tinybench@2.9.0:
     resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
@@ -4116,7 +4120,9 @@ snapshots:
 
   html-entities@2.6.0: {}
 
-  iamcal@4.0.0: {}
+  iamcal@4.1.0:
+    dependencies:
+      timezones-ical-library: 2.1.2
 
   ignore@5.3.2: {}
 
@@ -4852,6 +4858,8 @@ snapshots:
   tailwindcss@4.2.1: {}
 
   tapable@2.3.0: {}
+
+  timezones-ical-library@2.1.2: {}
 
   tinybench@2.9.0: {}
 
