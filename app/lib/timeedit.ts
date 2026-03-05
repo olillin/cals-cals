@@ -1,4 +1,4 @@
-import { CalendarEvent } from 'iamcal'
+import { CalendarDateTime, CalendarEvent } from 'iamcal'
 import type { Concrete, UrlResponse } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
@@ -506,8 +506,12 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
             `${isoDateStringSweden(exam.registrationStart)} - ${isoDateStringSweden(exam.registrationEnd)}`,
         ],
     }
-    return new CalendarEvent(exam.id, exam.updated, exam.start)
-        .setEnd(exam.end)
+    const start = new CalendarDateTime(exam.start, true)
+    const end = new CalendarDateTime(exam.end, true)
+    const stamp = new CalendarDateTime(exam.updated, true)
+
+    return new CalendarEvent(exam.id, stamp, start)
+        .setEnd(end)
         .setLocation(`Campus: ${exam.location}`)
         .setSummary(serializeEventData(data))
         .setDescription('')

@@ -5,7 +5,7 @@ import {
     lindholmenExamScheduleUrl,
     MultiExam,
 } from '../../../app/lib/timeedit'
-import { CalendarEvent } from 'iamcal'
+import { CalendarDateTime, CalendarEvent } from 'iamcal'
 import { convertEvent } from '../../../app/lib/adapter/TimeEditAdapter'
 
 const multiExam1: MultiExam = {
@@ -80,10 +80,10 @@ it('follows the expected format for one event', () => {
 
     const expected = new CalendarEvent(
         'norm_63294',
-        new Date('2026-02-26T12:00:00.000Z'),
-        new Date('2026-03-19T13:00:00.000Z')
+        new CalendarDateTime('2026-02-26T12:00:00Z'),
+        new CalendarDateTime('2026-03-19T13:00:00Z')
     )
-        .setEnd(new Date('2026-03-19T17:00:00.000Z'))
+        .setEnd(new CalendarDateTime('2026-03-19T17:00:00Z'))
         .setLocation('Campus: Johanneberg')
         .setSummary(
             `Aktivitet: Tentamen. Kurskod: TDA553. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
@@ -100,10 +100,10 @@ it('follows the expected format for two events', () => {
 
     const expected = new CalendarEvent(
         'norm_63294',
-        new Date('2026-02-26T12:00:00.000Z'),
-        new Date('2026-03-19T13:00:00.000Z')
+        new CalendarDateTime('2026-02-26T12:00:00Z'),
+        new CalendarDateTime('2026-03-19T13:00:00Z')
     )
-        .setEnd(new Date('2026-03-19T17:00:00.000Z'))
+        .setEnd(new CalendarDateTime('2026-03-19T17:00:00Z'))
         .setLocation('Campus: Johanneberg')
         .setSummary(
             `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
@@ -120,10 +120,10 @@ it('uses the Lindholmen exam URL if at Lindholmen', () => {
 
     const expected = new CalendarEvent(
         'norm_63294',
-        new Date('2026-02-26T12:00:00.000Z'),
-        new Date('2026-03-19T13:00:00.000Z')
+        new CalendarDateTime('2026-02-26T12:00:00Z'),
+        new CalendarDateTime('2026-03-19T13:00:00Z')
     )
-        .setEnd(new Date('2026-03-19T17:00:00.000Z'))
+        .setEnd(new CalendarDateTime('2026-03-19T17:00:00Z'))
         .setLocation('Campus: Lindholmen')
         .setSummary(
             `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${lindholmenExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
@@ -140,4 +140,22 @@ it('has a description after converting', () => {
     convertEvent(event)
 
     expect(event.getDescription()).not.toBeUndefined()
+})
+
+it('has absolute start', () => {
+    const event = createExamEvent(multiExam1)
+    expect(event.getStart()).toBeInstanceOf(CalendarDateTime)
+    expect((event.getStart() as CalendarDateTime).isAbsolute()).toBe(true)
+})
+
+it('has absolute end', () => {
+    const event = createExamEvent(multiExam1)
+    expect(event.getEnd()).toBeInstanceOf(CalendarDateTime)
+    expect((event.getEnd() as CalendarDateTime).isAbsolute()).toBe(true)
+})
+
+it('has absolute stamp', () => {
+    const event = createExamEvent(multiExam1)
+    expect(event.getStamp()).toBeInstanceOf(CalendarDateTime)
+    expect(event.getStamp().isAbsolute()).toBe(true)
 })
