@@ -477,18 +477,18 @@ export function getExamLocationUrl(location: string): string {
 }
 
 /**
- * Format a date in ISO format as YYYY-MM-DD.
+ * Format a date in ISO format as YYYY-MM-DD in Sweden.
  * @param date The date to format.
  * @returns The formatted date.
  */
-export function isoDateString(date: Date): string {
-    return (
-        date.getFullYear() +
-        '-' +
-        date.getMonth().toString().padStart(2, '0') +
-        '-' +
-        date.getDate().toString().padStart(2, '0')
-    )
+export function isoDateStringSweden(date: Date): string {
+    return new Intl.DateTimeFormat('sv-SE', {
+        timeZone: 'Europe/Stockholm',
+        hour12: false,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).format(date)
 }
 
 /**
@@ -504,7 +504,7 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         kursnamn: [exam.name],
         examurl: [locationUrl],
         registrering: [
-            `${isoDateString(exam.registrationStart)} - ${isoDateString(exam.registrationEnd)}`,
+            `${isoDateStringSweden(exam.registrationStart)} - ${isoDateStringSweden(exam.registrationEnd)}`,
         ],
     }
     return new CalendarEvent(exam.id, exam.updated, exam.start)

@@ -86,7 +86,7 @@ it('follows the expected format for one event', () => {
         .setEnd(new Date('2026-03-19T17:00:00.000Z'))
         .setLocation('Campus: Johanneberg')
         .setSummary(
-            `Aktivitet: Tentamen. Kurskod: TDA553. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-11-29 - 2026-02-01`
+            `Aktivitet: Tentamen. Kurskod: TDA553. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
         )
         .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
@@ -106,7 +106,7 @@ it('follows the expected format for two events', () => {
         .setEnd(new Date('2026-03-19T17:00:00.000Z'))
         .setLocation('Campus: Johanneberg')
         .setSummary(
-            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-11-29 - 2026-02-01`
+            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
         )
         .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
@@ -126,7 +126,7 @@ it('uses the Lindholmen exam URL if at Lindholmen', () => {
         .setEnd(new Date('2026-03-19T17:00:00.000Z'))
         .setLocation('Campus: Lindholmen')
         .setSummary(
-            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${lindholmenExamScheduleUrl}. Registrering: 2025-11-29 - 2026-02-01`
+            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${lindholmenExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
         )
         .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
