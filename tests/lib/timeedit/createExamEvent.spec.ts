@@ -6,6 +6,7 @@ import {
     MultiExam,
 } from '../../../app/lib/timeedit'
 import { CalendarEvent } from 'iamcal'
+import { convertEvent } from '../../../app/lib/adapter/TimeEditAdapter'
 
 const multiExam1: MultiExam = {
     name: 'Objektorienterad programmering och design',
@@ -87,6 +88,7 @@ it('follows the expected format for one event', () => {
         .setSummary(
             `Aktivitet: Tentamen. Kurskod: TDA553. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-11-29 - 2026-02-01`
         )
+        .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
 
     expect(event).toStrictEqual(expected)
@@ -106,6 +108,7 @@ it('follows the expected format for two events', () => {
         .setSummary(
             `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-11-29 - 2026-02-01`
         )
+        .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
 
     expect(event).toStrictEqual(expected)
@@ -125,7 +128,16 @@ it('uses the Lindholmen exam URL if at Lindholmen', () => {
         .setSummary(
             `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${lindholmenExamScheduleUrl}. Registrering: 2025-11-29 - 2026-02-01`
         )
+        .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
 
     expect(event).toStrictEqual(expected)
+})
+
+it('has a description after converting', () => {
+    const event = createExamEvent(multiExam1)
+
+    convertEvent(event)
+
+    expect(event.getDescription()).not.toBeUndefined()
 })

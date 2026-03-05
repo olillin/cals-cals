@@ -347,7 +347,7 @@ export async function createExamEvents(
 ): Promise<CalendarEvent[]> {
     const exams = await findExams(groupedCourseCodes.flat())
     const multiExams = deDuplicateExams(exams, groupedCourseCodes)
-    const events = multiExams.map(createExamEvent)
+    const events = multiExams.map(exam => createExamEvent(exam))
     return events
 }
 
@@ -511,4 +511,5 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         .setEnd(exam.end)
         .setLocation(`Campus: ${exam.location}`)
         .setSummary(serializeEventData(data))
+        .setDescription('')
 }
