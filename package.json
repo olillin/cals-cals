@@ -10,7 +10,8 @@
         "test": "vitest",
         "format": "prettier . --write --list-different",
         "checkformat": "prettier . --check",
-        "lint": "eslint"
+        "lint": "eslint",
+        "checks": "pnpm checkformat; pnpm test --run --reporter=dot; pnpm lint"
     },
     "repository": {
         "type": "git",
