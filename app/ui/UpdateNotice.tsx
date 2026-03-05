@@ -3,19 +3,27 @@
 import Image from 'next/image'
 import clsx from 'clsx'
 import { ReactNode, useState } from 'react'
+import Link from 'next/link'
 
 export default function UpdateNotice() {
-    const title: string = 'Update v2.0 is here!'
+    const title: string = 'Hello tentavecka!'
     const body: ReactNode = (
         <>
             <p>
-                Cal&apos;s cals has been rewritten using Next.js, finally ending
-                the long feature freeze. Expect new exciting features soon!
-            </p>
-            <strong>v2.0.2</strong>
-            <p>
-                The TimeEdit adapter has been fixed after TimeEdit changed their
-                calendar format again. Sorry for the inconvenience.
+                Just in time for the exams, v2.1 is here with a new feature! The
+                calendar builder is now able to add events for the exams of your
+                subscribed courses. These events are treated like any other so
+                all of you who use calendar groups can highlight your exams in
+                the brightest colours so you won&apos;t miss them. Internally
+                this uses my library{' '}
+                <Link
+                    href="https://github.com/olillin/chalmers-search-exam"
+                    target="_blank"
+                >
+                    chalmers-search-exam
+                </Link>
+                , which is also available as a CLI if that&apos;s something you
+                want.
             </p>
         </>
     )
