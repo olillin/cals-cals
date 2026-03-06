@@ -4,6 +4,9 @@ name: Node.js CI
 
 on:
     push:
+        pr:
+        branches:
+            - '**'
 
 env:
     NODE_VERSION: 20
