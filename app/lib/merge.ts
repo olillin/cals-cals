@@ -25,10 +25,16 @@ export function mergeCalendars(
     const base: Calendar = deepCopy(calendars[0])
 
     const names: string[] = []
+    const descriptions: string[] = []
 
     const baseName = base.getCalendarName()
     if (baseName) {
         names.push(baseName)
+    }
+    const baseDescription = base.getCalendarDescription()
+    if (baseDescription) {
+        const prefix = baseName ? baseName + ': ' : ''
+        descriptions.push(prefix + baseDescription)
     }
 
     if (appendOriginName && baseName) {
@@ -42,6 +48,11 @@ export function mergeCalendars(
         const calendarName = calendar.getCalendarName()
         if (calendarName) {
             names.push(calendarName)
+        }
+        const calendarDescription = calendar.getCalendarDescription()
+        if (calendarDescription) {
+            const prefix = calendarName ?? 'Unnamed'
+            descriptions.push(prefix + ': ' + calendarDescription)
         }
 
         base.components.push(
@@ -68,6 +79,9 @@ export function mergeCalendars(
     }
     if (names.length > 0) {
         base.setCalendarName(names.join('+'))
+    }
+    if (descriptions.length > 1) {
+        base.setCalendarDescription(descriptions.join('\n'))
     }
     return base
 }

@@ -2,6 +2,7 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:example
 X-WR-CALNAME:Birthdays
+X-WR-CALDESC:My description 1
 BEGIN:VEVENT
 SUMMARY:🍰Cousins's birthday party
 LOCATION:Their house
