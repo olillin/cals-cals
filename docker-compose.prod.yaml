@@ -1,0 +1,13 @@
+# This is an example of how to run the backend in production using secret files
+# and using the image from GitHub Packages.
+
+name: cals-cals
+
+services:
+    server:
+        image: 'ghcr.io/olillin/cals-cals/app:latest'
+        container_name: cals-cals-server
+        restart: always
+
+        ports:
+            - '3000:3000'
