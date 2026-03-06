@@ -1,0 +1,15 @@
+# This compose file builds and runs the backend locally for development.
+
+name: cals-cals-dev
+
+services:
+    server:
+        build:
+            context: .
+        container_name: cals-cals-dev-server
+        restart: unless-stopped
+        environment:
+            NODE_ENV: development
+
+        ports:
+            - '3000:3000'

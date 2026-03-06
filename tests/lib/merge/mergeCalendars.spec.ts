@@ -26,7 +26,25 @@ it('combines calendar names', () => {
 
     const merged = mergeCalendars([base, extra])
     const name = merged.getCalendarName()
-    expect(name).toBe(baseName + '+' + extraName)
+
+    const expected = baseName + '+' + extraName
+    expect(name).toBe(expected)
+})
+
+it('combines calendar descriptions', () => {
+    const base = EXAMPLE_CALENDAR_1
+    const baseName = base.getCalendarName()
+    const baseDescription = base.getCalendarDescription()
+    const extra = EXAMPLE_CALENDAR_2
+    const extraName = extra.getCalendarName()
+    const extraDescription = extra.getCalendarDescription()
+
+    const merged = mergeCalendars([base, extra])
+    const description = merged.getCalendarDescription()
+
+    const expected = `${baseName}: ${baseDescription}
+${extraName}: ${extraDescription}`
+    expect(description).toBe(expected)
 })
 
 it('returns the correct number of events', () => {
