@@ -25,6 +25,16 @@ export default function UpdateNotice() {
                 , which is also available as a CLI if that&apos;s something you
                 want.
             </p>
+            <strong>v2.1.3</strong>
+            <p>
+                Handling of TimeEdit events that are missing properties has been
+                improved. These events are no longer skipped and you are able to
+                sort them into groups, for example filtering events that have no
+                assigned activity or course. Events that have no properties such
+                as the exam week are called &quot;global events&quot; and are
+                excluded by default, but there is now also an option to keep
+                this if you wish.
+            </p>
         </>
     )
     const [closed, setClosed] = useState(true)
