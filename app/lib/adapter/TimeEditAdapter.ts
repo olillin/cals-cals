@@ -10,6 +10,7 @@ import {
     createEventSummary,
     createExamEvents,
     groupByOptions,
+    isGlobalEvent,
     parseEventData,
     shortenCourseCode,
     TimeEditUrlExtras,
@@ -63,12 +64,24 @@ export default class TimeEditAdapter extends Adapter {
                 req.nextUrl.searchParams.get('noExam') ?? '0'
             )
 
-        if (!addExams) {
+        const keepGlobalEvents =
+            req != undefined &&
+            ['1', 'true', 't'].includes(
+                req.nextUrl.searchParams.get('keepGlobal') ?? '0'
+            )
+
+        if (!addExams && keepGlobalEvents) {
             return calendar
         }
 
         const courseCodeSets: string[][] = []
-        calendar.getEvents().forEach(event => {
+        const oldEvents = calendar.getEvents()
+        oldEvents.forEach(event => {
+            if (isGlobalEvent(event) && !keepGlobalEvents) {
+                calendar.removeEvent(event.getUid())
+                return
+            }
+
             const eventData = parseEventData(event)
             const courseCodes = eventData.kurskod?.map(shortenCourseCode)
             if (courseCodes === undefined) return

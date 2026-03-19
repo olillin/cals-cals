@@ -24,8 +24,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       iamcal:
-        specifier: ^4.1.0
-        version: 4.1.0
+        specifier: ^4.1.1
+        version: 4.1.1
       next:
         specifier: ^16.1.6
         version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1638,8 +1638,8 @@ packages:
   html-entities@2.6.0:
     resolution: {integrity: sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ==}
 
-  iamcal@4.1.0:
-    resolution: {integrity: sha512-QSQE611eJlh5wiVTmPC+8uVVK0Bp8JLNHIYJiBM9Ib614zdcU7kPQPLlxJtfiI3Cd1JOaaAk3t5gzj3jkBHbPw==}
+  iamcal@4.1.1:
+    resolution: {integrity: sha512-CwBXPbCjOKhTz82ElfLh3U6buBAwB497YjqJPSy32f41LOtkedfnwbmwx3qzMcHP82O4aX6FOGDhqrce9OznDg==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -4120,7 +4120,7 @@ snapshots:
 
   html-entities@2.6.0: {}
 
-  iamcal@4.1.0:
+  iamcal@4.1.1:
     dependencies:
       timezones-ical-library: 2.1.2
 

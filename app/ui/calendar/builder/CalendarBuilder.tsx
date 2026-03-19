@@ -10,6 +10,7 @@ export type AdapterChoice = 'timeedit'
 export default function CalendarBuilder() {
     const [inputUrl, setInputUrl] = useState<string | null>(null)
     const [addExams, setAddExams] = useState<boolean>(true)
+    const [keepGlobal, setKeepGlobal] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
     const [urlData, setUrlData] = useState<TimeEditUrlResponse | null>(null)
 
@@ -17,9 +18,10 @@ export default function CalendarBuilder() {
         if (!inputUrl) return
 
         const params = new URLSearchParams(
-            [addExams == false ? ['noExam', '1'] : undefined].filter(
-                entry => entry != undefined
-            )
+            [
+                addExams == false ? ['noExam', '1'] : undefined,
+                keepGlobal == true ? ['keepGlobal', '1'] : undefined,
+            ].filter(entry => entry != undefined)
         )
 
         fetchAdapterUrl(
@@ -35,7 +37,7 @@ export default function CalendarBuilder() {
                 setInputUrl(null)
                 setError(String(reason).split(':')[1] ?? String(reason))
             })
-    }, [inputUrl, addExams])
+    }, [inputUrl, addExams, keepGlobal])
 
     const input = useRef<HTMLInputElement>(null)
     function updateInputUrl() {
@@ -56,7 +58,6 @@ export default function CalendarBuilder() {
                 <span className="checkbox-field">
                     <input
                         type="checkbox"
-                        id="add-exams"
                         name="add-exams"
                         defaultChecked={true}
                         onChange={event => {
@@ -65,6 +66,18 @@ export default function CalendarBuilder() {
                         }}
                     />
                     <label htmlFor="add-exams">Add exams (tentamen)</label>
+                </span>
+                <span className="checkbox-field">
+                    <input
+                        type="checkbox"
+                        name="keep-global"
+                        defaultChecked={false}
+                        onChange={event => {
+                            setUrlData(null)
+                            setKeepGlobal(event.target.checked)
+                        }}
+                    />
+                    <label htmlFor="keep-global">Keep global events</label>
                 </span>
             </div>
             <span className="calendar-builder-input">
