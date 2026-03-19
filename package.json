@@ -3,10 +3,11 @@
     "version": "2.1.3",
     "description": "Calendar website for better calendars at Chalmers",
     "private": true,
+    "main": ".next/standalone/server.js",
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start",
+        "start": "node .",
         "test": "vitest",
         "format": "prettier . --write --list-different",
         "checkformat": "prettier . --check",
