@@ -175,7 +175,13 @@ export function CalendarGroupContainer({
                     <ul className="included-values">
                         {includedValues.map(([key, prettyValue]) => (
                             <li key={key}>
-                                <span>{prettyValue}</span>
+                                <span>
+                                    {key === '_' ? (
+                                        <i>No value</i>
+                                    ) : (
+                                        prettyValue
+                                    )}
+                                </span>
                                 <button
                                     className="move-up"
                                     onClick={onMoveUp && (() => onMoveUp(key))}

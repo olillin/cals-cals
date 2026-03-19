@@ -10,6 +10,7 @@ import {
     createEventSummary,
     createExamEvents,
     groupByOptions,
+    isGlobalEvent,
     parseEventData,
     shortenCourseCode,
     TimeEditUrlExtras,
@@ -63,12 +64,24 @@ export default class TimeEditAdapter extends Adapter {
                 req.nextUrl.searchParams.get('noExam') ?? '0'
             )
 
-        if (!addExams) {
+        const keepGlobalEvents =
+            req != undefined &&
+            ['1', 'true', 't'].includes(
+                req.nextUrl.searchParams.get('keepGlobal') ?? '0'
+            )
+
+        if (!addExams && keepGlobalEvents) {
             return calendar
         }
 
         const courseCodeSets: string[][] = []
-        calendar.getEvents().forEach(event => {
+        const oldEvents = calendar.getEvents()
+        oldEvents.forEach(event => {
+            if (isGlobalEvent(event) && !keepGlobalEvents) {
+                calendar.removeEvent(event.getUid())
+                return
+            }
+
             const eventData = parseEventData(event)
             const courseCodes = eventData.kurskod?.map(shortenCourseCode)
             if (courseCodes === undefined) return
@@ -119,15 +132,21 @@ export default class TimeEditAdapter extends Adapter {
 
         calendar.getEvents().forEach(event => {
             const data = parseEventData(event)
+            // For each groupable property name
             for (let i = 0; i < groupByOptions.length; i++) {
                 const property = groupByOptions[i]
+
                 if (data[property]) {
+                    // Event has property
                     const key = prepareSetForComparison(data[property])
                     const prettyValues =
                         property === 'kurskod'
                             ? data[property].map(shortenCourseCode)
                             : data[property]
                     groups[i].values[key] = prettyValues.join(', ')
+                } else {
+                    // Event does not have property
+                    groups[i].values['_'] = ''
                 }
             }
         })
@@ -180,7 +199,7 @@ export function parseGroupBy(req: NextRequest): number {
  */
 export function parseAllowedValues(req: NextRequest): Set<string> {
     const serializedValues = req.nextUrl.searchParams.get('gi')
-    if (serializedValues === undefined)
+    if (serializedValues == undefined)
         throw new Error(
             "Unable to get group index. Missing query parameter 'gi'"
         )
@@ -189,11 +208,13 @@ export function parseAllowedValues(req: NextRequest): Set<string> {
         .replace(/[^a-z0-9_ -]/g, '')
         .split(' ')
         .map(value =>
-            value
-                .split('_')
-                .filter(v => v !== '')
-                .sort()
-                .join('_')
+            value === '_'
+                ? value
+                : value
+                      .split('_')
+                      .filter(v => v !== '')
+                      .sort()
+                      .join('_')
         )
         .filter(v => v !== '')
 
@@ -224,7 +245,10 @@ export function createGroupSlicer(
      */
     const hash = (event: CalendarEvent): number => {
         const data = parseEventData(event)
-        if (data[property] === undefined) return 0
+        if (data[property] == undefined) {
+            // Match undefined represented by _
+            return Number(allowedValues.has('_'))
+        }
         const values = prepareSetForComparison(data[property])
         return Number(allowedValues.has(values))
     }

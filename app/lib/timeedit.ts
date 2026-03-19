@@ -516,3 +516,17 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         .setSummary(serializeEventData(data))
         .setDescription('')
 }
+
+/**
+ * Check if an TimeEdit event is an global event.
+ *
+ * A global event is any event not linked to a course.
+ * @param event The event to check.
+ * @returns Whether the event is a global event.
+ */
+export function isGlobalEvent(event: CalendarEvent): boolean {
+    const data = parseEventData(event)
+    const dataKeys = new Set(Object.keys(data))
+    const ignoredKeys = new Set<keyof TimeEditEventData>(['titel'])
+    return dataKeys.difference(ignoredKeys).size === 0
+}
