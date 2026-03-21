@@ -1,0 +1,7 @@
+data
+node_modules
+tests
+eslint.config.mjs
+jest.config.js
+README.md
+
