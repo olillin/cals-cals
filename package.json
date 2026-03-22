@@ -6,7 +6,7 @@
     "main": ".next/standalone/server.js",
     "scripts": {
         "dev": "next dev",
-        "build": "next build",
+        "build": "next build && node -e \"require('fs').cpSync('public', '.next/standalone/public', {recursive: true});require('fs').cpSync('.next/static', '.next/standalone/public/_next/static', {recursive: true})\"",
         "start": "node .",
         "test": "vitest",
         "format": "prettier . --write --list-different",

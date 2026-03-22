@@ -9,7 +9,7 @@ services:
         container_name: cals-cals-server
         restart: always
         volumes:
-          - ./data:/app/data
+            - ./data:/app/data
 
         ports:
             - '3000:3000'
