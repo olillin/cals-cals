@@ -3,9 +3,7 @@ import { Calendar, parseCalendar } from 'iamcal'
 import { NextRequest, NextResponse } from 'next/server'
 import { ErrorResponse, UrlResponse } from '../responses'
 
-export type RouteHandler = (
-    request: NextRequest
-) => NextResponse | Promise<NextResponse>
+export type RouteHandler = (request: NextRequest) => Promise<NextResponse>
 
 abstract class Adapter {
     /**
