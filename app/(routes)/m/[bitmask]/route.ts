@@ -9,7 +9,7 @@ export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ bitmask: string }> }
 ): Promise<NextResponse> {
-    const pickerConfig: Picker | undefined = readPicker()
+    const pickerConfig: Picker | undefined = await readPicker()
     if (pickerConfig === undefined) {
         return NextResponse.json(
             {

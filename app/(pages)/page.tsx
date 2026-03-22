@@ -8,17 +8,33 @@ import { formatKebabCase } from '@/app/lib/util'
 import PickerUnavailable from '../ui/calendar/picker/PickerUnavailable'
 import { buildTree, RenderedCalendarTree } from '../lib/calendarTree'
 import ErrorPage from '../ui/ErrorPage'
+import { cacheLife } from 'next/cache'
+import { Suspense } from 'react'
+import PickerDescription from '../ui/calendar/picker/PickerDescription'
 
 export default async function Page() {
-    const pickerConfig = readPicker()
+    return (
+        <section className="calendar-picker">
+            <Suspense fallback={<PickerDescription />}>
+                <PageContent />
+            </Suspense>
+        </section>
+    )
+}
+
+async function PageContent() {
+    'use cache: private'
+    cacheLife('hours')
+
+    const pickerConfig = await readPicker()
     if (pickerConfig === undefined) {
         return <PickerUnavailable />
     }
 
     const picker = await renderPicker(pickerConfig)
 
-    const hostHeader = (await headers()).get('host')
-    const urlBase = 'webcal://' + (hostHeader ?? 'cal.olillin.com')
+    const host = await headers().then(h => h.get('host') ?? 'cal.olillin.com')
+    const urlBase = 'webcal://' + host
 
     // Load picker tree
     let tree: RenderedCalendarTree | null
@@ -31,15 +47,8 @@ export default async function Page() {
     }
 
     return (
-        <section className="calendar-picker">
-            <h2>Calendar Picker</h2>
-            <p>
-                Here you can select which calendars you want to include in your
-                custom calendar feed. The URL you get at the bottom will
-                automatically update as you select and deselect calendars. You
-                can then use this URL to subscribe to your custom calendar feed
-                in your calendar application of choice.
-            </p>
+        <>
+            <PickerDescription />
 
             {tree !== null ? (
                 <CalendarPicker initialTree={tree} urlBase={urlBase} />
@@ -48,7 +57,7 @@ export default async function Page() {
                     Failed to load calendar picker, try again later
                 </ErrorPage>
             )}
-        </section>
+        </>
     )
 }
 
@@ -83,7 +92,7 @@ export async function getCalendarName(filename: string): Promise<string> {
     }
 
     try {
-        const calendar = await parseCalendar(fileContents)
+        const calendar = parseCalendar(fileContents)
         return calendar.getCalendarName() ?? fallback
     } catch (err) {
         console.warn(`Failed to parse calendar name: ${err}`)

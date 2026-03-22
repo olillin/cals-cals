@@ -1,4 +1,4 @@
-import { dataFileExists, readDataFileJson } from './datafiles'
+import { readDataFileJson } from './datafiles'
 
 /** A calendar in the calendar picker. */
 export interface PickerCalendar {
@@ -24,20 +24,14 @@ export interface Picker {
  * Read and validate the picker configuration from file.
  * @returns The picker configuration, or undefined if it is invalid or does not exist.
  */
-export function readPicker(): Picker | undefined {
+export async function readPicker(): Promise<Picker | undefined> {
     const pickerFile = 'picker.json'
 
-    // Safe read with default
-    if (!dataFileExists(pickerFile)) {
-        console.warn(`${pickerFile} does not exist`)
-        return undefined
-    }
-
-    try {
-        return readDataFileJson(pickerFile, 'picker.schema.json') as Picker
-    } catch (e) {
+    return await readDataFileJson<Picker>(
+        pickerFile,
+        'picker.schema.json'
+    ).catch(() => {
         console.warn(`Failed to load ${pickerFile}`)
-        console.warn(e)
         return undefined
-    }
+    })
 }

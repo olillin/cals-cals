@@ -1,6 +1,6 @@
 import Ajv from 'ajv'
 import crypto from 'crypto'
-import { existsSync, readFileSync } from 'fs'
+import { readFile } from 'fs/promises'
 import path from 'path'
 
 /** Contains hashed JSON data files to only revalidate when the file changes. */
@@ -17,29 +17,31 @@ export function getDataFilePath(...file: string[]): string {
 }
 
 /**
- * Check if a data file exists.
- * @param file The path to the file relative to `data/`.
- * @returns If the file exists.
- * @example dataFileExists("picker.json")
- */
-export function dataFileExists(file: string): boolean {
-    return existsSync(getDataFilePath(file))
-}
-
-/**
  * Read and validate a JSON file from the `data/` directory.
+ * @template T The expected type of the object.
  * @param file The path to the JSON file relative to `data/`.
  * @param schema The path to the JSON schema file relative to `data/schema/`.
  * @returns The validated JSON data, or `undefined` if the file does not exist.
+ * @throws {Error} If the data file does not exist.
+ * @throws {Error} If the schema file does not exist.
  * @throws {Error} If the data does not match the schema.
- * @throws {Error} If the file does not exist.
  * @example readJsonData("picker.json", "picker.schema.json")
  */
-export function readDataFileJson(file: string, schema: string): object {
+export async function readDataFileJson<T extends object>(
+    file: string,
+    schema: string
+): Promise<T> {
     const filePath = getDataFilePath(file)
     const schemaPath = getDataFilePath('schema', schema)
 
-    const fileText = readFileSync(filePath, { encoding: 'utf8' })
+    const fileText = await readFile(filePath, { encoding: 'utf8' }).catch(
+        reason => reason as unknown
+    )
+    if (typeof fileText !== 'string') {
+        // Failed to read data file
+        throw new Error(`Failed to read data file: ${String(fileText)}`)
+    }
+
     const fileJson = JSON.parse(fileText) as object
 
     const hash = crypto.createHash('sha256').update(fileText).digest('hex')
@@ -47,10 +49,18 @@ export function readDataFileJson(file: string, schema: string): object {
     const key = file + ';' + schema
     if (jsonDataHash.get(key) === hash) {
         // Validate picker
-        const schemaText = readFileSync(schemaPath, {
+        const schemaText = await readFile(schemaPath, {
             encoding: 'utf8',
             flag: 'r',
-        })
+        }).catch(reason => reason as unknown)
+
+        if (typeof schemaText !== 'string') {
+            // Failed to read schema file
+            throw new Error(
+                `Failed to read data file schema: ${String(schemaText)}`
+            )
+        }
+
         const schemaJson = JSON.parse(schemaText) as object
 
         const ajv = new Ajv()
@@ -63,5 +73,5 @@ export function readDataFileJson(file: string, schema: string): object {
         jsonDataHash.set(key, hash)
     }
 
-    return fileJson
+    return fileJson as T
 }

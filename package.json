@@ -1,12 +1,13 @@
 {
     "name": "cals-cals",
-    "version": "2.1.3",
+    "version": "2.1.4",
     "description": "Calendar website for better calendars at Chalmers",
     "private": true,
+    "main": ".next/standalone/server.js",
     "scripts": {
         "dev": "next dev",
-        "build": "next build",
-        "start": "next start",
+        "build": "next build && node -e \"require('fs').cpSync('public', '.next/standalone/public', {recursive: true});require('fs').cpSync('.next/static', '.next/standalone/public/_next/static', {recursive: true})\"",
+        "start": "node .",
         "test": "vitest",
         "format": "prettier . --write --list-different",
         "checkformat": "prettier . --check",
