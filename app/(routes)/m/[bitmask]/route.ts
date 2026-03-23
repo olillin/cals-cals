@@ -28,8 +28,10 @@ export async function GET(
     )
 
     const { bitmask } = await params
-    const selectedCalendars = parseInt(bitmask)
-    if (isNaN(selectedCalendars)) {
+    let selectedCalendars: bigint
+    try {
+        selectedCalendars = BigInt(bitmask)
+    } catch {
         return NextResponse.json(
             {
                 error: {
@@ -39,7 +41,7 @@ export async function GET(
             { status: 400 }
         )
     }
-    const selectedBits = dec2bin(selectedCalendars)
+    const selectedBits = selectedCalendars.toString(2)
 
     const calendarNames: string[] = pickerConfig.calendars
         .filter(c => {
@@ -78,13 +80,4 @@ export async function GET(
             'Cache-Control': 'no-store, max-age=0',
         },
     })
-}
-
-/**
- * Convert a decimal number to binary.
- * @param dec The decimal number.
- * @returns The binary as a string of 1s and 0s.
- */
-export function dec2bin(dec: number): string {
-    return (dec >>> 0).toString(2)
 }
