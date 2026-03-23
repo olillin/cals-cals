@@ -41,3 +41,13 @@ export function getSafeFilename(calendarName: string): string {
 export function formatKebabCase(text: string): string {
     return capitalizeWords(text.replaceAll('-', ' '))
 }
+
+/**
+ * Check if a key is one that should be used for clicking.
+ * @param key The key to check.
+ * @returns True if the key is Enter or Space.
+ */
+export function isClickKey(key: string): boolean {
+    const clickKeys: string[] = ['Space', 'Enter']
+    return clickKeys.includes(key)
+}

@@ -7,6 +7,7 @@ import {
     TreeSelectedState,
 } from '@/app/lib/calendarTree'
 import {} from './CalendarPicker'
+import { isClickKey } from '@/app/lib/util'
 
 export default function CalendarTree({
     tree,
@@ -99,6 +100,12 @@ export function SelectAllButton({
             className="checkbox-field"
             onClick={ev => {
                 if (onClick) {
+                    ev.preventDefault()
+                    onClick()
+                }
+            }}
+            onKeyDown={ev => {
+                if (onClick && isClickKey(ev.key)) {
                     ev.preventDefault()
                     onClick()
                 }

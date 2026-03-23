@@ -37,29 +37,29 @@ vi.mock(import('chalmers-search-exam'), async () => {
 it('returns no events for no course codes', async () => {
     const events = await createExamEvents([])
     expect(events).toStrictEqual([])
-    expect(searchExam).not.toBeCalled()
+    expect(searchExam).not.toHaveBeenCalled()
 })
 
 it('ignores empty course code groups', async () => {
     const events = await createExamEvents([[], [], []])
     expect(events).toStrictEqual([])
-    expect(searchExam).not.toBeCalled()
+    expect(searchExam).not.toHaveBeenCalled()
 })
 
 it('returns one event for one exam', async () => {
     const events = await createExamEvents([['TDA553']])
     expect(events).toHaveLength(1)
-    expect(searchExam).toBeCalled()
+    expect(searchExam).toHaveBeenCalled()
 })
 
 it('deduplicates events in the same group', async () => {
     const events = await createExamEvents([['TDA553', 'DIT954']])
     expect(events).toHaveLength(1)
-    expect(searchExam).toBeCalled()
+    expect(searchExam).toHaveBeenCalled()
 })
 
 it('does not deduplicate events in separate groups', async () => {
     const events = await createExamEvents([['TDA553'], ['TDA384']])
     expect(events).toHaveLength(2)
-    expect(searchExam).toBeCalled()
+    expect(searchExam).toHaveBeenCalled()
 })

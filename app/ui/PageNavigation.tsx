@@ -23,7 +23,7 @@ function NavigationLink({
     const pathname = usePathname()
     const selected: boolean = pathname === href
     return selected ? (
-        <a className="selected">{children}</a>
+        <span className="selected">{children}</span>
     ) : (
         <Link href={href}>{children}</Link>
     )
