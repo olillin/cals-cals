@@ -1,6 +1,6 @@
 {
     "name": "cals-cals",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "description": "Calendar website for better calendars at Chalmers",
     "private": true,
     "main": ".next/standalone/server.js",
@@ -9,10 +9,10 @@
         "build": "next build && node -e \"require('fs').cpSync('public', '.next/standalone/public', {recursive: true});require('fs').cpSync('.next/static', '.next/standalone/public/_next/static', {recursive: true})\"",
         "start": "node .",
         "test": "vitest",
-        "format": "prettier . --write --list-different",
-        "checkformat": "prettier . --check",
-        "lint": "eslint",
-        "checks": "pnpm checkformat; pnpm test --run --reporter=dot; pnpm lint"
+        "fmt": "oxfmt",
+        "fmt:check": "oxfmt --check",
+        "lint": "oxlint",
+        "checks": "pnpm fmt:check; pnpm test --run --reporter=dot; pnpm lint"
     },
     "repository": {
         "type": "git",
@@ -35,19 +35,16 @@
         "react-dom": "^19.2.4"
     },
     "devDependencies": {
-        "@eslint/compat": "^2.0.2",
-        "@eslint/js": "^9.39.3",
         "@tailwindcss/postcss": "^4.2.1",
         "@types/node": "^24.10.14",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
-        "eslint": "^9.39.3",
-        "eslint-config-next": "16.0.0",
-        "eslint-plugin-jsdoc": "^62.7.1",
+        "oxfmt": "^0.41.0",
+        "oxlint": "^1.56.0",
+        "oxlint-tsgolint": "^0.17.1",
         "prettier": "^3.8.1",
         "tailwindcss": "^4.2.1",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.56.1",
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.1.0"
     }
