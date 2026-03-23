@@ -6,12 +6,20 @@ services:
     server:
         build:
             context: .
-        container_name: cals-cals-dev-server
         restart: unless-stopped
         environment:
+            REDIS_URL: redis://redis:6379
             NODE_ENV: development
         volumes:
             - ./data:/app/data
 
         ports:
             - '3000:3000'
+
+        depends_on:
+            - redis
+    redis:
+        image: redis:8.6-alpine
+        restart: unless-stopped
+        expose:
+            - 6379

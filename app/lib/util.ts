@@ -1,4 +1,6 @@
+import { ONE_DAY_MS } from 'iamcal'
 import path from 'path'
+import { weekNumber } from 'weeknumber'
 
 /**
  * Capitalize a string.
@@ -40,4 +42,15 @@ export function getSafeFilename(calendarName: string): string {
  */
 export function formatKebabCase(text: string): string {
     return capitalizeWords(text.replaceAll('-', ' '))
+}
+
+/**
+ * Get the year and week number as a concatenated number.
+ * @param date The date to get the year and date of.
+ * @returns The year and week number as YYYYWW.
+ */
+export function getYearWeekNumber(date: Date = new Date()): number {
+    const year = date.getFullYear()
+    const week = weekNumber(date)
+    return year * 100 + week
 }

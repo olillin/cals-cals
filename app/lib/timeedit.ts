@@ -1,7 +1,9 @@
-import { CalendarDateTime, CalendarEvent } from 'iamcal'
+import { Calendar, CalendarDateTime, CalendarEvent } from 'iamcal'
 import type { Concrete, UrlResponse } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
+import { getRedisClient, TIMEEDIT_INDEX } from './redis'
+import { prepareForComparison } from './adapter/TimeEditAdapter'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const groupByOptions = (<T extends keyof TimeEditEventData>(
@@ -46,6 +48,14 @@ export interface TimeEditEventData {
     antaldatorer?: string[]
     // Extra not from TimeEdit
     examurl?: string[]
+}
+
+export interface TimeEditEvent {
+    uid: string
+    stamp: Date
+    start: Date
+    end: Date
+    content: TimeEditEventData
 }
 
 /**
@@ -151,6 +161,23 @@ export function serializeEventData(eventData: TimeEditEventData): string {
         })
         .filter(x => x != null)
         .join('. ')
+}
+
+/**
+ * Create a TimeEdit event from data.
+ * @param event The event data.
+ * @returns The serialized event.
+ */
+export function serializeEvent(event: TimeEditEvent): CalendarEvent {
+    const summary = serializeEventData(event.content)
+    const stamp = new CalendarDateTime(event.stamp, true)
+    const start = new CalendarDateTime(event.start, true)
+    const end = new CalendarDateTime(event.end, true)
+
+    return new CalendarEvent(event.uid, stamp, start)
+        .setEnd(end)
+        .setSummary(summary)
+        .setDescription('')
 }
 
 /**
@@ -506,15 +533,16 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
             `${isoDateStringSweden(exam.registrationStart)} - ${isoDateStringSweden(exam.registrationEnd)}`,
         ],
     }
-    const start = new CalendarDateTime(exam.start, true)
-    const end = new CalendarDateTime(exam.end, true)
-    const stamp = new CalendarDateTime(exam.updated, true)
 
-    return new CalendarEvent(exam.id, stamp, start)
-        .setEnd(end)
-        .setLocation(`Campus: ${exam.location}`)
-        .setSummary(serializeEventData(data))
-        .setDescription('')
+    const event: TimeEditEvent = {
+        uid: exam.id,
+        stamp: exam.updated,
+        start: exam.start,
+        end: exam.end,
+        content: data,
+    }
+
+    return serializeEvent(event)
 }
 
 /**
@@ -529,4 +557,136 @@ export function isGlobalEvent(event: CalendarEvent): boolean {
     const dataKeys = new Set(Object.keys(data))
     const ignoredKeys = new Set<keyof TimeEditEventData>(['titel'])
     return dataKeys.difference(ignoredKeys).size === 0
+}
+
+function parseEventsBuffer(buffer: string | null): TimeEditEvent[] | null {
+    if (buffer == null) return null
+
+    // Deserialize buffer
+    const parsed = JSON.parse(buffer) as { [x: string]: unknown }[]
+    // TODO: Validate document structure
+    return parsed.map(
+        obj =>
+            Object.assign(obj, {
+                stamp: new Date(obj['stamp'] as number),
+                start: new Date(obj['start'] as number),
+                end: new Date(obj['end'] as number),
+            }) as unknown as TimeEditEvent
+    )
+}
+
+/**
+ * Create a calendar id for use in Redis.
+ * @param id The calendar id.
+ * @returns A safe id that can be used in Redis.
+ */
+function createRedisId(id: string): string {
+    return id.replaceAll(/[^a-zA-Z0-9]/g, '_')
+}
+
+/**
+ * Get cached events for a TimeEdit id.
+ * @param id The TimeEdit calendar id
+ * @returns The cached events, or null if there are none cached.
+ */
+export async function getCachedEvents(
+    id: string
+): Promise<TimeEditEvent[] | null> {
+    const redisId = createRedisId(id)
+    const redis = await getRedisClient()
+    const result = await redis.ft.search(TIMEEDIT_INDEX, `@id:{ ${redisId} }`, {
+        RETURN: 'events',
+    })
+    return result.documents.flatMap<TimeEditEvent>(document => {
+        const serialized = document.value['events'] as string
+        const events = parseEventsBuffer(serialized)
+        return events ?? []
+    })
+}
+
+/**
+ * Check if a calendar is cached for a certain week.
+ * @param id The calendar id.
+ * @param week The year and week as YYYYWW.
+ * @returns Whether the calendar has cached events for the week.
+ */
+export async function isCached(id: string, week: number): Promise<boolean> {
+    const redisId = createRedisId(id)
+    const redis = await getRedisClient()
+    const result = await redis.ft.searchNoContent(
+        TIMEEDIT_INDEX,
+        `@id:{ ${redisId} } @week:[${week} ${week}]`
+    )
+    return result.total !== 0
+}
+
+/**
+ * Add TimeEdit events to the cache.
+ * @param id The TimeEdit calendar id.
+ * @param yearWeek The year and week that the events are in.
+ * @param events The parsed events.
+ */
+export async function updateCache(
+    id: string,
+    yearWeek: number,
+    events: TimeEditEvent[]
+): Promise<void> {
+    const redisId = createRedisId(id)
+    const key = `timeedit:${redisId}:${yearWeek}`
+
+    const serializedEvents = JSON.stringify(
+        events.map(event =>
+            Object.assign(event, {
+                stamp: event.stamp.getTime(),
+                start: event.start.getTime(),
+                end: event.end.getTime(),
+            })
+        )
+    )
+
+    const redis = await getRedisClient()
+    await redis.hSet(key, {
+        id: redisId,
+        week: yearWeek,
+        events: serializedEvents,
+    })
+}
+
+/**
+ * Append cached events to the TimeEdit calendar.
+ * @param calendar The TimeEdit calendar to append to.
+ */
+export async function appendCached(
+    id: string,
+    calendar: Calendar
+): Promise<void> {
+    const events = await getCachedEvents(id)
+    if (events == null) return
+    const hasEvent = (uid: string): boolean => {
+        return !!calendar.getEvents().find(event => event.getUid() === uid)
+    }
+    calendar.addComponents(
+        events
+            .map(event => serializeEvent(event))
+            .filter(event => hasEvent(event.getUid()))
+    )
+}
+
+/**
+ * Create a new calendar from the TimeEdit cache.
+ * @param id The calendar id.
+ * @returns The created calendar.
+ * @throws If there are no cached events.
+ */
+export async function createCachedCalendar(id: string): Promise<Calendar> {
+    // TODO: Add calendar name
+    const events = await getCachedEvents(id).then(events =>
+        events?.map(event => serializeEvent(event))
+    )
+    if (events == null) {
+        throw new Error(
+            'Unable to create cached calendar. There are no cached events'
+        )
+    }
+    return new Calendar('timeeditcached').addComponents(events)
 }

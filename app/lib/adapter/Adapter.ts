@@ -171,7 +171,7 @@ abstract class Adapter {
             }
             let id: string | undefined = undefined
             try {
-                id = this.getId(new URL(String(originalUrl)))
+                id = this.getId(new URL(originalUrl))
             } catch (error) {
                 return NextResponse.json(
                     {
@@ -187,7 +187,7 @@ abstract class Adapter {
 
             let extra: object | undefined = undefined
             try {
-                const url = new URL(String(originalUrl))
+                const url = new URL(originalUrl)
                 const originalCalendar: Calendar = await this.fetchCalendar(url)
                 const patchedCalendar: Calendar = await this.patchCalendar(
                     originalCalendar,

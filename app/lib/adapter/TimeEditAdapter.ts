@@ -4,17 +4,23 @@ import Adapter from './Adapter'
 import HashSlicer from '../slicer/HashSlicer'
 import Slicer, { EventGroup, applySlicer } from '../slicer/Slicer'
 import {
+    appendCached,
     AvailableGroup,
     createEventDescription,
     createEventLocation,
     createEventSummary,
     createExamEvents,
     groupByOptions,
+    isCached,
     isGlobalEvent,
     parseEventData,
     shortenCourseCode,
+    TimeEditEvent,
     TimeEditUrlExtras,
+    updateCache,
+    createCachedCalendar,
 } from '../timeedit'
+import { getYearWeekNumber } from '../util'
 
 export default class TimeEditAdapter extends Adapter {
     override createUrl(id: string): URL {
@@ -156,6 +162,52 @@ export default class TimeEditAdapter extends Adapter {
         }
 
         return extras
+    }
+
+    override async fetchCalendar(
+        url: URL,
+        timeoutMilliseconds: number
+    ): Promise<Calendar> {
+        const id = this.getId(url)
+        // TODO: Fix offset for new years
+        const lastExpectedWeek = getYearWeekNumber() + 4
+
+        if (await isCached(id, lastExpectedWeek)) {
+            console.log(`CACHE HIT ${id}`)
+            return createCachedCalendar(id)
+        }
+        console.log(`CACHE MISS ${id}`)
+
+        const calendar = await super.fetchCalendar(url, timeoutMilliseconds)
+
+        // Add previous cached events
+        appendCached(id, calendar)
+
+        // Cache calendar events
+        const groupedEvents: { [x: string]: TimeEditEvent[] } = {}
+        calendar.getEvents().forEach(event => {
+            const data = parseEventData(event)
+            const timeEditEvent: TimeEditEvent = {
+                uid: event.getUid(),
+                stamp: event.getStamp().getDate(),
+                start: event.getStart().getDate(),
+                end: event.getEnd().getDate(),
+                content: data,
+            }
+            const yearWeek = getYearWeekNumber(
+                event.getEnd().getDate()
+            ).toString()
+            if (!groupedEvents[yearWeek]) {
+                groupedEvents[yearWeek] = []
+            }
+            groupedEvents[yearWeek].push(timeEditEvent)
+        })
+
+        Object.entries(groupedEvents).forEach(([yearWeek, events]) => {
+            updateCache(id, parseInt(yearWeek), events)
+        })
+
+        return calendar
     }
 }
 
