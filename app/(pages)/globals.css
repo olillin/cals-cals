@@ -144,6 +144,7 @@ nav {
     background-color: #0a0a0a;
 }
 
+nav > *,
 nav > a {
     color: var(--foreground);
     flex: 1;
