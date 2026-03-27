@@ -49,7 +49,7 @@ export default function UpdateNotice() {
             className={clsx('update-notice', {
                 closed: closed,
             })}
-            onClick={() => setClosed(false)}
+            // onClick={closed ? () => setClosed(false) : undefined}
         >
             <div className="notice-title">
                 <strong>{title} </strong>
@@ -57,7 +57,12 @@ export default function UpdateNotice() {
             </div>
             <div className="notice-body">
                 {body}
-                {closed && <span className="read-more">Read more</span>}
+                <button
+                    className="close-toggle"
+                    onClick={() => setClosed(!closed)}
+                >
+                    {closed ? 'Read more' : 'Read less'}
+                </button>
             </div>
         </div>
     )
