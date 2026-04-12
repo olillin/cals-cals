@@ -2,7 +2,7 @@ import { createExamEvents } from '../../../app/lib/timeedit'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 import { it, expect, vi } from 'vitest'
 
-vi.mock(import('chalmers-search-exam'), async () => {
+vi.mock('chalmers-search-exam', async () => {
     const mockExam = (courseCode: string): Exam => ({
         name: 'Objektorienterad programmering och design',
         updated: new Date('2026-01-27T11:00:00.000Z'),
@@ -15,7 +15,7 @@ vi.mock(import('chalmers-search-exam'), async () => {
         courseCode,
         isCancelled: false,
         courseId: 40337,
-        dateChanges: [],
+        updates: [],
         id: 'norm_63294',
         inst: 0,
         cmCode: '0122',
