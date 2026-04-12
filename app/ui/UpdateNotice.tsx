@@ -35,6 +35,11 @@ export default function UpdateNotice() {
                 excluded by default, but there is now also an option to keep
                 this if you wish.
             </p>
+            <strong>v2.1.4</strong>
+            <p>
+                Exam subscriptions have been improved! Random exams should no
+                longer appear when subscribed to courses without exams.
+            </p>
         </>
     )
     const [closed, setClosed] = useState(true)

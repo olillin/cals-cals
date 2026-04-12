@@ -1,6 +1,6 @@
 {
     "name": "cals-cals",
-    "version": "2.1.7",
+    "version": "2.1.8",
     "description": "Calendar website for better calendars at Chalmers",
     "private": true,
     "main": ".next/standalone/server.js",
