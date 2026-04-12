@@ -1,5 +1,5 @@
 import { createExamEvents } from '../../../app/lib/timeedit'
-import { searchExam, type Exam } from 'chalmers-search-exam'
+import { ExamSearchOptions, searchExam, type Exam } from 'chalmers-search-exam'
 import { it, expect, vi } from 'vitest'
 
 vi.mock('chalmers-search-exam', async () => {
@@ -28,9 +28,11 @@ vi.mock('chalmers-search-exam', async () => {
     return {
         __esModule: true,
         ...originalModule,
-        searchExam: vi.fn((query: string) =>
-            Promise.resolve([mockExam(query)])
-        ),
+        searchExam: vi.fn((query: string | ExamSearchOptions) => {
+            const courseCode =
+                typeof query === 'string' ? query : query.filter.courseCode!
+            return Promise.resolve([mockExam(courseCode)])
+        }),
     }
 })
 
