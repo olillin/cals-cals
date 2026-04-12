@@ -383,20 +383,19 @@ export function isConcreteExam(exam: Exam): exam is Concrete<Exam> {
 export async function findExams(
     courseCodes: string[]
 ): Promise<Concrete<Exam>[]> {
-    return (
-        await Promise.all(
-            courseCodes.map(async courseCode => {
-                return searchExam(courseCode).catch(reason => {
-                    console.error(
-                        `Failed to get exam for ${courseCode}: ${reason}`
-                    )
-                    return null
-                })
+    const examPromises = courseCodes.map(async courseCode => {
+        return searchExam({ filter: { courseCode } })
+            .then(exams => {
+                return exams.filter(exam => isConcreteExam(exam))
             })
-        )
-    )
-        .flat()
-        .filter(maybeExam => maybeExam !== null && isConcreteExam(maybeExam))
+            .catch(reason => {
+                console.error(
+                    `Failed to get exams for ${courseCode}: ${reason}`
+                )
+                return []
+            })
+    })
+    return (await Promise.all(examPromises)).flat()
 }
 
 /**

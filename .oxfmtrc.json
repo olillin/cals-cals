@@ -14,5 +14,10 @@
     "trailingComma": "es5",
     "useTabs": false,
     "sortPackageJson": false,
-    "ignorePatterns": ["build", "coverage", "pnpm-lock.yaml"]
+    "ignorePatterns": [
+        "build",
+        "coverage",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml"
+    ]
 }

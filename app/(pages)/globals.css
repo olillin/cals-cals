@@ -174,13 +174,7 @@ nav > a:focus {
     z-index: 2;
 }
 
-/* Calendar selector */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
-    gap: 1em;
-}
-
+/* Calendar picker */
 .calendar-item {
     transition-duration: 1s;
 }
@@ -514,12 +508,6 @@ nav > a:focus {
     margin-block: 1em;
 }
 
-.update-notice.closed .notice-body {
-    display: grid;
-    grid-template-columns: 1fr max-content;
-    gap: 2em;
-}
-
 .update-notice.closed .notice-body > :nth-child(1) {
     margin-block: 0;
 
@@ -539,16 +527,24 @@ nav > a:focus {
     color: transparent;
 }
 
-.update-notice.closed .notice-body > *:not(:nth-child(1), .read-more) {
+.update-notice.closed .notice-body > *:not(:nth-child(1), .close-toggle) {
     display: none;
 }
 
-.update-notice.closed .read-more {
+.close-toggle {
     display: block;
+    margin: 2em 0.5em 1em auto;
+
     font-weight: bold;
-    margin-top: 2em;
-    /* font-style: italic; */
-    margin-right: 0.5em;
+
+    /* Undo button styling */
+    padding: 0;
+    border: none;
+    border-radius: 0;
+}
+
+.closed .close-toggle {
+    margin-top: 1em;
 }
 
 .close-button-container {
