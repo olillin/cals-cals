@@ -35,7 +35,8 @@
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
         "redis": "^5.11.0",
-        "weeknumber": "github:olillin/weeknumber"
+        "weeknumber": "github:olillin/weeknumber",
+        "zod": "^4.4.3"
     },
     "devDependencies": {
         "@eslint/compat": "^2.0.2",

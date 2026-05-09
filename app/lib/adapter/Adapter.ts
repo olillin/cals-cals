@@ -108,6 +108,7 @@ abstract class Adapter {
         url: URL,
         timeoutMilliseconds: number = 5000
     ): Promise<Calendar> {
+        console.log(`Fetching provider calendar from ${url}`)
         // Fetch with timeout
         const timeoutPromise = new Promise<null>(resolve =>
             setTimeout(() => {

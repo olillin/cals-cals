@@ -17,8 +17,10 @@ import {
     shortenCourseCode,
     TimeEditEvent,
     TimeEditUrlExtras,
-    updateCache,
     createCachedCalendar,
+    TimeEditMeta,
+    updateCachedMeta,
+    updateCachedEvents,
 } from '../timeedit'
 import { getYearWeekNumber } from '../util'
 
@@ -203,8 +205,14 @@ export default class TimeEditAdapter extends Adapter {
             groupedEvents[yearWeek].push(timeEditEvent)
         })
 
+        const meta: TimeEditMeta = {
+            name: calendar.getCalendarName() ?? '',
+            prodid: calendar.getProductId(),
+        }
+        updateCachedMeta(id, meta)
+
         Object.entries(groupedEvents).forEach(([yearWeek, events]) => {
-            updateCache(id, parseInt(yearWeek), events)
+            updateCachedEvents(id, parseInt(yearWeek), events)
         })
 
         return calendar

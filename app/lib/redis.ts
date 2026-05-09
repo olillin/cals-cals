@@ -1,6 +1,7 @@
 import { createClient, RedisClientType, SCHEMA_FIELD_TYPE } from 'redis'
 
 export const TIMEEDIT_INDEX = 'hash-idx:timeedit'
+export const TIMEEDIT_META_INDEX = 'hash-idx:timeedit-meta'
 
 let client: RedisClientType | null = null
 
@@ -17,8 +18,12 @@ export async function getRedisClient(): Promise<RedisClientType> {
 
         await client.connect()
 
-        // Create hash index for TimeEdit cache
+        // Create hash index for TimeEdit caches
         await client.ft.dropIndex(TIMEEDIT_INDEX, { DD: true }).then(
+            () => {},
+            () => {}
+        )
+        await client.ft.dropIndex(TIMEEDIT_META_INDEX, { DD: true }).then(
             () => {},
             () => {}
         )
@@ -34,6 +39,19 @@ export async function getRedisClient(): Promise<RedisClientType> {
             {
                 ON: 'HASH',
                 PREFIX: 'timeedit:',
+            }
+        )
+        await client.ft.create(
+            TIMEEDIT_META_INDEX,
+            {
+                id: {
+                    type: SCHEMA_FIELD_TYPE.TAG,
+                    CASESENSITIVE: true,
+                },
+            },
+            {
+                ON: 'HASH',
+                PREFIX: 'timeedit-meta:',
             }
         )
     }

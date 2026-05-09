@@ -4,6 +4,7 @@ import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 import { getRedisClient, TIMEEDIT_INDEX } from './redis'
 import { prepareForComparison } from './adapter/TimeEditAdapter'
+import z from 'zod'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
 export const groupByOptions = (<T extends keyof TimeEditEventData>(
@@ -57,6 +58,23 @@ export interface TimeEditEvent {
     end: Date
     content: TimeEditEventData
 }
+
+const TimeEditMetaSchema = z.object({
+    name: z.string(),
+    prodid: z.string(),
+})
+
+export type TimeEditMeta = z.infer<typeof TimeEditMetaSchema>
+
+const EventsBufferEvent = z.object({
+    uid: z.string(),
+    stamp: z.int().min(0),
+    start: z.int().min(0),
+    end: z.int().min(0),
+    content: z.record(z.string(), z.array(z.string()).or(z.undefined())),
+})
+
+const EventsBuffer = z.array(EventsBufferEvent)
 
 /**
  * Parse the TimeEdit event data from an event.
@@ -563,15 +581,17 @@ function parseEventsBuffer(buffer: string | null): TimeEditEvent[] | null {
     if (buffer == null) return null
 
     // Deserialize buffer
-    const parsed = JSON.parse(buffer) as { [x: string]: unknown }[]
-    // TODO: Validate document structure
+    const parsed = EventsBuffer.parse(JSON.parse(buffer))
+
     return parsed.map(
         obj =>
-            Object.assign(obj, {
-                stamp: new Date(obj['stamp'] as number),
-                start: new Date(obj['start'] as number),
-                end: new Date(obj['end'] as number),
-            }) as unknown as TimeEditEvent
+            ({
+                uid: obj.uid,
+                stamp: new Date(obj['stamp']),
+                start: new Date(obj['start']),
+                end: new Date(obj['end']),
+                content: obj.content,
+            }) satisfies TimeEditEvent
     )
 }
 
@@ -605,6 +625,23 @@ export async function getCachedEvents(
 }
 
 /**
+ * Get cached metadata for a TimeEdit id.
+ * @param id The TimeEdit calendar id
+ * @returns The cached meta, or null if not cached.
+ */
+export async function getCachedMeta(id: string): Promise<TimeEditMeta | null> {
+    const redisId = createRedisId(id)
+    const redis = await getRedisClient()
+    const result = await redis.ft.search(TIMEEDIT_INDEX, `@id:{ ${redisId} }`, {
+        RETURN: ['name', 'prodid'],
+    })
+    if (result.documents.length === 0) {
+        return null
+    }
+    return TimeEditMetaSchema.parse(result.documents[0])
+}
+
+/**
  * Check if a calendar is cached for a certain week.
  * @param id The calendar id.
  * @param week The year and week as YYYYWW.
@@ -626,7 +663,7 @@ export async function isCached(id: string, week: number): Promise<boolean> {
  * @param yearWeek The year and week that the events are in.
  * @param events The parsed events.
  */
-export async function updateCache(
+export async function updateCachedEvents(
     id: string,
     yearWeek: number,
     events: TimeEditEvent[]
@@ -635,13 +672,13 @@ export async function updateCache(
     const key = `timeedit:${redisId}:${yearWeek}`
 
     const serializedEvents = JSON.stringify(
-        events.map(event =>
-            Object.assign(event, {
-                stamp: event.stamp.getTime(),
-                start: event.start.getTime(),
-                end: event.end.getTime(),
-            })
-        )
+        events.map(event => ({
+            uid: event.uid,
+            stamp: event.stamp.getTime(),
+            start: event.start.getTime(),
+            end: event.end.getTime(),
+            content: event.content,
+        })) satisfies z.infer<typeof EventsBuffer>
     )
 
     const redis = await getRedisClient()
@@ -649,6 +686,26 @@ export async function updateCache(
         id: redisId,
         week: yearWeek,
         events: serializedEvents,
+    })
+}
+
+/**
+ * Update the cached TimeEdit metadata.
+ * @param id The TimeEdit calendar id.
+ * @param meta The new metadata.
+ */
+export async function updateCachedMeta(
+    id: string,
+    meta: TimeEditMeta
+): Promise<void> {
+    const redisId = createRedisId(id)
+    const key = `timeedit-meta:${redisId}`
+
+    const redis = await getRedisClient()
+    await redis.hSet(key, {
+        id: redisId,
+        name: meta.name,
+        prodid: meta.prodid,
     })
 }
 
@@ -676,10 +733,9 @@ export async function appendCached(
  * Create a new calendar from the TimeEdit cache.
  * @param id The calendar id.
  * @returns The created calendar.
- * @throws If there are no cached events.
+ * @throws If there is no cached data.
  */
 export async function createCachedCalendar(id: string): Promise<Calendar> {
-    // TODO: Add calendar name
     const events = await getCachedEvents(id).then(events =>
         events?.map(event => serializeEvent(event))
     )
@@ -688,5 +744,13 @@ export async function createCachedCalendar(id: string): Promise<Calendar> {
             'Unable to create cached calendar. There are no cached events'
         )
     }
-    return new Calendar('timeeditcached').addComponents(events)
+    const meta = await getCachedMeta(id)
+    if (meta == null) {
+        throw new Error(
+            'Unable to create cached calendar. There is no cached meta'
+        )
+    }
+    return new Calendar(meta.prodid)
+        .setCalendarName(meta.name)
+        .addComponents(events)
 }
