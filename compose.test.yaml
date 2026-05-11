@@ -1,0 +1,10 @@
+# This compose file runs Redis for testing.
+
+name: cals-cals-test
+
+services:
+    redis:
+        image: redis:8.6-alpine
+        restart: unless-stopped
+        ports:
+            - '6379:6379'

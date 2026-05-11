@@ -2,7 +2,7 @@ import { Calendar, CalendarDateTime, CalendarEvent } from 'iamcal'
 import type { Concrete, UrlResponse } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
-import { getRedisClient, TIMEEDIT_INDEX } from './redis'
+import { getRedisClient, TIMEEDIT_INDEX, TIMEEDIT_META_INDEX } from './redis'
 import { prepareForComparison } from './adapter/TimeEditAdapter'
 import z from 'zod'
 
@@ -632,13 +632,17 @@ export async function getCachedEvents(
 export async function getCachedMeta(id: string): Promise<TimeEditMeta | null> {
     const redisId = createRedisId(id)
     const redis = await getRedisClient()
-    const result = await redis.ft.search(TIMEEDIT_INDEX, `@id:{ ${redisId} }`, {
-        RETURN: ['name', 'prodid'],
-    })
+    const result = await redis.ft.search(
+        TIMEEDIT_META_INDEX,
+        `@id:{ ${redisId} }`,
+        {
+            RETURN: ['name', 'prodid'],
+        }
+    )
     if (result.documents.length === 0) {
         return null
     }
-    return TimeEditMetaSchema.parse(result.documents[0])
+    return TimeEditMetaSchema.parse(result.documents[0].value)
 }
 
 /**

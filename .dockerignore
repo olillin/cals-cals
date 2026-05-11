@@ -2,6 +2,6 @@ data
 node_modules
 tests
 eslint.config.mjs
-jest.config.js
+vitest.config.ts
 README.md
 
