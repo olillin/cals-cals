@@ -84,9 +84,8 @@ it('follows the expected format for one event', () => {
         new CalendarDateTime('2026-03-19T13:00:00Z')
     )
         .setEnd(new CalendarDateTime('2026-03-19T17:00:00Z'))
-        .setLocation('Campus: Johanneberg')
         .setSummary(
-            `Aktivitet: Tentamen. Kurskod: TDA553. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
+            `Aktivitet: Tentamen. Kurskod: TDA553. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Campus: Johanneberg. Registrering: 2025-12-29 - 2026-03-01`
         )
         .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
@@ -104,9 +103,8 @@ it('follows the expected format for two events', () => {
         new CalendarDateTime('2026-03-19T13:00:00Z')
     )
         .setEnd(new CalendarDateTime('2026-03-19T17:00:00Z'))
-        .setLocation('Campus: Johanneberg')
         .setSummary(
-            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
+            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${johannebergExamScheduleUrl}. Campus: Johanneberg. Registrering: 2025-12-29 - 2026-03-01`
         )
         .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')
@@ -124,9 +122,8 @@ it('uses the Lindholmen exam URL if at Lindholmen', () => {
         new CalendarDateTime('2026-03-19T13:00:00Z')
     )
         .setEnd(new CalendarDateTime('2026-03-19T17:00:00Z'))
-        .setLocation('Campus: Lindholmen')
         .setSummary(
-            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${lindholmenExamScheduleUrl}. Registrering: 2025-12-29 - 2026-03-01`
+            `Aktivitet: Tentamen. Kurskod: TDA553. Kurskod: DIT954. Kursnamn: Objektorienterad programmering och design. Examurl: ${lindholmenExamScheduleUrl}. Campus: Lindholmen. Registrering: 2025-12-29 - 2026-03-01`
         )
         .setDescription('')
     expected.removePropertiesWithName('DTSTAMP')

@@ -191,10 +191,11 @@ export function serializeEvent(event: TimeEditEvent): CalendarEvent {
     const start = new CalendarDateTime(event.start, true)
     const end = new CalendarDateTime(event.end, true)
 
-    return new CalendarEvent(event.uid, stamp, start)
+    const serializedEvent = new CalendarEvent(event.uid, stamp, start)
         .setEnd(end)
         .setSummary(summary)
         .setDescription('')
+    return serializedEvent
 }
 
 /**
@@ -545,6 +546,7 @@ export function createExamEvent(exam: MultiExam): CalendarEvent {
         kurskod: exam.courseCodes,
         kursnamn: [exam.name],
         examurl: [locationUrl],
+        campus: [exam.location],
         registrering: [
             `${isoDateStringSweden(exam.registrationStart)} - ${isoDateStringSweden(exam.registrationEnd)}`,
         ],
