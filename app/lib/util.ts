@@ -45,6 +45,7 @@ export function formatKebabCase(text: string): string {
 }
 
 /**
+<<<<<<< HEAD
  * Get the year and week number as a concatenated number.
  * @param date The date to get the year and date of.
  * @returns The year and week number as YYYYWW.
@@ -53,4 +54,14 @@ export function getYearWeekNumber(date: Date = new Date()): number {
     const year = date.getFullYear()
     const week = weekNumber(date)
     return year * 100 + week
+}
+
+/**
+ * Check if a key is one that should be used for clicking.
+ * @param key The key to check.
+ * @returns True if the key is Enter or Space.
+ */
+export function isClickKey(key: string): boolean {
+    const clickKeys: string[] = ['Space', 'Enter']
+    return clickKeys.includes(key)
 }

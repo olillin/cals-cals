@@ -75,4 +75,4 @@ jobs:
                   cache: pnpm
             - name: Install pnpm dependencies
               run: pnpm install
-            - run: pnpm checkformat
+            - run: pnpm fmt:check

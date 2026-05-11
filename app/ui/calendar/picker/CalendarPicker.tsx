@@ -118,9 +118,9 @@ function generateUrl(
     }
 
     // Merge calendars
-    let bitmask = 0
+    let bitmask = BigInt(0)
     for (const calendar of calendars) {
-        bitmask += 1 << calendar.id
+        bitmask += BigInt(1) << BigInt(calendar.id)
     }
     return `${urlBase}/m/${bitmask}${showOrigin ? '?origin' : ''}`
 }
