@@ -183,7 +183,7 @@ export default class TimeEditAdapter extends Adapter {
         const calendar = await super.fetchCalendar(url, timeoutMilliseconds)
 
         // Add previous cached events
-        appendCached(id, calendar)
+        await appendCached(id, calendar)
 
         // Cache calendar events
         const groupedEvents: { [x: string]: TimeEditEvent[] } = {}
@@ -209,11 +209,12 @@ export default class TimeEditAdapter extends Adapter {
             name: calendar.getCalendarName() ?? '',
             prodid: calendar.getProductId(),
         }
-        updateCachedMeta(id, meta)
-
-        Object.entries(groupedEvents).forEach(([yearWeek, events]) => {
-            updateCachedEvents(id, parseInt(yearWeek), events)
-        })
+        await Promise.all([
+            updateCachedMeta(id, meta),
+            ...Object.entries(groupedEvents).map(([yearWeek, events]) =>
+                updateCachedEvents(id, parseInt(yearWeek), events)
+            ),
+        ])
 
         return calendar
     }

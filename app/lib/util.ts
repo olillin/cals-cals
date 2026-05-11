@@ -1,4 +1,3 @@
-import { ONE_DAY_MS } from 'iamcal'
 import path from 'path'
 import { weekNumber } from 'weeknumber'
 
@@ -45,7 +44,6 @@ export function formatKebabCase(text: string): string {
 }
 
 /**
-<<<<<<< HEAD
  * Get the year and week number as a concatenated number.
  * @param date The date to get the year and date of.
  * @returns The year and week number as YYYYWW.

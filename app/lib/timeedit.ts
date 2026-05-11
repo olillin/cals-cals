@@ -3,7 +3,6 @@ import type { Concrete, UrlResponse } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 import { getRedisClient, TIMEEDIT_INDEX, TIMEEDIT_META_INDEX } from './redis'
-import { prepareForComparison } from './adapter/TimeEditAdapter'
 import z from 'zod'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
@@ -713,7 +712,8 @@ export async function updateCachedMeta(
 }
 
 /**
- * Append cached events to the TimeEdit calendar.
+ * Append cached TimeEdit events to a calendar.
+ * @param id The identifier of the TimeEdit calendar to fetch cached events from.
  * @param calendar The TimeEdit calendar to append to.
  */
 export async function appendCached(
