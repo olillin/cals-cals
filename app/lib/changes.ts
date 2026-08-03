@@ -1,3 +1,4 @@
+/* oxlint-disable typescript/no-unsafe-call, typescript/no-unsafe-member-access */
 'use server'
 
 import fs from 'node:fs/promises'
@@ -54,15 +55,15 @@ export async function readLatestChanges(
 ): Promise<Changes | null> {
     'use cache'
     const text = await fs.readFile(filename)
-    const file = await unified()
+    const file = (await unified()
         .use(remarkParse, { fragment: true })
         .use(lastHeading, { depth: 2 })
         .use(replaceHeadings)
         .use(remarkRehype)
         .use(rehypeReact, production)
-        .process(text)
+        .process(text)) as VFile
 
-    const body = file.result
+    const body = file.result as ReactNode
     const heading = file.data.lastHeading
     if (typeof heading !== 'string') {
         throw new Error('lastHeading is not a string')
