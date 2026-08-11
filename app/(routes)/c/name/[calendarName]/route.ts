@@ -1,7 +1,8 @@
 'use server'
 
-import { getCalendarFile } from '@/app/(routes)/c/[calendarName]/route'
+import { NoPickerError, readCalendarFile } from '@/app/lib/datafiles'
 import { CalendarNameResponse } from '@/app/lib/responses'
+import { withSuffix } from '@/app/lib/util'
 import { parseCalendar } from 'iamcal'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -12,10 +13,25 @@ export async function GET(
 ): Promise<NextResponse> {
     const { calendarName } = await params
 
+    const filename = withSuffix(calendarName, '.ics')
     let fileContents: string
     try {
-        fileContents = await getCalendarFile(calendarName)
-    } catch {
+        const file = await readCalendarFile(filename)
+        if (file == null) throw new Error('No file')
+        fileContents = file
+    } catch (error) {
+        if (error instanceof NoPickerError) {
+            return NextResponse.json(
+                {
+                    error: {
+                        message:
+                            'Service unavailable, picker is not configured',
+                    },
+                },
+                { status: 503 }
+            )
+        }
+
         return NextResponse.json(
             {
                 error: { message: 'Not found' },
