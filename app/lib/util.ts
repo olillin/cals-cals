@@ -1,5 +1,3 @@
-import path from 'path'
-
 /**
  * Capitalize a string.
  * @param text The string to capitalize.
@@ -22,18 +20,6 @@ export function capitalizeWords(text: string): string {
 }
 
 /**
- * Convert a calendar name to a safe filename ensuring no directory traversal.
- * @param calendarName The calendar name, does not need the file extension.
- * @returns The safe calendar filename.
- */
-export function getSafeFilename(calendarName: string): string {
-    return (
-        path.basename(calendarName) +
-        (calendarName.endsWith('.ics') ? '' : '.ics')
-    )
-}
-
-/**
  * Convert a kebab-case string into capitalized words.
  * @param text The kebab-case string.
  * @returns The same string with capitalized words and spaces instead of hyphens.
@@ -50,4 +36,14 @@ export function formatKebabCase(text: string): string {
 export function isClickKey(key: string): boolean {
     const clickKeys: string[] = ['Space', 'Enter']
     return clickKeys.includes(key)
+}
+
+/**
+ * Add a suffix to a string if missing.
+ * @param s The string which may already have the suffix.
+ * @param suffix The suffix which will be appended to the end of `s` if missing.
+ * @returns The string, ending with suffix.
+ */
+export function withSuffix(s: string, suffix: string): string {
+    return s.endsWith(suffix) ? s : s + suffix
 }

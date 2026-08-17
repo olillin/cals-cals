@@ -2,7 +2,7 @@ import { mergeCalendars } from '@/app/lib/merge'
 import { parseCalendar } from 'iamcal'
 import { NextRequest, NextResponse } from 'next/server'
 import { Picker, readPicker } from '@/app/lib/picker'
-import { getCalendarFile } from '@/app/(routes)/c/[calendarName]/route'
+import { NoPickerError, readCalendarFile } from '@/app/lib/datafiles'
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 export async function GET(
@@ -62,12 +62,45 @@ export async function GET(
         )
     }
 
-    const calendars = await Promise.all(
-        calendarNames.map(name =>
-            getCalendarFile(name).then(content => parseCalendar(content))
-        )
+    const allCalendars = await Promise.allSettled(
+        calendarNames.map(async name => {
+            const content = await readCalendarFile(name)
+            return content === null ? null : parseCalendar(content)
+        })
     )
 
+    const error = allCalendars.find(settled => settled.status === 'rejected')
+        ?.reason as unknown
+    if (error) {
+        if (error instanceof NoPickerError) {
+            return NextResponse.json(
+                {
+                    error: {
+                        message:
+                            'Service unavailable, picker is not configured',
+                    },
+                },
+                { status: 503 }
+            )
+        }
+        console.error(
+            'An unknown error occured while reading calendar files to merge:',
+            error
+        )
+        return NextResponse.json(
+            {
+                error: {
+                    message:
+                        'An unknown error occurred while reading calendar files',
+                },
+            },
+            { status: 500 }
+        )
+    }
+
+    const calendars = allCalendars
+        .map(settled => (settled.status === 'fulfilled' ? settled.value : null))
+        .filter(value => value !== null)
     const mergedCalendar = mergeCalendars(
         calendars,
         appendOriginName

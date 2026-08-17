@@ -1,9 +1,8 @@
 'use server'
 
-import { getSafeFilename } from '@/app/lib/util'
-import { promises as fs } from 'fs'
+import { NoPickerError, readCalendarFile } from '@/app/lib/datafiles'
+import { withSuffix } from '@/app/lib/util'
 import { NextRequest, NextResponse } from 'next/server'
-import path from 'path'
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 export async function GET(
@@ -12,38 +11,36 @@ export async function GET(
 ): Promise<NextResponse> {
     const { calendarName } = await params
 
-    const safeFilename = getSafeFilename(calendarName)
-
+    const filename = withSuffix(calendarName, '.ics')
     try {
-        const fileContents = await getCalendarFile(safeFilename)
+        const fileContents = await readCalendarFile(filename)
+        if (fileContents == null) {
+            throw new Error('No file')
+        }
 
         return new NextResponse(fileContents, {
             headers: {
                 'Content-Type': 'text/calendar; charset=utf-8',
-                'Content-Disposition': `inline; filename="${safeFilename}"`,
+                'Content-Disposition': `inline; filename="${filename}"`,
                 'Cache-Control': 'no-store, max-age=0',
             },
         })
-    } catch {
+    } catch (error) {
+        if (error instanceof NoPickerError) {
+            return NextResponse.json(
+                {
+                    error: {
+                        message:
+                            'Service unavailable, picker is not configured',
+                    },
+                },
+                { status: 503 }
+            )
+        }
+
         return NextResponse.json(
             { error: { message: 'Not found' } },
             { status: 404 }
         )
     }
-}
-
-/**
- * Read a calendar file from `/data/calendars`.
- * @param filename The name of the calendar, does not need the file extension.
- * @returns The content of the file.
- */
-export async function getCalendarFile(filename: string): Promise<string> {
-    const safeFilename = getSafeFilename(filename)
-    const filePath = path.join(
-        process.cwd(),
-        'data',
-        'calendars',
-        `${safeFilename}`
-    )
-    return fs.readFile(filePath, 'utf8')
 }
