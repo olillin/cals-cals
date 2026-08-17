@@ -1,3 +1,5 @@
+const currentVersion: string | undefined = process.env.NEXT_PUBLIC_WEB_VERSION
+
 export default function PageFooter() {
     return (
         <footer>
@@ -19,6 +21,7 @@ export default function PageFooter() {
                 on GitHub!
             </span>
             <span>
+                {currentVersion && `Cal's cals v${currentVersion}. `}
                 See the{' '}
                 <a href="https://github.com/olillin/cals-cals" target="_blank">
                     source code
