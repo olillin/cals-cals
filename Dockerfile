@@ -3,7 +3,6 @@
 # ============================================
 
 ARG NODE_VERSION=24.13.0-slim
-
 FROM node:${NODE_VERSION} AS dependencies
 
 # Set working directory
@@ -22,6 +21,8 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
 
 FROM node:${NODE_VERSION} AS builder
 
+ARG WEB_VERSION
+
 # Set working directory
 WORKDIR /app
 
@@ -32,6 +33,9 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
 ENV NODE_ENV=production
+
+# Make version available as an environment variable
+ENV NEXT_PUBLIC_WEB_VERSION=${WEB_VERSION}
 
 # Disable Next.js anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry

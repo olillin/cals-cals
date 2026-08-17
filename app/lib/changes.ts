@@ -68,7 +68,10 @@ export async function readLatestChanges(
     if (typeof heading !== 'string') {
         throw new Error('lastHeading is not a string')
     }
-    const index = heading.indexOf(' ')
+    let index = heading.indexOf(' ')
+    if (index === -1) {
+        index = heading.length
+    }
     const version = heading.slice(0, index)
     const name = heading.slice(index + 1)
 
