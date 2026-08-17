@@ -324,6 +324,20 @@ export function createCalendarName(groupedCourseCodes: string[][]): string {
 }
 
 /**
+ * Create the adapted description for a TimeEdit calendar.
+ * @param previousDescription The raw description from TimeEdit.
+ * @returns The new description of the calendar.
+ */
+export function createCalendarDescription(
+    previousDescription?: string
+): string {
+    return (
+        "TimeEdit calendar adapted by Cal's cals (https://cal.olillin.com)" +
+        (previousDescription ? '\n\n' + previousDescription : '')
+    )
+}
+
+/**
  * Format information about the course from TimeEdit event data.
  * @param data The event data.
  * @returns The course information or null if there is none.
