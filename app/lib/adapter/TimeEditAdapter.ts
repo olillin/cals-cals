@@ -5,6 +5,7 @@ import HashSlicer from '../slicer/HashSlicer'
 import Slicer, { EventGroup, applySlicer } from '../slicer/Slicer'
 import {
     AvailableGroup,
+    createCalendarName,
     createEventDescription,
     createEventLocation,
     createEventSummary,
@@ -103,6 +104,10 @@ export default class TimeEditAdapter extends Adapter {
             const examEvents = await createExamEvents([...groupedCourseCodes])
             calendar.addComponents(examEvents)
         }
+
+        // Update calendar name
+        const calendarName = createCalendarName(groupedCourseCodes)
+        calendar.setCalendarName(calendarName)
 
         return calendar
     }

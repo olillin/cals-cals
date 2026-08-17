@@ -312,6 +312,18 @@ export function createEventLocation(
 }
 
 /**
+ * Create the adapted name for a TimeEdit calendar.
+ * @param groupedCourseCodes The grouped course codes in the calendar.
+ * @returns The name of the calendar.
+ */
+export function createCalendarName(groupedCourseCodes: string[][]): string {
+    return (
+        'TimeEdit ' +
+        groupedCourseCodes.map(group => group.join('/')).join(', ')
+    )
+}
+
+/**
  * Format information about the course from TimeEdit event data.
  * @param data The event data.
  * @returns The course information or null if there is none.
