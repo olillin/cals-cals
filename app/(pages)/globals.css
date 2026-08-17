@@ -175,6 +175,12 @@ nav > a:focus {
 }
 
 /* Calendar picker */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
+    gap: 1em;
+}
+
 .calendar-item {
     transition-duration: 1s;
 }
