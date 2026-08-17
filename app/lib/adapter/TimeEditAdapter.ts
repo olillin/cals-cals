@@ -70,10 +70,6 @@ export default class TimeEditAdapter extends Adapter {
                 req.nextUrl.searchParams.get('keepGlobal') ?? '0'
             )
 
-        if (!addExams && keepGlobalEvents) {
-            return calendar
-        }
-
         const courseCodeSets: string[][] = []
         const oldEvents = calendar.getEvents()
         oldEvents.forEach(event => {
@@ -103,8 +99,10 @@ export default class TimeEditAdapter extends Adapter {
 
         const groupedCourseCodes = courseCodeSets.map(s => [...s])
 
-        const examEvents = await createExamEvents([...groupedCourseCodes])
-        calendar.addComponents(examEvents)
+        if (addExams) {
+            const examEvents = await createExamEvents([...groupedCourseCodes])
+            calendar.addComponents(examEvents)
+        }
 
         return calendar
     }
