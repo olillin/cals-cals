@@ -47,6 +47,8 @@ export default function CalendarPicker({
                 <span className="checkbox-field show-origin-section">
                     <input
                         type="checkbox"
+                        name="show-origin"
+                        id="show-origin"
                         checked={showOrigin}
                         onChange={ev => {
                             setShowOrigin(ev.currentTarget.checked)

@@ -3,6 +3,7 @@ import PageFooter from '@/app/ui/PageFooter'
 import UpdateNotice from '@/app/ui/UpdateNotice'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { readLatestChanges } from '../lib/changes'
 
 export const metadata: Metadata = {
     metadataBase: 'http://localhost:3000',
@@ -41,16 +42,18 @@ export const viewport: Viewport = {
     colorScheme: 'dark',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const changes = await readLatestChanges()
+
     return (
         <html lang="en">
             <body className="antialiased">
                 <div className="center-column">
-                    <UpdateNotice />
+                    {changes && <UpdateNotice changes={changes} />}
                     <main>
                         <section className="introduction">
                             <h1>Welcome to Cal&apos;s cals!</h1>
