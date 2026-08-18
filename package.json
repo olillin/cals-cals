@@ -30,13 +30,20 @@
         "chalmers-search-exam": "^3.1.0",
         "clsx": "^2.1.1",
         "iamcal": "^4.1.1",
+        "mdast-util-to-string": "^4.0.0",
         "next": "^16.2.9",
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
+        "rehype-react": "^8.0.0",
+        "remark": "^15.0.1",
+        "remark-parse": "^11.0.0",
+        "remark-rehype": "^11.1.2",
+        "unified": "^11.0.5",
         "vite": "^7.3.5"
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4.3.1",
+        "@types/mdast": "^4.0.4",
         "@types/node": "^24.13.2",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",
@@ -46,6 +53,7 @@
         "prettier": "^3.8.4",
         "tailwindcss": "^4.3.1",
         "typescript": "^5.9.3",
+        "vfile": "^6.0.3",
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.1.9"
     }

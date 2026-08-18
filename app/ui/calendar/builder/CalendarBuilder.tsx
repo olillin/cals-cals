@@ -59,6 +59,7 @@ export default function CalendarBuilder() {
                     <input
                         type="checkbox"
                         name="add-exams"
+                        id="add-exams"
                         defaultChecked={true}
                         onChange={event => {
                             setUrlData(null)
@@ -71,6 +72,7 @@ export default function CalendarBuilder() {
                     <input
                         type="checkbox"
                         name="keep-global"
+                        id="keep-global"
                         defaultChecked={false}
                         onChange={event => {
                             setUrlData(null)

@@ -2,6 +2,8 @@ import Ajv from 'ajv'
 import crypto from 'crypto'
 import { readFile } from 'fs/promises'
 import path from 'path'
+import fs from 'fs/promises'
+import { Picker, readPicker } from './picker'
 
 /** Contains hashed JSON data files to only revalidate when the file changes. */
 const jsonDataHash = new Map<string, string>()
@@ -74,4 +76,32 @@ export async function readDataFileJson<T extends object>(
     }
 
     return fileJson as T
+}
+
+export class NoPickerError extends Error {}
+
+/**
+ * Read a calendar file.
+ * @param filename The name of the calendar including the file extension.
+ * @returns The content of the file or null if the file is invalid.
+ */
+export async function readCalendarFile(
+    filename: string
+): Promise<string | null> {
+    const pickerConfig: Picker | undefined = await readPicker()
+    if (pickerConfig === undefined) {
+        throw new NoPickerError(
+            'Unable to find calendar file, picker file is undefined'
+        )
+    }
+
+    const pickerCalendar = pickerConfig.calendars.find(
+        c => c.filename === filename
+    )
+    if (pickerCalendar === undefined) {
+        return null
+    }
+
+    const filePath = getDataFilePath('calendars', pickerCalendar.filename)
+    return fs.readFile(filePath, 'utf8')
 }

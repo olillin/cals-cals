@@ -5,6 +5,8 @@ import HashSlicer from '../slicer/HashSlicer'
 import Slicer, { EventGroup, applySlicer } from '../slicer/Slicer'
 import {
     AvailableGroup,
+    createCalendarDescription,
+    createCalendarName,
     createEventDescription,
     createEventLocation,
     createEventSummary,
@@ -70,10 +72,6 @@ export default class TimeEditAdapter extends Adapter {
                 req.nextUrl.searchParams.get('keepGlobal') ?? '0'
             )
 
-        if (!addExams && keepGlobalEvents) {
-            return calendar
-        }
-
         const courseCodeSets: string[][] = []
         const oldEvents = calendar.getEvents()
         oldEvents.forEach(event => {
@@ -103,8 +101,18 @@ export default class TimeEditAdapter extends Adapter {
 
         const groupedCourseCodes = courseCodeSets.map(s => [...s])
 
-        const examEvents = await createExamEvents([...groupedCourseCodes])
-        calendar.addComponents(examEvents)
+        if (addExams) {
+            const examEvents = await createExamEvents([...groupedCourseCodes])
+            calendar.addComponents(examEvents)
+        }
+
+        // Update calendar metadata
+        const calendarName = createCalendarName(groupedCourseCodes)
+        calendar.setCalendarName(calendarName)
+        const calendarDescription = createCalendarDescription(
+            calendar.getCalendarDescription()
+        )
+        calendar.setCalendarDescription(calendarDescription)
 
         return calendar
     }

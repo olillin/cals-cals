@@ -6,7 +6,8 @@ A better calendar experience at Chalmers, made and maintained by Cal.
 
 ### Prerequisites
 
-You must have [Node.js®](https://nodejs.org/en/download/current) installed to start the website.
+You must have [Node.js®](https://nodejs.org/en/download/current) installed to
+start the website.
 
 ### Scripts
 

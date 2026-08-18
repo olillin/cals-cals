@@ -1,0 +1,8 @@
+# Wrap lines at 80 characters width
+wrap = 80
+
+# Use consecutive numbering style for ordered lists
+number = true
+
+# Use LF as line ending
+end_of_line = "lf"

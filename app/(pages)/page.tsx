@@ -2,7 +2,7 @@ import { RenderedPicker, RenderedPickerCalendar } from '@/app/lib/calendarTree'
 import { Picker, readPicker } from '@/app/lib/picker'
 import { parseCalendar } from 'iamcal'
 import { headers } from 'next/headers'
-import { getCalendarFile } from '../(routes)/c/[calendarName]/route'
+import { readCalendarFile } from '@/app/lib/datafiles'
 import CalendarPicker from '../ui/calendar/picker/CalendarPicker'
 import { formatKebabCase } from '@/app/lib/util'
 import PickerUnavailable from '../ui/calendar/picker/PickerUnavailable'
@@ -85,7 +85,10 @@ export async function getCalendarName(filename: string): Promise<string> {
     let fileContents: string
     const fallback: string = formatKebabCase(filename.replace(/\.ics$/, ''))
     try {
-        fileContents = await getCalendarFile(filename)
+        fileContents = await readCalendarFile(filename).then(contents => {
+            if (contents === null) throw new Error('File does not exist')
+            return contents
+        })
     } catch (err) {
         console.warn(`Failed to read calendar file: ${err}`)
         return fallback

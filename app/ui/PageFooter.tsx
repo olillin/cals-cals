@@ -1,3 +1,10 @@
+const currentVersion: string | undefined = process.env.NEXT_PUBLIC_WEB_VERSION
+const versionString = currentVersion
+    ? currentVersion.match(/^[0-9]+\.[0-9]+/)
+        ? `v${currentVersion}`
+        : `version ${currentVersion}`
+    : undefined
+
 export default function PageFooter() {
     return (
         <footer>
@@ -19,6 +26,7 @@ export default function PageFooter() {
                 on GitHub!
             </span>
             <span>
+                {versionString && `Cal's cals ${versionString}. `}
                 See the{' '}
                 <a href="https://github.com/olillin/cals-cals" target="_blank">
                     source code
