@@ -30,3 +30,15 @@ excluded by default, but there is now also an option to keep this if you wish.
 
 Exam subscriptions have been improved! Random exams should no longer appear when
 subscribed to courses without exams.
+
+## v2.2 A small update
+
+This is a smaller update containing some minor changes and patches:
+
+- The calendar builder now updates the TimeEdit calendar name and description
+- Update notice is now generated from a
+  [changelog](https://github.com/olillin/cals-cals/blob/main/CHANGELOG.md) file.
+- Fixed bug where selecting "Keep global events" would also add exams to the
+  calendar
+- Fixed the calendar picker grid again
+- Fixed some checkbox labels not being clickable
