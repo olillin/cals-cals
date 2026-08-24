@@ -5,7 +5,7 @@ import type {
 } from '@/app/lib/timeedit'
 import clsx from 'clsx'
 import { useState } from 'react'
-import CalendarUrl from '../CalendarUrl'
+import CalendarCard from '../CalendarCard'
 
 export default function CalendarGroups({
     data,
@@ -212,7 +212,7 @@ export function CalendarGroupContainer({
                         ))}
                     </ul>
 
-                    <CalendarUrl url={url} />
+                    <CalendarCard url={url} />
                 </>
             )}
         </div>

@@ -1,7 +1,7 @@
 import { AvailableGroup, TimeEditUrlResponse } from '@/app/lib/timeedit'
 import { useState } from 'react'
 import CalendarGroups, { getGroupByOptions } from './CalendarGroups'
-import CalendarUrl from '../CalendarUrl'
+import CalendarCard from '../CalendarCard'
 
 export default function CalendarBuilderOutput({
     data,
@@ -24,7 +24,7 @@ export default function CalendarBuilderOutput({
             ) : (
                 <>
                     <div id="builder-calendars" className="builder-calendars">
-                        <CalendarUrl url={data.url} />
+                        <CalendarCard url={data.url} />
                     </div>
 
                     {canGroup ? (

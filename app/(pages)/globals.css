@@ -206,12 +206,17 @@ nav > a:focus {
     margin-block: 2.5em -0.5em;
 }
 
+.calendar-card {
+    margin-block: 1.5em;
+    border-radius: var(--border-radius);
+}
+
 .calendar-url {
     display: grid;
     grid-template-columns: 1fr max-content 2em;
     grid-template-rows: 1fr;
     align-items: center;
-    margin-block: 1.5em;
+    margin-block: 1em;
     width: 100%;
     box-sizing: border-box;
     padding: 1em 1.5em;
@@ -268,6 +273,28 @@ nav > a:focus {
 
 .copy-notice.visible span {
     right: 0;
+}
+
+.calendar-link {
+    padding: 1.5em;
+    gap: 1em;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    background: #0a0a0a;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.calendar-link img {
+    width: 2em;
+    height: 2em;
+}
+
+.calendar-link span {
+    color: var(--foreground);
+    text-align: center;
 }
 
 .no-select {

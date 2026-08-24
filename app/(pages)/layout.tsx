@@ -60,13 +60,7 @@ export default async function RootLayout({
                             <p>
                                 A better calendar experience at Chalmers,
                                 created and maintained by&nbsp;
-                                <a
-                                    href="https://wiki.chalmers.it/Cal"
-                                    target="_blank"
-                                >
-                                    Cal
-                                </a>
-                                .
+                                <a href="https://wiki.chalmers.it/Cal">Cal</a>.
                             </p>
                         </section>
 

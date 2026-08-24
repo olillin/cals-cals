@@ -14,7 +14,7 @@ import {
 import { Dispatch, SetStateAction, useState } from 'react'
 import { PickerCalendar } from '@/app/lib/picker'
 import CalendarTree from './CalendarTree'
-import CalendarUrl from '../CalendarUrl'
+import CalendarCard from '../CalendarCard'
 
 export default function CalendarPicker({
     initialTree,
@@ -60,7 +60,7 @@ export default function CalendarPicker({
                 </span>
             )}
 
-            {url && <CalendarUrl url={url} />}
+            {url && <CalendarCard url={url} />}
         </>
     )
 }
