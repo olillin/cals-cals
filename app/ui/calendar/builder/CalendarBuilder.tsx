@@ -11,6 +11,7 @@ export default function CalendarBuilder() {
     const [inputUrl, setInputUrl] = useState<string | null>(null)
     const [addExams, setAddExams] = useState<boolean>(true)
     const [keepGlobal, setKeepGlobal] = useState<boolean>(false)
+    const [hideGu, setHideGu] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
     const [urlData, setUrlData] = useState<TimeEditUrlResponse | null>(null)
 
@@ -21,6 +22,7 @@ export default function CalendarBuilder() {
             [
                 addExams == false ? ['noExam', '1'] : undefined,
                 keepGlobal == true ? ['keepGlobal', '1'] : undefined,
+                hideGu == true ? ['hideGu', '1'] : undefined,
             ].filter(entry => entry != undefined)
         )
 
@@ -37,7 +39,7 @@ export default function CalendarBuilder() {
                 setInputUrl(null)
                 setError(String(reason).split(':')[1] ?? String(reason))
             })
-    }, [inputUrl, addExams, keepGlobal])
+    }, [inputUrl, addExams, keepGlobal, hideGu])
 
     const input = useRef<HTMLInputElement>(null)
     function updateInputUrl() {
@@ -80,6 +82,19 @@ export default function CalendarBuilder() {
                         }}
                     />
                     <label htmlFor="keep-global">Keep global events</label>
+                </span>
+                <span className="checkbox-field">
+                    <input
+                        type="checkbox"
+                        name="hide-gu"
+                        id="hide-gu"
+                        defaultChecked={true}
+                        onChange={event => {
+                            setUrlData(null)
+                            setHideGu(event.target.checked)
+                        }}
+                    />
+                    <label htmlFor="hide-gu">Hide GU course codes</label>
                 </span>
             </div>
             <span className="calendar-builder-input">

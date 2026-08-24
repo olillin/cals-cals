@@ -1,4 +1,4 @@
-import {
+import type {
     AvailableGroup,
     GroupByOption,
     TimeEditUrlResponse,
@@ -14,11 +14,22 @@ export default function CalendarGroups({
     data: TimeEditUrlResponse
     onClose: () => void
 }) {
-    const [groupBy, setGroupBy] = useState(0)
+    const [selectedProperty, setSelectedProperty] = useState(0)
     const [groups, setGroups] = useState<BuilderGroup[]>([])
 
     const groupByOptions = getGroupByOptions(data.extra.groups)
-    const groupByProperty = groupByOptions[groupBy]
+    const groupByProperty = groupByOptions[selectedProperty]
+    const groupBy = data.extra.groups.find(
+        g => g.property === groupByProperty
+    )?.propertyIndex
+
+    if (groupBy === undefined) {
+        return (
+            <span>
+                Unable to group calendar, invalid grouping property found
+            </span>
+        )
+    }
 
     if (groups.length === 0) {
         const initialGroups: BuilderGroup[] = [
@@ -38,11 +49,11 @@ export default function CalendarGroups({
     return (
         <>
             {groupByOptions.length > 1 && (
-                <GroupBySelector
+                <PropertySelector
                     options={groupByOptions}
-                    selected={groupBy}
-                    setGroupBy={newGroupBy => {
-                        setGroupBy(newGroupBy)
+                    selected={selectedProperty}
+                    setSelectedProperty={value => {
+                        setSelectedProperty(value)
                         setGroups([])
                     }}
                 />
@@ -95,14 +106,14 @@ export default function CalendarGroups({
     )
 }
 
-export function GroupBySelector({
+export function PropertySelector({
     options,
-    selected: currentGroupBy,
-    setGroupBy,
+    selected: currentSelected,
+    setSelectedProperty,
 }: {
     options: GroupByOption[]
     selected: number
-    setGroupBy: (groupBy: number) => void
+    setSelectedProperty: (value: number) => void
 }) {
     const optionCount = options.length
     if (optionCount === 0) {
@@ -111,10 +122,10 @@ export function GroupBySelector({
 
     return (
         <div className="group-by">
-            <label>Grouping events by</label>
+            <label>Group events by</label>
             <span className="group-by-selector">
                 {options.map((property, i) => {
-                    const selected = i === currentGroupBy
+                    const selected = i === currentSelected
                     return (
                         <button
                             key={i}
@@ -122,7 +133,7 @@ export function GroupBySelector({
                             disabled={selected}
                             aria-disabled={selected}
                             onClick={() => {
-                                setGroupBy(i)
+                                setSelectedProperty(i)
                             }}
                         >
                             {property}

@@ -13,12 +13,12 @@ export const groupByOptions = (<T extends keyof TimeEditEventData>(
     'lokalnamn',
     'klasskod',
 ] as const)
-
 /** An option to group calendar events by. */
 export type GroupByOption = (typeof groupByOptions)[number]
 
 export interface AvailableGroup {
     property: GroupByOption
+    propertyIndex: number
     values: {
         [k: string]: string
     }
@@ -166,10 +166,19 @@ export function formatKey(text: string): string {
 /**
  * Shorten the course code by removing the course occasion code.
  * @param code The long course code.
- * @returns The sortened course code.
+ * @returns The shortened course code.
  */
 export function shortenCourseCode(code: string): string {
     return code.split('_')[0]
+}
+
+/**
+ * Detect if a course code belongs to GU.
+ * @param code The long course code.
+ * @returns If the course code ends with "GU".
+ */
+export function isGuCourseCode(code: string): boolean {
+    return code.endsWith('GU')
 }
 
 /**

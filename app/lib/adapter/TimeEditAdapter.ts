@@ -13,7 +13,9 @@ import {
     createExamEvents,
     groupByOptions,
     isGlobalEvent,
+    isGuCourseCode,
     parseEventData,
+    serializeEventData,
     shortenCourseCode,
     TimeEditUrlExtras,
 } from '../timeedit'
@@ -72,6 +74,12 @@ export default class TimeEditAdapter extends Adapter {
                 req.nextUrl.searchParams.get('keepGlobal') ?? '0'
             )
 
+        const hideGu =
+            req != undefined &&
+            ['1', 'true', 't'].includes(
+                req.nextUrl.searchParams.get('hideGu') ?? '0'
+            )
+
         const courseCodeSets: string[][] = []
         const oldEvents = calendar.getEvents()
         oldEvents.forEach(event => {
@@ -81,6 +89,17 @@ export default class TimeEditAdapter extends Adapter {
             }
 
             const eventData = parseEventData(event)
+
+            if (hideGu && eventData.kurskod) {
+                eventData.kurskod = eventData.kurskod.filter(
+                    code => !isGuCourseCode(code)
+                )
+                // Patch event
+                event.setSummary(serializeEventData(eventData))
+                event.setDescription('')
+                event.setLocation('')
+            }
+
             const courseCodes = eventData.kurskod?.map(shortenCourseCode)
             if (courseCodes === undefined) return
 
@@ -135,6 +154,7 @@ export default class TimeEditAdapter extends Adapter {
     override getExtras(calendar: Calendar): TimeEditUrlExtras {
         const groups: AvailableGroup[] = groupByOptions.map(option => ({
             property: option,
+            propertyIndex: groupByOptions.indexOf(option),
             values: {},
         }))
 
