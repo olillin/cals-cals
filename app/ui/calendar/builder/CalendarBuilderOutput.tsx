@@ -10,9 +10,9 @@ export default function CalendarBuilderOutput({
 }) {
     const [showGrouping, setShowGrouping] = useState(false)
 
-    const canGroup: boolean =
-        !!data.extra.groups &&
+    const hasGroups =
         getGroupByOptions(data.extra.groups as AvailableGroup[]).length > 0
+    const canGroup: boolean = !!data.extra.groups && hasGroups
 
     return (
         <div id="calendar-builder-output" className="calendar-builder-output">
@@ -27,7 +27,7 @@ export default function CalendarBuilderOutput({
                         <CalendarUrl url={data.url} />
                     </div>
 
-                    {canGroup && (
+                    {canGroup ? (
                         <button
                             id="add-group"
                             className="add-group"
@@ -37,6 +37,11 @@ export default function CalendarBuilderOutput({
                         >
                             Group events
                         </button>
+                    ) : (
+                        <p style={{ textAlign: 'center' }}>
+                            This calendar cannot be grouped. All events have the
+                            same properties.
+                        </p>
                     )}
                 </>
             )}

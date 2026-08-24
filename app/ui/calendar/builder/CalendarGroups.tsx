@@ -19,15 +19,16 @@ export default function CalendarGroups({
 
     const groupByOptions = getGroupByOptions(data.extra.groups)
     const groupByProperty = groupByOptions[selectedProperty]
+
     const groupBy = data.extra.groups.find(
         g => g.property === groupByProperty
     )?.propertyIndex
 
     if (groupBy === undefined) {
         return (
-            <span>
-                Unable to group calendar, invalid grouping property found
-            </span>
+            <p className="error">
+                Unable to group calendar. Grouping property is invalid.
+            </p>
         )
     }
 
