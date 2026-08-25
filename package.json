@@ -8,6 +8,7 @@
         "dev": "next dev",
         "build": "next build && node -e \"require('fs').cpSync('public', '.next/standalone/public', {recursive: true});require('fs').cpSync('.next/static', '.next/standalone/public/_next/static', {recursive: true})\"",
         "start": "node .",
+        "postinstall": "(copy-env-cli || true)",
         "test": "vitest",
         "fmt": "oxfmt",
         "fmt:check": "oxfmt --check",
@@ -26,6 +27,8 @@
     "homepage": "https://cal.olillin.com",
     "packageManager": "pnpm@10.28.0",
     "dependencies": {
+        "@t3-oss/env-core": "^0.13.11",
+        "@t3-oss/env-nextjs": "^0.13.11",
         "ajv": "^8.20.0",
         "chalmers-search-exam": "^3.1.0",
         "clsx": "^2.1.1",
@@ -39,7 +42,8 @@
         "remark-parse": "^11.0.0",
         "remark-rehype": "^11.1.2",
         "unified": "^11.0.5",
-        "vite": "^7.3.5"
+        "vite": "^7.3.5",
+        "zod": "^4.4.3"
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4.3.1",
@@ -47,6 +51,7 @@
         "@types/node": "^24.13.2",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",
+        "copy-env-cli": "^1.0.0",
         "oxfmt": "^0.41.0",
         "oxlint": "^1.71.0",
         "oxlint-tsgolint": "^0.22.1",

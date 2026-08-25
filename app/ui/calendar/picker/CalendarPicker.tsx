@@ -18,21 +18,17 @@ import CalendarCard from '../CalendarCard'
 
 export default function CalendarPicker({
     initialTree,
-    urlBase,
+    baseUrl,
 }: {
     initialTree: RenderedCalendarTree
-    urlBase: string
+    baseUrl: string
 }) {
     const [tree, setTree] = useState<RenderedCalendarTree>(initialTree)
     const [showOrigin, setShowOrigin] = useState(true)
 
     const selectedCalendars = getSelectedCalendars(tree)
     const showOriginCheckbox = selectedCalendars.length >= 2
-    const url: string | null = generateUrl(
-        urlBase,
-        selectedCalendars,
-        showOrigin
-    )
+    const url = generateUrl(baseUrl, selectedCalendars, showOrigin)
 
     return (
         <>
@@ -105,7 +101,7 @@ function selectTree(
 }
 
 function generateUrl(
-    urlBase: string,
+    baseUrl: string,
     calendars: PickerCalendar[],
     showOrigin: boolean = true
 ): string | null {
@@ -116,7 +112,7 @@ function generateUrl(
     if (calendars.length == 1) {
         // Single calendar
         const filename = calendars[0].filename
-        return `${urlBase}/c/${filename}`
+        return new URL(`/c/${filename}`, baseUrl).href
     }
 
     // Merge calendars
@@ -124,5 +120,9 @@ function generateUrl(
     for (const calendar of calendars) {
         bitmask += BigInt(1) << BigInt(calendar.id)
     }
-    return `${urlBase}/m/${bitmask}${showOrigin ? '?origin' : ''}`
+    const url = new URL(`/m/${bitmask}`, baseUrl).href
+    if (showOrigin) {
+        return url + '?origin'
+    }
+    return url
 }

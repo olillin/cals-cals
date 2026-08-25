@@ -4,9 +4,10 @@ import UpdateNotice from '@/app/ui/UpdateNotice'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { readLatestChanges } from '../lib/changes'
+import { env } from '@/app/lib/env'
 
 export const metadata: Metadata = {
-    metadataBase: 'http://localhost:3000',
+    metadataBase: env.BASE_URL,
     title: "Cal's cals",
     description: 'Locally produced calendars at Chalmers!',
     applicationName: "Cal's cals",

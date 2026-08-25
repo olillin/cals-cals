@@ -1,4 +1,6 @@
-const currentVersion: string | undefined = process.env.NEXT_PUBLIC_WEB_VERSION
+import { env } from '@/app/lib/env'
+
+const currentVersion = env.NEXT_PUBLIC_WEB_VERSION
 const versionString = currentVersion
     ? currentVersion.match(/^[0-9]+\.[0-9]+/)
         ? `v${currentVersion}`

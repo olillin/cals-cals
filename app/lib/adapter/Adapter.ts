@@ -2,6 +2,7 @@ import { Calendar, parseCalendar } from 'iamcal'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { ErrorResponse, UrlResponse } from '../responses'
+import { env } from '@/app/lib/env'
 
 export type RouteHandler = (request: NextRequest) => Promise<NextResponse>
 
@@ -210,9 +211,9 @@ abstract class Adapter {
                 )
             }
 
-            const host = request.headers.get('host') ?? 'cal.olillin.com'
             const path = request.nextUrl.pathname.replace(/\/[^/]*$/, '')
-            const adapterUrl = new URL('webcal://' + host + path)
+            const baseUrl = env.BASE_URL
+            const adapterUrl = new URL(path, baseUrl)
             // Add id query parameter
             const searchParams = new URLSearchParams()
             searchParams.append('id', id)
