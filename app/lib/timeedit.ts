@@ -25,6 +25,7 @@ export interface AvailableGroup {
 }
 
 export interface TimeEditUrlExtras {
+    name?: string
     groups: AvailableGroup[]
 }
 

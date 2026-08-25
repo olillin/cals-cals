@@ -180,6 +180,7 @@ export default class TimeEditAdapter extends Adapter {
         })
 
         const extras: TimeEditUrlExtras = {
+            name: calendar.getCalendarName(),
             groups: groups,
         }
 

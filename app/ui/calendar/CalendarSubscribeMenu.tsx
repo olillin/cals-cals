@@ -1,23 +1,30 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 
-export default function CalendarSubscribeMenu({ url }: { url: string }) {
+export default function CalendarSubscribeMenu({
+    url,
+    calendarName,
+}: {
+    url: string
+    calendarName?: string
+}) {
+    const webcalUrl = url.replace(/^\w+:\/\//, 'webcal://')
+
     return (
         <div className="calendar-grid">
             <CalendarLink
                 href={`https://calendar.google.com/calendar/r?cid=${encodeURIComponent(
-                    url
+                    webcalUrl
                 )}`}
             >
                 Google Calendar
             </CalendarLink>
-            <CalendarLink href={url.replace(/^\w+:\/\//, 'webcal://')}>
-                Apple Calendar
-            </CalendarLink>
+            <CalendarLink href={webcalUrl}>Apple Calendar</CalendarLink>
             <CalendarLink
-                href={`https://outlook.office.com/owa/?path=/calendar/action/compose&rru=addsubscription&url=${encodeURIComponent(
+                href={`https://outlook.office.com/calendar/0/addcalendar?url=${encodeURIComponent(
                     url
-                )}`}
+                )}&name=${encodeURIComponent(calendarName ?? "Cal's cals Calendar")}`}
             >
                 Outlook
             </CalendarLink>
@@ -32,7 +39,7 @@ interface CalendarLinkProps {
 
 const CalendarLink = (props: CalendarLinkProps) => {
     return (
-        <a href={props.href} className="calendar-link">
+        <Link href={props.href} className="calendar-link">
             <Image
                 src="/symbols/material/calendar_add_on.png"
                 width={128}
@@ -40,6 +47,6 @@ const CalendarLink = (props: CalendarLinkProps) => {
                 alt="Subscribe to calendar"
             />
             <span>{props.children}</span>
-        </a>
+        </Link>
     )
 }

@@ -24,7 +24,10 @@ export default function CalendarBuilderOutput({
             ) : (
                 <>
                     <div id="builder-calendars" className="builder-calendars">
-                        <CalendarCard url={data.url} />
+                        <CalendarCard
+                            url={data.url}
+                            calendarName={data.extra.name}
+                        />
                     </div>
 
                     {canGroup ? (

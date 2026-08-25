@@ -29,6 +29,7 @@ export default function CalendarPicker({
     const selectedCalendars = getSelectedCalendars(tree)
     const showOriginCheckbox = selectedCalendars.length >= 2
     const url = generateUrl(baseUrl, selectedCalendars, showOrigin)
+    const calendarName = generateCalendarName(selectedCalendars, tree)
 
     return (
         <>
@@ -56,7 +57,7 @@ export default function CalendarPicker({
                 </span>
             )}
 
-            {url && <CalendarCard url={url} />}
+            {url && <CalendarCard url={url} calendarName={calendarName} />}
         </>
     )
 }
@@ -125,4 +126,35 @@ function generateUrl(
         return url + '?origin'
     }
     return url
+}
+
+function generateCalendarName(
+    calendars: PickerCalendar[],
+    tree: RenderedCalendarTree
+): string | undefined {
+    if (calendars.length === 0) {
+        return undefined
+    }
+
+    const getDisplayName = (
+        calendarId: number,
+        tree: RenderedCalendarTree
+    ): string | null => {
+        for (const calendar of tree.calendars ?? []) {
+            if (calendar.id === calendarId) {
+                return calendar.displayName
+            }
+        }
+
+        for (const subcategory of tree.subcategories ?? []) {
+            const name = getDisplayName(calendarId, subcategory)
+            if (name !== null) return name
+        }
+
+        return null
+    }
+
+    return calendars
+        .map(calendar => getDisplayName(calendar.id, tree))
+        .join('+')
 }
