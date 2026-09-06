@@ -6,18 +6,16 @@ export const defaultBaseUrl = 'http://localhost:3000'
 export const env = createEnv({
     server: {
         NODE_ENV: z.enum(['production', 'development', 'test']),
-    },
-    shared: {
         BASE_URL: z
             .url({ normalize: true, protocol: /^https?$/ })
             .regex(/\/$/)
             .default(defaultBaseUrl),
+    },
+    shared: {
         NEXT_PUBLIC_WEB_VERSION: z.string().optional(),
     },
     emptyStringAsUndefined: true,
-    // Experimental settings infer runtime server variable values from names
     experimental__runtimeEnv: {
-        BASE_URL: process.env.BASE_URL,
         NEXT_PUBLIC_WEB_VERSION: process.env.NEXT_PUBLIC_WEB_VERSION,
     },
     // Skip validation with environment variable

@@ -3,7 +3,7 @@
 
 import fs from 'node:fs/promises'
 import * as prod from 'react/jsx-runtime'
-import { ReactNode } from 'react'
+import { cache, ReactNode } from 'react'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeReact from 'rehype-react'
@@ -66,48 +66,46 @@ const removeTopHeading: Plugin<[]> = () => {
     }
 }
 
-export async function readLatestChanges(
-    filename: string = 'CHANGELOG.md'
-): Promise<Changes | null> {
-    'use cache'
-    const text = await fs.readFile(filename)
-    const file = (await unified()
-        .use(remarkParse, { fragment: true })
-        .use(lastHeading, { depth: 2 })
-        .use(replaceHeadings)
-        .use(remarkRehype)
-        .use(rehypeReact, production)
-        .process(text)) as VFile
+export const readLatestChanges = cache(
+    async (filename: string = 'CHANGELOG.md'): Promise<Changes | null> => {
+        const text = await fs.readFile(filename)
+        const file = (await unified()
+            .use(remarkParse, { fragment: true })
+            .use(lastHeading, { depth: 2 })
+            .use(replaceHeadings)
+            .use(remarkRehype)
+            .use(rehypeReact, production)
+            .process(text)) as VFile
 
-    const body = file.result as ReactNode
-    const heading = file.data.lastHeading
-    if (typeof heading !== 'string') {
-        throw new Error('lastHeading is not a string')
-    }
-    let index = heading.indexOf(' ')
-    if (index === -1) {
-        index = heading.length
-    }
-    const version = heading.slice(0, index)
-    const name = heading.slice(index + 1)
+        const body = file.result as ReactNode
+        const heading = file.data.lastHeading
+        if (typeof heading !== 'string') {
+            throw new Error('lastHeading is not a string')
+        }
+        let index = heading.indexOf(' ')
+        if (index === -1) {
+            index = heading.length
+        }
+        const version = heading.slice(0, index)
+        const name = heading.slice(index + 1)
 
-    return {
-        version,
-        name,
-        body,
+        return {
+            version,
+            name,
+            body,
+        }
     }
-}
+)
 
-export async function readAllChanges(
-    filename: string = 'CHANGELOG.md'
-): Promise<ReactNode | null> {
-    'use cache'
-    const text = await fs.readFile(filename)
-    const file = (await unified()
-        .use(remarkParse, { fragment: true })
-        .use(removeTopHeading)
-        .use(remarkRehype)
-        .use(rehypeReact, production)
-        .process(text)) as VFile
-    return file.result as ReactNode
-}
+export const readAllChanges = cache(
+    async (filename: string = 'CHANGELOG.md'): Promise<ReactNode | null> => {
+        const text = await fs.readFile(filename)
+        const file = (await unified()
+            .use(remarkParse, { fragment: true })
+            .use(removeTopHeading)
+            .use(remarkRehype)
+            .use(rehypeReact, production)
+            .process(text)) as VFile
+        return file.result as ReactNode
+    }
+)

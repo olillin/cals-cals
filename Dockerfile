@@ -41,10 +41,6 @@ ENV NEXT_PUBLIC_WEB_VERSION=${WEB_VERSION}
 # Learn more here: https://nextjs.org/telemetry
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Skip environment validation to prevent errors caused by required environment
-# variables. Read more: https://create.t3.gg/en/deployment/docker
-ENV SKIP_ENV_VALIDATION=1
-
 # Build Next.js application
 # If you want to speed up Docker rebuilds, you can cache the build artifacts
 # by adding: --mount=type=cache,target=/app/.next/cache
@@ -79,6 +75,9 @@ RUN chown node:node .next
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=node:node /app/.next/standalone ./
+
+# Copy CHANGELOG.md
+COPY --from=builder --chown=node:node /app/CHANGELOG.md ./
 
 # If you want to persist the fetch cache generated during the build so that
 # cached responses are available immediately on startup, uncomment this line:
