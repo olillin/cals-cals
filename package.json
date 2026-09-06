@@ -25,7 +25,19 @@
         "url": "https://github.com/olillin/cals-cals/issues"
     },
     "homepage": "https://cal.olillin.com",
-    "packageManager": "pnpm@10.28.0",
+    "packageManager": "pnpm@11.25.0",
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": "^24.19.0",
+            "onFail": "error"
+        },
+        "packageManager": {
+            "name": "pnpm",
+            "version": "11.25.0",
+            "onFail": "download"
+        }
+    },
     "dependencies": {
         "@t3-oss/env-core": "^0.13.11",
         "@t3-oss/env-nextjs": "^0.13.11",
@@ -34,7 +46,7 @@
         "clsx": "^2.1.1",
         "iamcal": "^4.1.1",
         "mdast-util-to-string": "^4.0.0",
-        "next": "^16.2.9",
+        "next": "^16.2.12",
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
         "rehype-react": "^8.0.0",
