@@ -66,28 +66,6 @@ const removeTopHeading: Plugin<[]> = () => {
     }
 }
 
-const reverseHeadings: Plugin<[{ depth: number }]> = options => {
-    return (tree: mdast.Root, file: VFile) => {
-        // Find all headings of the correct depth
-        const indices = tree.children
-            .map((node, i) => {
-                return node.type === 'heading' && node.depth === options.depth
-                    ? i
-                    : -1
-            })
-            .filter(i => i !== -1)
-
-        const children: mdast.RootContent[] = []
-        for (let i = indices.length; i > 0; i--) {
-            const start = indices[i - 1]
-            const end = i < indices.length ? indices[i] : undefined
-            children.push(...tree.children.slice(start, end))
-        }
-
-        tree.children = children
-    }
-}
-
 export async function readLatestChanges(
     filename: string = 'CHANGELOG.md'
 ): Promise<Changes | null> {
