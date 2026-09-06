@@ -1,4 +1,4 @@
-import CalendarBuilder from '@/app/ui/calendar/builder/CalendarBuilder'
+import AdapterBuilder from '@/app/ui/calendar/builder/AdapterBuilder'
 
 export default function Page() {
     return (
@@ -21,7 +21,7 @@ export default function Page() {
                 </p>
             </details>
 
-            <CalendarBuilder adapter="timeedit" />
+            <AdapterBuilder adapter="timeedit" />
         </section>
     )
 }
