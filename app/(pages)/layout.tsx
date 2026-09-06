@@ -5,37 +5,43 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { readLatestChanges } from '../lib/changes'
 import { env } from '@/app/lib/env'
+import { connection } from 'next/server'
 
-export const metadata: Metadata = {
-    metadataBase: env.BASE_URL,
-    title: "Cal's cals",
-    description: 'Locally produced calendars at Chalmers!',
-    applicationName: "Cal's cals",
-    openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+    // Do not inline BASE_URL
+    await connection()
+
+    return {
+        metadataBase: new URL(env.BASE_URL),
         title: "Cal's cals",
         description: 'Locally produced calendars at Chalmers!',
-        siteName: 'Olillin',
-        images: [
-            {
-                url: '/media.png',
-                alt: "Cal's cals banner",
-            },
-        ],
-    },
-    twitter: {
-        title: "Cal's cals",
-        description: 'Locally produced calendars at Chalmers!',
-        card: 'summary_large_image',
-        images: [
-            {
-                url: '/media.png',
-                alt: "Cal's cals banner",
-            },
-        ],
-    },
-    icons: {
-        icon: '/favicon.ico',
-    },
+        applicationName: "Cal's cals",
+        openGraph: {
+            title: "Cal's cals",
+            description: 'Locally produced calendars at Chalmers!',
+            siteName: 'Olillin',
+            images: [
+                {
+                    url: '/media.png',
+                    alt: "Cal's cals banner",
+                },
+            ],
+        },
+        twitter: {
+            title: "Cal's cals",
+            description: 'Locally produced calendars at Chalmers!',
+            card: 'summary_large_image',
+            images: [
+                {
+                    url: '/media.png',
+                    alt: "Cal's cals banner",
+                },
+            ],
+        },
+        icons: {
+            icon: '/favicon.ico',
+        },
+    }
 }
 
 export const viewport: Viewport = {

@@ -7,7 +7,6 @@ import { formatKebabCase } from '@/app/lib/util'
 import PickerUnavailable from '../ui/calendar/picker/PickerUnavailable'
 import { buildTree, RenderedCalendarTree } from '../lib/calendarTree'
 import ErrorPage from '../ui/ErrorPage'
-import { cacheLife } from 'next/cache'
 import { Suspense } from 'react'
 import PickerDescription from '../ui/calendar/picker/PickerDescription'
 import { env } from '@/app/lib/env'
@@ -23,9 +22,6 @@ export default async function Page() {
 }
 
 async function PageContent() {
-    'use cache: private'
-    cacheLife('hours')
-
     const pickerConfig = await readPicker()
     if (pickerConfig === undefined) {
         return <PickerUnavailable />
