@@ -50,6 +50,44 @@ const replaceHeadings: Plugin<[]> = () => {
     }
 }
 
+const removeTopHeading: Plugin<[]> = () => {
+    return (tree: mdast.Root) => {
+        // Find second heading
+        const firstIndex = tree.children.findIndex(node => {
+            return node.type === 'heading'
+        })
+        const secondIndex = tree.children.findIndex((node, i) => {
+            return i > firstIndex && node.type === 'heading'
+        })
+        // Do nothing if not found
+        if (secondIndex === -1) return
+
+        tree.children = tree.children.slice(secondIndex)
+    }
+}
+
+const reverseHeadings: Plugin<[{ depth: number }]> = options => {
+    return (tree: mdast.Root, file: VFile) => {
+        // Find all headings of the correct depth
+        const indices = tree.children
+            .map((node, i) => {
+                return node.type === 'heading' && node.depth === options.depth
+                    ? i
+                    : -1
+            })
+            .filter(i => i !== -1)
+
+        const children: mdast.RootContent[] = []
+        for (let i = indices.length; i > 0; i--) {
+            const start = indices[i - 1]
+            const end = i < indices.length ? indices[i] : undefined
+            children.push(...tree.children.slice(start, end))
+        }
+
+        tree.children = children
+    }
+}
+
 export async function readLatestChanges(
     filename: string = 'CHANGELOG.md'
 ): Promise<Changes | null> {
@@ -80,4 +118,18 @@ export async function readLatestChanges(
         name,
         body,
     }
+}
+
+export async function readAllChanges(
+    filename: string = 'CHANGELOG.md'
+): Promise<ReactNode | null> {
+    'use cache'
+    const text = await fs.readFile(filename)
+    const file = (await unified()
+        .use(remarkParse, { fragment: true })
+        .use(removeTopHeading)
+        .use(remarkRehype)
+        .use(rehypeReact, production)
+        .process(text)) as VFile
+    return file.result as ReactNode
 }
