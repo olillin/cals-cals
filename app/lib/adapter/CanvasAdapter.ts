@@ -1,5 +1,4 @@
-import { NextRequest } from 'next/server'
-import Adapter from './Adapter'
+import Adapter, { AdapterContext } from './Adapter'
 import { Calendar, CalendarEvent } from 'iamcal'
 import {
     AvailableGroup,
@@ -36,10 +35,13 @@ export default class CanvasAdapter extends Adapter {
         return match[0]
     }
 
-    override convertCalendar(calendar: Calendar, req?: NextRequest): Calendar {
-        if (req?.nextUrl.searchParams.get('group')) {
-            const groupBy = parseGroupBy(req)
-            const allowedValues = parseAllowedValues(req)
+    override convertCalendar(
+        calendar: Calendar,
+        context?: AdapterContext
+    ): Calendar {
+        if (context?.req?.nextUrl.searchParams.get('group')) {
+            const groupBy = parseGroupBy(context.req)
+            const allowedValues = parseAllowedValues(context.req)
             const slicer = createGroupSlicer(groupBy, allowedValues)
 
             // Include only the group which has events with the included values
@@ -48,9 +50,9 @@ export default class CanvasAdapter extends Adapter {
         }
 
         const plainDescription =
-            req != undefined &&
+            context?.req != undefined &&
             ['1', 'true', 't'].includes(
-                req.nextUrl.searchParams.get('plain') ?? '0'
+                context.req.nextUrl.searchParams.get('plain') ?? '0'
             )
 
         calendar.getEvents().forEach(event => {

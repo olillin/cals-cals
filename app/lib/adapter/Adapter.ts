@@ -6,6 +6,11 @@ import { env } from '@/app/lib/env'
 
 export type RouteHandler = (request: NextRequest) => Promise<NextResponse>
 
+export interface AdapterContext {
+    req?: NextRequest
+    id?: string
+}
+
 abstract class Adapter {
     /**
      * Create a route which takes a query parameter 'id' and returns the
@@ -27,6 +32,11 @@ abstract class Adapter {
                         status: 400,
                     }
                 )
+            }
+
+            const context: AdapterContext = {
+                req: request,
+                id: id,
             }
 
             const url = this.createUrl(String(id))
@@ -53,7 +63,7 @@ abstract class Adapter {
             try {
                 patchedCalendar = await this.patchCalendar(
                     originalCalendar,
-                    request
+                    context
                 )
             } catch (error) {
                 return NextResponse.json(
@@ -71,7 +81,7 @@ abstract class Adapter {
             try {
                 convertedCalendar = await this.convertCalendar(
                     patchedCalendar,
-                    request
+                    context
                 )
             } catch (error) {
                 return NextResponse.json(
@@ -186,13 +196,18 @@ abstract class Adapter {
                 )
             }
 
+            const context: AdapterContext = {
+                req: request,
+                id: id,
+            }
+
             let extra: object | undefined = undefined
             try {
                 const url = new URL(String(originalUrl))
                 const originalCalendar: Calendar = await this.fetchCalendar(url)
                 const patchedCalendar: Calendar = await this.patchCalendar(
                     originalCalendar,
-                    request
+                    context
                 )
                 extra = await this.getExtras(patchedCalendar)
             } catch (error) {
@@ -254,25 +269,25 @@ abstract class Adapter {
     /**
      * Convert a calendar according to the rules of this adapter.
      * @param calendar The calendar from the URL which may have been patched.
-     * @param req The context of the request to get this calendar.
+     * @param context The context of the request to get this calendar.
      * @returns The converted calendar.
      * @see {@link this.patchCalendar}
      */
     abstract convertCalendar(
         calendar: Calendar,
-        req?: NextRequest
+        context?: AdapterContext
     ): Calendar | Promise<Calendar>
 
     /**
      * Patch a calendar before getting extra information about it.
      * @param calendar The original calendar.
-     * @param req The context of the request to get this calendar.
+     * @param context The context of the request to get this calendar.
      * @returns The patched calendar.
      */
     patchCalendar(
         calendar: Calendar,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        req?: NextRequest
+        context?: AdapterContext
     ): Calendar | Promise<Calendar> {
         return calendar
     }

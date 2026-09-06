@@ -192,6 +192,28 @@ export function createEventSummary(
 }
 
 /**
+ * Create an event summary for a TimeEdit room booking from event data.
+ * @param data The parsed event data.
+ * @param context The original event as context.
+ * @returns The event summary or null if there is no summary.
+ */
+export function createBookingEventSummary(
+    data: TimeEditEventData,
+    context?: CalendarEvent
+): string | null {
+    if (data.titel) {
+        return data.titel.join(', ')
+    }
+
+    const location = createEventLocation(data, context)
+    const summary = ['Booking', location]
+        .filter(part => part !== null)
+        .join(': ')
+
+    return summary === '' ? (context?.getSummary() ?? null) : summary
+}
+
+/**
  * Create an event description from TimeEdit event data.
  * @param data The parsed event data.
  * @param context The original event as context.

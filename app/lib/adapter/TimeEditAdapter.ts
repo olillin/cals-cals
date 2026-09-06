@@ -1,6 +1,5 @@
 import { Calendar, CalendarEvent } from 'iamcal'
-import { NextRequest } from 'next/server'
-import Adapter from './Adapter'
+import Adapter, { AdapterContext } from './Adapter'
 import HashSlicer from '../slicer/HashSlicer'
 import Slicer, { EventGroup, applySlicer } from '../slicer/Slicer'
 import {
@@ -17,6 +16,7 @@ import {
     serializeEventData,
     shortenCourseCode,
     TimeEditGroupByOption,
+    createBookingEventSummary,
 } from '../timeedit'
 import {
     AvailableGroup,
@@ -29,6 +29,13 @@ import {
 export default class TimeEditAdapter extends Adapter {
     override createUrl(id: string): URL {
         const [category, filename] = id.split('.')
+
+        if (category === 'student-bookings') {
+            return new URL(
+                `https://cloud.timeedit.net/chalmers/web/student/my.ics?i=${filename}`
+            )
+        }
+
         return new URL(
             `https://cloud.timeedit.net/chalmers/web/${category}/${filename}.ics`
         )
@@ -36,7 +43,7 @@ export default class TimeEditAdapter extends Adapter {
 
     override getId(url: URL): string {
         const urlPattern =
-            /^(https|webcal):\/\/cloud\.timeedit\.net\/\w+\/web\/\w+\/[^/]+\.ics$/
+            /^(https|webcal):\/\/cloud\.timeedit\.net\/\w+\/web\/\w+\/[^/]+\.ics(\?i=\w+)?$/
         if (!urlPattern.test(url.href)) {
             throw new Error('Invalid URL')
         }
@@ -52,13 +59,26 @@ export default class TimeEditAdapter extends Adapter {
         const categoryPattern = /(?<=web\/).+?(?=\/)/
         const category = categoryPattern.exec(url.href)?.[0]
 
-        if (category !== 'public')
+        if (category !== 'public' && category !== 'student') {
             throw new Error(
-                'Unsupported category. Calendar must be from the "public" schedule ("Öppen schemavisning").'
+                'Unsupported category. Calendar must be from the "public" schedule ("Öppen schemavisning") or room bookings.'
             )
+        }
 
         const filenamePattern = /[^/]+?(?=\.ics)/
         const filename = filenamePattern.exec(url.href)![0]
+
+        const isBookingCalendar = category === 'student' && filename === 'my'
+        if (isBookingCalendar) {
+            const iPattern = /(?<=\?i=)\w+$/
+            const i = iPattern.exec(url.href)?.[0]
+            if (!i) throw new Error('Invalid URL')
+            return `student-bookings.${i}`
+        } else if (category === 'student') {
+            throw new Error(
+                'Unsupported category. Calendar must be from the "public" schedule ("Öppen schemavisning") or room bookings.'
+            )
+        }
 
         const id = `${category}.${filename}`
         return id
@@ -66,24 +86,39 @@ export default class TimeEditAdapter extends Adapter {
 
     override async patchCalendar(
         calendar: Calendar,
-        req?: NextRequest
+        context?: AdapterContext
     ): Promise<Calendar> {
+        // Update calendar description
+        const calendarDescription = createCalendarDescription(
+            calendar.getCalendarDescription()
+        )
+        calendar.setCalendarDescription(calendarDescription)
+
+        // Handle bookings calendar
+        const category = context?.id ? context.id.split('.')[0] : null
+        if (category === 'student-bookings') {
+            // Update calendar metadata
+            calendar.setCalendarName('TimeEdit Bookings')
+            return calendar
+        }
+
+        // Public calendar
         const addExams =
-            req == undefined ||
+            context?.req == undefined ||
             !['1', 'true', 't'].includes(
-                req.nextUrl.searchParams.get('noExam') ?? '0'
+                context.req.nextUrl.searchParams.get('noExam') ?? '0'
             )
 
         const keepGlobalEvents =
-            req != undefined &&
+            context?.req != undefined &&
             ['1', 'true', 't'].includes(
-                req.nextUrl.searchParams.get('keepGlobal') ?? '0'
+                context.req.nextUrl.searchParams.get('keepGlobal') ?? '0'
             )
 
         const hideGu =
-            req != undefined &&
+            context?.req != undefined &&
             ['1', 'true', 't'].includes(
-                req.nextUrl.searchParams.get('hideGu') ?? '0'
+                context.req.nextUrl.searchParams.get('hideGu') ?? '0'
             )
 
         const courseCodeSets: string[][] = []
@@ -131,21 +166,20 @@ export default class TimeEditAdapter extends Adapter {
             calendar.addComponents(examEvents)
         }
 
-        // Update calendar metadata
+        // Update calendar name
         const calendarName = createCalendarName(groupedCourseCodes)
         calendar.setCalendarName(calendarName)
-        const calendarDescription = createCalendarDescription(
-            calendar.getCalendarDescription()
-        )
-        calendar.setCalendarDescription(calendarDescription)
 
         return calendar
     }
 
-    override convertCalendar(calendar: Calendar, req?: NextRequest): Calendar {
-        if (req?.nextUrl.searchParams.get('group')) {
-            const groupBy = parseGroupBy(req)
-            const allowedValues = parseAllowedValues(req)
+    override convertCalendar(
+        calendar: Calendar,
+        context?: AdapterContext
+    ): Calendar {
+        if (context?.req?.nextUrl.searchParams.get('group')) {
+            const groupBy = parseGroupBy(context.req)
+            const allowedValues = parseAllowedValues(context.req)
             const slicer = createGroupSlicer(groupBy, allowedValues)
 
             // Include only the group which has events with the included values
@@ -153,7 +187,7 @@ export default class TimeEditAdapter extends Adapter {
             applySlicer(calendar, slicer, mask)
         }
 
-        calendar.getEvents().forEach(event => convertEvent(event))
+        calendar.getEvents().forEach(event => convertEvent(event, context))
         return calendar
     }
 
@@ -234,12 +268,20 @@ export function createGroupSlicer(
 /**
  * Update a TimeEdit event to follow the adapter format.
  * @param event The event from TimeEdit.
+ * @param context The context of the request to get the calendar.
  */
-export function convertEvent(event: CalendarEvent): void {
+export function convertEvent(
+    event: CalendarEvent,
+    context?: AdapterContext
+): void {
     const eventData = parseEventData(event)
+    const category = context?.id?.split('.')[0]
 
     // Summary
-    const summary = createEventSummary(eventData, event)
+    const summary =
+        category === 'student-bookings'
+            ? createBookingEventSummary(eventData, event)
+            : createEventSummary(eventData, event)
     if (summary) {
         event.setSummary(summary)
     } else {
