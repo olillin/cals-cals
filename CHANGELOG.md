@@ -42,3 +42,10 @@ This is a smaller update containing some minor changes and patches:
   calendar
 - Fixed the calendar picker grid again
 - Fixed some checkbox labels not being clickable
+
+## Unreleased
+
+- The TimeEdit calendar adapter has been moved to [/timeedit](./timeedit) and
+  been made more obvious in the navigation.
+- Added calendar adapter for Canvas schedule with support for generating
+  assignment URLs and grouping.
