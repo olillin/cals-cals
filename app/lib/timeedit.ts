@@ -1,10 +1,10 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
-import type { Concrete, UrlResponse } from './responses'
+import type { Concrete } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
-export const groupByOptions = (<T extends keyof TimeEditEventData>(
+export const timeEditGroupByOptions = (<T extends keyof TimeEditEventData>(
     options: T[]
 ): T[] => options)([
     'aktivitet',
@@ -14,24 +14,7 @@ export const groupByOptions = (<T extends keyof TimeEditEventData>(
     'klasskod',
 ] as const)
 /** An option to group calendar events by. */
-export type GroupByOption = (typeof groupByOptions)[number]
-
-export interface AvailableGroup {
-    property: GroupByOption
-    propertyIndex: number
-    values: {
-        [k: string]: string
-    }
-}
-
-export interface TimeEditUrlExtras {
-    name?: string
-    groups: AvailableGroup[]
-}
-
-export interface TimeEditUrlResponse extends UrlResponse {
-    extra: TimeEditUrlExtras
-}
+export type TimeEditGroupByOption = (typeof timeEditGroupByOptions)[number]
 
 export interface TimeEditEventData {
     [k: string]: string[] | undefined

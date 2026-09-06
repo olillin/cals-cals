@@ -1,24 +1,24 @@
-import { AvailableGroup, TimeEditUrlResponse } from '@/app/lib/timeedit'
+import { AvailableGroup, GroupedUrlResponse } from '@/app/lib/group'
 import { useState } from 'react'
-import CalendarGroups, { getGroupByOptions } from './CalendarGroups'
+import AdapterGroups, { getGroupByOptions } from './AdapterGroups'
 import CalendarCard from '../CalendarCard'
 
-export default function CalendarBuilderOutput({
+export default function AdapterBuilderOutput<T extends string>({
     data,
 }: {
-    data: TimeEditUrlResponse
+    data: GroupedUrlResponse<T>
 }) {
     const [showGrouping, setShowGrouping] = useState(false)
 
     const hasGroups =
-        getGroupByOptions(data.extra.groups as AvailableGroup[]).length > 0
+        getGroupByOptions(data.extra.groups as AvailableGroup<T>[]).length > 0
     const canGroup: boolean = !!data.extra.groups && hasGroups
 
     return (
         <div id="calendar-builder-output" className="calendar-builder-output">
             {showGrouping ? (
-                <CalendarGroups
-                    data={data as TimeEditUrlResponse}
+                <AdapterGroups
+                    data={data as GroupedUrlResponse<T>}
                     onClose={() => setShowGrouping(false)}
                 />
             ) : (

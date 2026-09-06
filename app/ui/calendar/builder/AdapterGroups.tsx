@@ -1,17 +1,13 @@
-import type {
-    AvailableGroup,
-    GroupByOption,
-    TimeEditUrlResponse,
-} from '@/app/lib/timeedit'
+import type { AvailableGroup, GroupedUrlResponse } from '@/app/lib/group'
 import clsx from 'clsx'
 import { useState } from 'react'
 import CalendarCard from '../CalendarCard'
 
-export default function CalendarGroups({
+export default function AdapterGroups<T extends string>({
     data,
     onClose,
 }: {
-    data: TimeEditUrlResponse
+    data: GroupedUrlResponse<T>
     onClose: () => void
 }) {
     const [selectedProperty, setSelectedProperty] = useState(0)
@@ -60,7 +56,7 @@ export default function CalendarGroups({
                 />
             )}
 
-            {groups.map((group, i) => (
+            {groups.map((_group, i) => (
                 <CalendarGroupContainer
                     key={i}
                     groups={groups}
@@ -112,7 +108,7 @@ export function PropertySelector({
     selected: currentSelected,
     setSelectedProperty,
 }: {
-    options: GroupByOption[]
+    options: string[]
     selected: number
     setSelectedProperty: (value: number) => void
 }) {
@@ -225,9 +221,9 @@ export interface BuilderGroup {
     }
 }
 
-export function getGroupByOptions(
-    availableGroups: AvailableGroup[]
-): GroupByOption[] {
+export function getGroupByOptions<T>(
+    availableGroups: AvailableGroup<T>[]
+): T[] {
     return availableGroups
         .filter(group => Object.keys(group.values).length > 1)
         .map(group => group.property)

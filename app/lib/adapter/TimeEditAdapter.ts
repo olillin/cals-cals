@@ -4,21 +4,27 @@ import Adapter from './Adapter'
 import HashSlicer from '../slicer/HashSlicer'
 import Slicer, { EventGroup, applySlicer } from '../slicer/Slicer'
 import {
-    AvailableGroup,
     createCalendarDescription,
     createCalendarName,
     createEventDescription,
     createEventLocation,
     createEventSummary,
     createExamEvents,
-    groupByOptions,
+    timeEditGroupByOptions,
     isGlobalEvent,
     isGuCourseCode,
     parseEventData,
     serializeEventData,
     shortenCourseCode,
-    TimeEditUrlExtras,
+    TimeEditGroupByOption,
 } from '../timeedit'
+import {
+    AvailableGroup,
+    GroupedUrlExtras,
+    parseAllowedValues,
+    parseGroupBy,
+    prepareSetForComparison,
+} from '../group'
 
 export default class TimeEditAdapter extends Adapter {
     override createUrl(id: string): URL {
@@ -151,18 +157,21 @@ export default class TimeEditAdapter extends Adapter {
         return calendar
     }
 
-    override getExtras(calendar: Calendar): TimeEditUrlExtras {
-        const groups: AvailableGroup[] = groupByOptions.map(option => ({
-            property: option,
-            propertyIndex: groupByOptions.indexOf(option),
-            values: {},
-        }))
+    override getExtras(
+        calendar: Calendar
+    ): GroupedUrlExtras<TimeEditGroupByOption> {
+        const groups: AvailableGroup<TimeEditGroupByOption>[] =
+            timeEditGroupByOptions.map(option => ({
+                property: option,
+                propertyIndex: timeEditGroupByOptions.indexOf(option),
+                values: {},
+            }))
 
         calendar.getEvents().forEach(event => {
             const data = parseEventData(event)
             // For each groupable property name
-            for (let i = 0; i < groupByOptions.length; i++) {
-                const property = groupByOptions[i]
+            for (let i = 0; i < timeEditGroupByOptions.length; i++) {
+                const property = timeEditGroupByOptions[i]
 
                 if (data[property]) {
                     // Event has property
@@ -179,75 +188,13 @@ export default class TimeEditAdapter extends Adapter {
             }
         })
 
-        const extras: TimeEditUrlExtras = {
+        const extras: GroupedUrlExtras<TimeEditGroupByOption> = {
             name: calendar.getCalendarName(),
             groups: groups,
         }
 
         return extras
     }
-}
-
-/**
- * Get the index of the property to group by.
- * @param req The request to parse.
- * @returns The index of the property in {@link groupByOptions}.
- * @throws {Error} If the 'group' query parameter is missing or invalid.
- */
-export function parseGroupBy(req: NextRequest): number {
-    const groupByString = req.nextUrl.searchParams.get('group')
-    if (groupByString === undefined)
-        throw new Error(
-            "Unable to find property to group by. Missing query parameter 'group'"
-        )
-
-    let groupBy: number
-    try {
-        groupBy = parseInt(String(groupByString))
-    } catch {
-        throw new Error(
-            "Invalid query parameter 'group', must be a positive integer"
-        )
-    }
-    if (groupBy < 0) {
-        throw new Error(
-            "Invalid query parameter 'group', must be a positive integer"
-        )
-    }
-
-    return groupBy
-}
-
-/**
- * Get the allowed values for grouping from the request.
- *
- * One element represents one allowed combination of TimeEdit property values.
- * @param req The request to parse.
- * @returns A set of allowed values.
- * @throws {Error} If the request has no group values.
- */
-export function parseAllowedValues(req: NextRequest): Set<string> {
-    const serializedValues = req.nextUrl.searchParams.get('gi')
-    if (serializedValues == undefined)
-        throw new Error(
-            "Unable to get group index. Missing query parameter 'gi'"
-        )
-
-    const values = String(serializedValues)
-        .replace(/[^a-z0-9_ -]/g, '')
-        .split(' ')
-        .map(value =>
-            value === '_'
-                ? value
-                : value
-                      .split('_')
-                      .filter(v => v !== '')
-                      .sort()
-                      .join('_')
-        )
-        .filter(v => v !== '')
-
-    return new Set(values)
 }
 
 /**
@@ -261,10 +208,10 @@ export function createGroupSlicer(
     groupBy: number,
     allowedValues: Set<string>
 ): Slicer<EventGroup> {
-    if (groupBy >= groupByOptions.length) {
+    if (groupBy >= timeEditGroupByOptions.length) {
         throw new Error(`Unknown group by option ${groupBy}.`)
     }
-    const property = groupByOptions[groupBy]
+    const property = timeEditGroupByOptions[groupBy]
 
     /**
      * This hash function returns 1 for events that have any of the allowed
@@ -282,28 +229,6 @@ export function createGroupSlicer(
         return Number(allowedValues.has(values))
     }
     return new HashSlicer(hash, 2)
-}
-
-/**
- * Prepare a value to be used in grouping comparisons.
- * @param value The value to simplify.
- * @returns A URL friendly simplified version of the value.
- */
-export function prepareForComparison(value: string): string {
-    return value.toLowerCase().replace(/[^a-z0-9]/g, '-')
-}
-
-/**
- * Prepare a value to be used in grouping comparisons.
- * @param value The set to simplify, represents one combination of property values.
- * @returns A URL friendly simplified version of the value.
- */
-export function prepareSetForComparison(value: string[]): string {
-    return value
-        .map(prepareForComparison)
-        .filter(v => v !== '')
-        .sort()
-        .join('_')
 }
 
 /**
