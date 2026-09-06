@@ -14,25 +14,22 @@ import {
 import { Dispatch, SetStateAction, useState } from 'react'
 import { PickerCalendar } from '@/app/lib/picker'
 import CalendarTree from './CalendarTree'
-import CalendarUrl from '../CalendarUrl'
+import CalendarCard from '../CalendarCard'
 
 export default function CalendarPicker({
     initialTree,
-    urlBase,
+    baseUrl,
 }: {
     initialTree: RenderedCalendarTree
-    urlBase: string
+    baseUrl: string
 }) {
     const [tree, setTree] = useState<RenderedCalendarTree>(initialTree)
     const [showOrigin, setShowOrigin] = useState(true)
 
     const selectedCalendars = getSelectedCalendars(tree)
     const showOriginCheckbox = selectedCalendars.length >= 2
-    const url: string | null = generateUrl(
-        urlBase,
-        selectedCalendars,
-        showOrigin
-    )
+    const url = generateUrl(baseUrl, selectedCalendars, showOrigin)
+    const calendarName = generateCalendarName(selectedCalendars, tree)
 
     return (
         <>
@@ -60,7 +57,7 @@ export default function CalendarPicker({
                 </span>
             )}
 
-            {url && <CalendarUrl url={url} />}
+            {url && <CalendarCard url={url} calendarName={calendarName} />}
         </>
     )
 }
@@ -105,7 +102,7 @@ function selectTree(
 }
 
 function generateUrl(
-    urlBase: string,
+    baseUrl: string,
     calendars: PickerCalendar[],
     showOrigin: boolean = true
 ): string | null {
@@ -116,7 +113,7 @@ function generateUrl(
     if (calendars.length == 1) {
         // Single calendar
         const filename = calendars[0].filename
-        return `${urlBase}/c/${filename}`
+        return new URL(`/c/${filename}`, baseUrl).href
     }
 
     // Merge calendars
@@ -124,5 +121,40 @@ function generateUrl(
     for (const calendar of calendars) {
         bitmask += BigInt(1) << BigInt(calendar.id)
     }
-    return `${urlBase}/m/${bitmask}${showOrigin ? '?origin' : ''}`
+    const url = new URL(`/m/${bitmask}`, baseUrl).href
+    if (showOrigin) {
+        return url + '?origin'
+    }
+    return url
+}
+
+function generateCalendarName(
+    calendars: PickerCalendar[],
+    tree: RenderedCalendarTree
+): string | undefined {
+    if (calendars.length === 0) {
+        return undefined
+    }
+
+    const getDisplayName = (
+        calendarId: number,
+        tree: RenderedCalendarTree
+    ): string | null => {
+        for (const calendar of tree.calendars ?? []) {
+            if (calendar.id === calendarId) {
+                return calendar.displayName
+            }
+        }
+
+        for (const subcategory of tree.subcategories ?? []) {
+            const name = getDisplayName(calendarId, subcategory)
+            if (name !== null) return name
+        }
+
+        return null
+    }
+
+    return calendars
+        .map(calendar => getDisplayName(calendar.id, tree))
+        .join('+')
 }

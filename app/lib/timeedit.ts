@@ -1,10 +1,10 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
-import type { Concrete, UrlResponse } from './responses'
+import type { Concrete } from './responses'
 import { capitalize } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
-export const groupByOptions = (<T extends keyof TimeEditEventData>(
+export const timeEditGroupByOptions = (<T extends keyof TimeEditEventData>(
     options: T[]
 ): T[] => options)([
     'aktivitet',
@@ -13,24 +13,8 @@ export const groupByOptions = (<T extends keyof TimeEditEventData>(
     'lokalnamn',
     'klasskod',
 ] as const)
-
 /** An option to group calendar events by. */
-export type GroupByOption = (typeof groupByOptions)[number]
-
-export interface AvailableGroup {
-    property: GroupByOption
-    values: {
-        [k: string]: string
-    }
-}
-
-export interface TimeEditUrlExtras {
-    groups: AvailableGroup[]
-}
-
-export interface TimeEditUrlResponse extends UrlResponse {
-    extra: TimeEditUrlExtras
-}
+export type TimeEditGroupByOption = (typeof timeEditGroupByOptions)[number]
 
 export interface TimeEditEventData {
     [k: string]: string[] | undefined
@@ -166,10 +150,19 @@ export function formatKey(text: string): string {
 /**
  * Shorten the course code by removing the course occasion code.
  * @param code The long course code.
- * @returns The sortened course code.
+ * @returns The shortened course code.
  */
 export function shortenCourseCode(code: string): string {
     return code.split('_')[0]
+}
+
+/**
+ * Detect if a course code belongs to GU.
+ * @param code The long course code.
+ * @returns If the course code ends with "GU".
+ */
+export function isGuCourseCode(code: string): boolean {
+    return code.endsWith('GU')
 }
 
 /**
@@ -194,6 +187,28 @@ export function createEventSummary(
     const summary = [activityPart, coursePart]
         .filter(part => part !== null)
         .join(' ')
+
+    return summary === '' ? (context?.getSummary() ?? null) : summary
+}
+
+/**
+ * Create an event summary for a TimeEdit room booking from event data.
+ * @param data The parsed event data.
+ * @param context The original event as context.
+ * @returns The event summary or null if there is no summary.
+ */
+export function createBookingEventSummary(
+    data: TimeEditEventData,
+    context?: CalendarEvent
+): string | null {
+    if (data.titel) {
+        return data.titel.join(', ')
+    }
+
+    const location = createEventLocation(data, context)
+    const summary = ['Booking', location]
+        .filter(part => part !== null)
+        .join(': ')
 
     return summary === '' ? (context?.getSummary() ?? null) : summary
 }

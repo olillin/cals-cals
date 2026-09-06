@@ -1,7 +1,6 @@
 import { RenderedPicker, RenderedPickerCalendar } from '@/app/lib/calendarTree'
 import { Picker, readPicker } from '@/app/lib/picker'
 import { parseCalendar } from 'iamcal'
-import { headers } from 'next/headers'
 import { readCalendarFile } from '@/app/lib/datafiles'
 import CalendarPicker from '../ui/calendar/picker/CalendarPicker'
 import { formatKebabCase } from '@/app/lib/util'
@@ -11,6 +10,7 @@ import ErrorPage from '../ui/ErrorPage'
 import { cacheLife } from 'next/cache'
 import { Suspense } from 'react'
 import PickerDescription from '../ui/calendar/picker/PickerDescription'
+import { env } from '@/app/lib/env'
 
 export default async function Page() {
     return (
@@ -30,11 +30,7 @@ async function PageContent() {
     if (pickerConfig === undefined) {
         return <PickerUnavailable />
     }
-
     const picker = await renderPicker(pickerConfig)
-
-    const host = await headers().then(h => h.get('host') ?? 'cal.olillin.com')
-    const urlBase = 'webcal://' + host
 
     // Load picker tree
     let tree: RenderedCalendarTree | null
@@ -51,7 +47,7 @@ async function PageContent() {
             <PickerDescription />
 
             {tree !== null ? (
-                <CalendarPicker initialTree={tree} urlBase={urlBase} />
+                <CalendarPicker initialTree={tree} baseUrl={env.BASE_URL} />
             ) : (
                 <ErrorPage>
                     Failed to load calendar picker, try again later

@@ -12,6 +12,9 @@ const httpsUrl = new URL(
 const webcalUrl = new URL(
     'webcal://cloud.timeedit.net/chalmers/web/public/abc123.ics'
 )
+const bookingsUrl = new URL(
+    'https://cloud.timeedit.net/chalmers/web/student/my.ics?i=abc123' // This ID is randomly generated
+)
 const wrongCategoryUrl = new URL(
     'https://cloud.timeedit.net/chalmers/web/student/abc123.ics'
 )
@@ -32,12 +35,17 @@ it('should allow webcal://', () => {
     expect(id).toBe('public.abc123')
 })
 
+it('should allow student bookings', () => {
+    const id = adapter.getId(bookingsUrl)
+    expect(id).toBe('student-bookings.abc123')
+})
+
 it('should throw on wrong category', () => {
     expect(() => {
         adapter.getId(wrongCategoryUrl)
     }).toThrow(
         new Error(
-            'Unsupported category. Calendar must be from the "public" schedule ("Öppen schemavisning").'
+            'Unsupported category. Calendar must be from the "public" schedule ("Öppen schemavisning") or room bookings.'
         )
     )
 })

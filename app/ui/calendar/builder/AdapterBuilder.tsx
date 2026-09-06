@@ -1,43 +1,69 @@
 'use client'
 
-import { TimeEditUrlResponse } from '@/app/lib/timeedit'
 import { UrlResponse } from '@/app/lib/responses'
 import { useEffect, useRef, useState } from 'react'
-import CalendarBuilderOutput from './CalendarBuilderOutput'
+import AdapterBuilderOutput from './AdapterBuilderOutput'
+import TimeEditOptions from './options/TimeEditOptions'
+import CanvasOptions from './options/CanvasOptions'
+import { GroupedUrlResponseOfAdapter } from '@/app/lib/group'
 
-export type AdapterChoice = 'timeedit'
+export type AdapterOptionsMap = {
+    timeedit: {
+        noExam: boolean
+        keepGlobal: boolean
+        hideGu: boolean
+    }
+    canvas: {
+        plainText: boolean
+    }
+}
+export type AdapterChoice = keyof AdapterOptionsMap
+export type AdapterOptions<T extends AdapterChoice> = AdapterOptionsMap[T]
 
-export default function CalendarBuilder() {
+function createDefaultOptions<T extends AdapterChoice>(
+    adapter: T
+): AdapterOptions<T> {
+    const defaults: AdapterOptionsMap = {
+        timeedit: {
+            noExam: false,
+            keepGlobal: false,
+            hideGu: false,
+        },
+        canvas: {
+            plainText: false,
+        },
+    }
+    return defaults[adapter]
+}
+
+export default function AdapterBuilder<T extends AdapterChoice>({
+    adapter,
+}: {
+    adapter: T
+}) {
     const [inputUrl, setInputUrl] = useState<string | null>(null)
-    const [addExams, setAddExams] = useState<boolean>(true)
-    const [keepGlobal, setKeepGlobal] = useState<boolean>(false)
+    const [adapterOptions, setAdapterOptions] = useState<AdapterOptions<T>>(
+        createDefaultOptions(adapter)
+    )
     const [error, setError] = useState<string | null>(null)
-    const [urlData, setUrlData] = useState<TimeEditUrlResponse | null>(null)
+    const [urlData, setUrlData] =
+        useState<GroupedUrlResponseOfAdapter<T> | null>(null)
 
     useEffect(() => {
         if (!inputUrl) return
 
-        const params = new URLSearchParams(
-            [
-                addExams == false ? ['noExam', '1'] : undefined,
-                keepGlobal == true ? ['keepGlobal', '1'] : undefined,
-            ].filter(entry => entry != undefined)
-        )
+        const params = createSearchParamsFromOptions(adapterOptions)
 
-        fetchAdapterUrl(
-            'timeedit',
-            inputUrl,
-            params.size > 0 ? params : undefined
-        )
+        fetchAdapterUrl(adapter, inputUrl, params.size > 0 ? params : undefined)
             .then(data => {
-                setUrlData(data as TimeEditUrlResponse)
+                setUrlData(data as GroupedUrlResponseOfAdapter<T>)
             })
             .catch(reason => {
                 console.error(reason)
                 setInputUrl(null)
                 setError(String(reason).split(':')[1] ?? String(reason))
             })
-    }, [inputUrl, addExams, keepGlobal])
+    }, [adapter, inputUrl, adapterOptions])
 
     const input = useRef<HTMLInputElement>(null)
     function updateInputUrl() {
@@ -55,37 +81,28 @@ export default function CalendarBuilder() {
         <div>
             <div className="calendar-builder-options">
                 <h3>Options</h3>
-                <span className="checkbox-field">
-                    <input
-                        type="checkbox"
-                        name="add-exams"
-                        id="add-exams"
-                        defaultChecked={true}
-                        onChange={event => {
+                {adapter === 'timeedit' ? (
+                    <TimeEditOptions
+                        options={adapterOptions as AdapterOptions<'timeedit'>}
+                        setOptions={options => {
+                            setAdapterOptions(options as AdapterOptions<T>)
                             setUrlData(null)
-                            setAddExams(event.target.checked)
                         }}
                     />
-                    <label htmlFor="add-exams">Add exams (tentamen)</label>
-                </span>
-                <span className="checkbox-field">
-                    <input
-                        type="checkbox"
-                        name="keep-global"
-                        id="keep-global"
-                        defaultChecked={false}
-                        onChange={event => {
+                ) : (
+                    <CanvasOptions
+                        options={adapterOptions as AdapterOptions<'canvas'>}
+                        setOptions={options => {
+                            setAdapterOptions(options as AdapterOptions<T>)
                             setUrlData(null)
-                            setKeepGlobal(event.target.checked)
                         }}
                     />
-                    <label htmlFor="keep-global">Keep global events</label>
-                </span>
+                )}
             </div>
             <span className="calendar-builder-input">
                 <div>
                     <label htmlFor="calendar-builder-input-url">
-                        TimeEdit Calendar URL
+                        {formatAdapterName(adapter)} Calendar URL
                     </label>
                     <input
                         ref={input}
@@ -113,12 +130,44 @@ export default function CalendarBuilder() {
 
             {inputUrl &&
                 (urlData ? (
-                    <CalendarBuilderOutput data={urlData} />
+                    <AdapterBuilderOutput data={urlData} />
                 ) : (
                     <span>Loading...</span>
                 ))}
         </div>
     )
+}
+
+function isTimeEditOptions(
+    options: AdapterOptions<AdapterChoice>
+): options is AdapterOptions<'timeedit'> {
+    return (
+        Object.hasOwn(options, 'noExam') &&
+        Object.hasOwn(options, 'keepGlobal') &&
+        Object.hasOwn(options, 'hideGu')
+    )
+}
+
+function createSearchParamsFromOptions(
+    options: AdapterOptions<AdapterChoice>
+): URLSearchParams {
+    if (isTimeEditOptions(options)) {
+        // TimeEdit options
+        return new URLSearchParams(
+            [
+                options.noExam == true ? ['noExam', '1'] : undefined,
+                options.keepGlobal == true ? ['keepGlobal', '1'] : undefined,
+                options.hideGu == true ? ['hideGu', '1'] : undefined,
+            ].filter(entry => entry != undefined)
+        )
+    } else {
+        // Canvas options
+        return new URLSearchParams(
+            [options.plainText == true ? ['plain', '1'] : undefined].filter(
+                entry => entry != undefined
+            )
+        )
+    }
 }
 
 function fetchAdapterUrl(
@@ -154,4 +203,12 @@ function fetchAdapterUrl(
                 })
         })
     })
+}
+
+function formatAdapterName(adapter: AdapterChoice): string {
+    const map: Record<AdapterChoice, string> = {
+        timeedit: 'TimeEdit',
+        canvas: 'Canvas',
+    }
+    return map[adapter]
 }

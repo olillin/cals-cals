@@ -19,3 +19,10 @@ it('should create the correct URL for other categories', () => {
         'https://cloud.timeedit.net/chalmers/web/student/def456.ics'
     )
 })
+
+it('should create the correct URL for booking URLs', () => {
+    const url = adapter.createUrl('student-bookings.abc123')
+    expect(url.href).toBe(
+        'https://cloud.timeedit.net/chalmers/web/student/my.ics?i=abc123'
+    )
+})

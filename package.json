@@ -1,6 +1,5 @@
 {
     "name": "cals-cals",
-    "version": "2.1.11",
     "description": "Calendar website for better calendars at Chalmers",
     "private": true,
     "main": ".next/standalone/server.js",
@@ -8,6 +7,7 @@
         "dev": "next dev",
         "build": "next build && node -e \"require('fs').cpSync('public', '.next/standalone/public', {recursive: true});require('fs').cpSync('.next/static', '.next/standalone/public/_next/static', {recursive: true})\"",
         "start": "node .",
+        "postinstall": "(copy-env-cli || true)",
         "test": "vitest",
         "fmt": "oxfmt",
         "fmt:check": "oxfmt --check",
@@ -24,37 +24,52 @@
         "url": "https://github.com/olillin/cals-cals/issues"
     },
     "homepage": "https://cal.olillin.com",
-    "packageManager": "pnpm@10.28.0",
+    "packageManager": "pnpm@11.25.0",
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": "^24.19.0",
+            "onFail": "warn"
+        },
+        "packageManager": {
+            "name": "pnpm",
+            "version": "11.25.0",
+            "onFail": "download"
+        }
+    },
     "dependencies": {
+        "@t3-oss/env-core": "^0.13.11",
+        "@t3-oss/env-nextjs": "^0.13.11",
         "ajv": "^8.20.0",
         "chalmers-search-exam": "^3.1.0",
         "clsx": "^2.1.1",
-        "iamcal": "^4.1.1",
+        "iamcal": "^4.1.2",
         "mdast-util-to-string": "^4.0.0",
-        "next": "^16.2.9",
-        "react": "^19.2.7",
-        "react-dom": "^19.2.7",
+        "next": "^16.3.4",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8",
         "rehype-react": "^8.0.0",
         "remark": "^15.0.1",
         "remark-parse": "^11.0.0",
         "remark-rehype": "^11.1.2",
         "unified": "^11.0.5",
-        "vite": "^7.3.5"
+        "vite": "^7.3.6",
+        "zod": "^4.5.4"
     },
     "devDependencies": {
-        "@tailwindcss/postcss": "^4.3.1",
+        "@tailwindcss/postcss": "^4.3.3",
         "@types/mdast": "^4.0.4",
-        "@types/node": "^24.13.2",
-        "@types/react": "^19.2.17",
-        "@types/react-dom": "^19.2.3",
+        "@types/node": "^24.13.3",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.7",
+        "copy-env-cli": "^1.0.0",
         "oxfmt": "^0.41.0",
-        "oxlint": "^1.71.0",
+        "oxlint": "^1.81.0",
         "oxlint-tsgolint": "^0.22.1",
-        "prettier": "^3.8.4",
-        "tailwindcss": "^4.3.1",
+        "tailwindcss": "^4.3.3",
         "typescript": "^5.9.3",
         "vfile": "^6.0.3",
         "vite-tsconfig-paths": "^6.1.1",
-        "vitest": "^4.1.9"
+        "vitest": "^4.1.11"
     }
 }

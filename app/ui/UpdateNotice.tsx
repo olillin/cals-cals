@@ -4,6 +4,7 @@ import Image from 'next/image'
 import clsx from 'clsx'
 import { useState } from 'react'
 import type { Changes } from '../lib/changes'
+import Link from 'next/link'
 
 export interface Props {
     changes: Changes
@@ -34,12 +35,15 @@ export default function UpdateNotice({ changes }: Props) {
             </div>
             <div className="notice-body">
                 {body}
-                <button
-                    className="close-toggle"
-                    onClick={() => setClosed(!closed)}
-                >
-                    {closed ? 'Read more' : 'Read less'}
-                </button>
+                <span className="notice-actions">
+                    {!closed && <Link href="/changes">Full changelog</Link>}
+                    <button
+                        className="close-toggle"
+                        onClick={() => setClosed(!closed)}
+                    >
+                        {closed ? 'Read more' : 'Read less'}
+                    </button>
+                </span>
             </div>
         </div>
     )

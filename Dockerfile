@@ -41,6 +41,10 @@ ENV NEXT_PUBLIC_WEB_VERSION=${WEB_VERSION}
 # Learn more here: https://nextjs.org/telemetry
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Skip environment validation to prevent errors caused by required environment
+# variables. Read more: https://create.t3.gg/en/deployment/docker
+ENV SKIP_ENV_VALIDATION=1
+
 # Build Next.js application
 # If you want to speed up Docker rebuilds, you can cache the build artifacts
 # by adding: --mount=type=cache,target=/app/.next/cache

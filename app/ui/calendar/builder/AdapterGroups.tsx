@@ -1,24 +1,32 @@
-import {
-    AvailableGroup,
-    GroupByOption,
-    TimeEditUrlResponse,
-} from '@/app/lib/timeedit'
+import type { AvailableGroup, GroupedUrlResponse } from '@/app/lib/group'
 import clsx from 'clsx'
 import { useState } from 'react'
-import CalendarUrl from '../CalendarUrl'
+import CalendarCard from '../CalendarCard'
 
-export default function CalendarGroups({
+export default function AdapterGroups<T extends string>({
     data,
     onClose,
 }: {
-    data: TimeEditUrlResponse
+    data: GroupedUrlResponse<T>
     onClose: () => void
 }) {
-    const [groupBy, setGroupBy] = useState(0)
+    const [selectedProperty, setSelectedProperty] = useState(0)
     const [groups, setGroups] = useState<BuilderGroup[]>([])
 
     const groupByOptions = getGroupByOptions(data.extra.groups)
-    const groupByProperty = groupByOptions[groupBy]
+    const groupByProperty = groupByOptions[selectedProperty]
+
+    const groupBy = data.extra.groups.find(
+        g => g.property === groupByProperty
+    )?.propertyIndex
+
+    if (groupBy === undefined) {
+        return (
+            <p className="error">
+                Unable to group calendar. Grouping property is invalid.
+            </p>
+        )
+    }
 
     if (groups.length === 0) {
         const initialGroups: BuilderGroup[] = [
@@ -38,17 +46,17 @@ export default function CalendarGroups({
     return (
         <>
             {groupByOptions.length > 1 && (
-                <GroupBySelector
+                <PropertySelector
                     options={groupByOptions}
-                    selected={groupBy}
-                    setGroupBy={newGroupBy => {
-                        setGroupBy(newGroupBy)
+                    selected={selectedProperty}
+                    setSelectedProperty={value => {
+                        setSelectedProperty(value)
                         setGroups([])
                     }}
                 />
             )}
 
-            {groups.map((group, i) => (
+            {groups.map((_group, i) => (
                 <CalendarGroupContainer
                     key={i}
                     groups={groups}
@@ -95,14 +103,14 @@ export default function CalendarGroups({
     )
 }
 
-export function GroupBySelector({
+export function PropertySelector({
     options,
-    selected: currentGroupBy,
-    setGroupBy,
+    selected: currentSelected,
+    setSelectedProperty,
 }: {
-    options: GroupByOption[]
+    options: string[]
     selected: number
-    setGroupBy: (groupBy: number) => void
+    setSelectedProperty: (value: number) => void
 }) {
     const optionCount = options.length
     if (optionCount === 0) {
@@ -111,10 +119,10 @@ export function GroupBySelector({
 
     return (
         <div className="group-by">
-            <label>Grouping events by</label>
+            <label>Group events by</label>
             <span className="group-by-selector">
                 {options.map((property, i) => {
-                    const selected = i === currentGroupBy
+                    const selected = i === currentSelected
                     return (
                         <button
                             key={i}
@@ -122,7 +130,7 @@ export function GroupBySelector({
                             disabled={selected}
                             aria-disabled={selected}
                             onClick={() => {
-                                setGroupBy(i)
+                                setSelectedProperty(i)
                             }}
                         >
                             {property}
@@ -200,7 +208,7 @@ export function CalendarGroupContainer({
                         ))}
                     </ul>
 
-                    <CalendarUrl url={url} />
+                    <CalendarCard url={url} />
                 </>
             )}
         </div>
@@ -213,9 +221,9 @@ export interface BuilderGroup {
     }
 }
 
-export function getGroupByOptions(
-    availableGroups: AvailableGroup[]
-): GroupByOption[] {
+export function getGroupByOptions<T>(
+    availableGroups: AvailableGroup<T>[]
+): T[] {
     return availableGroups
         .filter(group => Object.keys(group.values).length > 1)
         .map(group => group.property)
