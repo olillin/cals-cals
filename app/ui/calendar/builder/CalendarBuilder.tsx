@@ -7,7 +7,11 @@ import CalendarBuilderOutput from './CalendarBuilderOutput'
 
 export type AdapterChoice = 'timeedit'
 
-export default function CalendarBuilder() {
+export default function AdapterBuilder({
+    adapter,
+}: {
+    adapter: AdapterChoice
+}) {
     const [inputUrl, setInputUrl] = useState<string | null>(null)
     const [addExams, setAddExams] = useState<boolean>(true)
     const [keepGlobal, setKeepGlobal] = useState<boolean>(false)
@@ -26,11 +30,7 @@ export default function CalendarBuilder() {
             ].filter(entry => entry != undefined)
         )
 
-        fetchAdapterUrl(
-            'timeedit',
-            inputUrl,
-            params.size > 0 ? params : undefined
-        )
+        fetchAdapterUrl(adapter, inputUrl, params.size > 0 ? params : undefined)
             .then(data => {
                 setUrlData(data as TimeEditUrlResponse)
             })
@@ -39,7 +39,7 @@ export default function CalendarBuilder() {
                 setInputUrl(null)
                 setError(String(reason).split(':')[1] ?? String(reason))
             })
-    }, [inputUrl, addExams, keepGlobal, hideGu])
+    }, [adapter, inputUrl, addExams, keepGlobal, hideGu])
 
     const input = useRef<HTMLInputElement>(null)
     function updateInputUrl() {

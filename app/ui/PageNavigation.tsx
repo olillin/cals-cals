@@ -8,7 +8,7 @@ export default function PageNavigation() {
     return (
         <nav>
             <NavigationLink href={'/'}>Calendar picker</NavigationLink>
-            <NavigationLink href={'/builder'}>Calendar builder</NavigationLink>
+            <NavigationLink href={'/timeedit'}>TimeEdit Adapter</NavigationLink>
         </nav>
     )
 }
