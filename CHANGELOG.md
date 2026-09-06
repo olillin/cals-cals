@@ -45,9 +45,9 @@ This is a smaller update containing some minor changes and patches:
 
 ## v2.3 Canvas calendars and QoL!
 
-This update adds a new calendar adapter Canvas. Now Canvas is not nearly as bad
-as TimeEdit so the main feature is being able to group these calendars by
-assignment/event and course code. There are also some improvements to the format
+This update adds a new calendar adapter for Canvas, granted Canvas calendars are
+not nearly as bad as TimeEdit so the main feature is being able to group by
+assignment/event or course code. There are some improvements to the format
 however! For assignments a link to the Canvas page is added to the top of the
 description and all descriptions now allow rich formatting for calendar apps
 which support it.
@@ -56,8 +56,8 @@ But that's not all, other changes for this update include:
 
 - The TimeEdit calendar adapter has been moved to [/timeedit](./timeedit) and
   been made more obvious in the navigation.
-- Proper subscribe buttons have been added to all calendars for *Google
-  Calendar*, *Apple Calendar* and *Outlook*.
+- Proper subscribe buttons have been added to all calendars for _Google
+  Calendar_, _Apple Calendar_ and _Outlook_.
 - Added an option to the TimeEdit adapter to hide GU course codes.
 - Support has been added for
   [TimeEdit booking calendars](https://cloud.timeedit.net/chalmers/web/student/my.html)
