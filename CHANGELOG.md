@@ -66,3 +66,7 @@ But that's not all, other changes for this update include:
 - Added a changelog page.
 - Fixed a bug causing grouping by the wrong property.
 - Fixed metadata for media previews pointing to localhost.
+
+### v2.3.1
+
+Actually fixed the metadata pointing to localhost (I hope).
