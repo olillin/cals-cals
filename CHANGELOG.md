@@ -70,3 +70,8 @@ But that's not all, other changes for this update include:
 ### v2.3.1
 
 Actually fixed the metadata pointing to localhost (I hope).
+
+### v2.3.2
+
+Fix Canvas adapter unable to load in Google Calendar because of Canvas including
+invalid duplicated property on events.
