@@ -137,6 +137,14 @@ export function convertEvent(
     if (richDescription) {
         event.removePropertiesWithName('X-ALT-DESC')
     }
+
+    // Fix duplicated VALUE property parameter
+    event.properties.forEach(property => {
+        const valueTypes = property.getParameter('VALUE')
+        if (valueTypes && valueTypes.length > 1) {
+            property.setValueType(valueTypes[0])
+        }
+    })
 }
 
 function createEventValueGetter(
