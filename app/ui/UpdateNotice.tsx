@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Changes } from '../lib/changes'
 import Link from 'next/link'
 
@@ -14,9 +14,23 @@ export default function UpdateNotice({ changes }: Props) {
     const { version, name, body } = changes
 
     const [closed, setClosed] = useState(true)
-    const [hidden, setHidden] = useState(false)
+    const [dismissed, setDismissed] = useState(false)
 
-    if (hidden) {
+    useEffect(() => {
+        if (window === undefined) return
+
+        const dismissedVersion = localStorage.getItem('noticeDismissedVersion')
+
+        if (dismissedVersion === version) {
+            setDismissed(true)
+        }
+
+        if (dismissed) {
+            localStorage.setItem('noticeDismissedVersion', version)
+        }
+    }, [version, dismissed])
+
+    if (dismissed) {
         return null
     }
 
@@ -31,7 +45,7 @@ export default function UpdateNotice({ changes }: Props) {
                 <strong>
                     {version} {name}
                 </strong>
-                <CloseButton onClick={() => setHidden(true)} />
+                <CloseButton onClick={() => setDismissed(true)} />
             </div>
             <div className="notice-body">
                 {body}
