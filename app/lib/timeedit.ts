@@ -1,6 +1,6 @@
 import { CalendarDateTime, CalendarEvent } from 'iamcal'
 import type { Concrete } from './responses'
-import { capitalize } from './util'
+import { capitalize, urlencodeChar } from './util'
 import { searchExam, type Exam } from 'chalmers-search-exam'
 
 // DO NOT CHANGE ORDER, WILL BREAK EXISTING CALENDAR URLS
@@ -64,7 +64,9 @@ export function parseEventDataString(...strings: string[]): TimeEditEventData {
 
     const groupedData: TimeEditEventData = dataPairs.reduce<{
         [k: string]: string[]
-    }>((acc, [key, value]) => {
+    }>((acc, [encodedKey, encodedValue]) => {
+        const key = decodeEventDataValue(encodedKey)
+        const value = decodeEventDataValue(encodedValue)
         if (!acc[key]) acc[key] = []
         if (
             !acc[key].includes(value) ||
@@ -130,11 +132,40 @@ keyAlias.set('title', 'titel')
 export function serializeEventData(eventData: TimeEditEventData): string {
     return Object.entries(eventData)
         .flatMap(([key, values]) => {
-            if (values == undefined) return null
-            return values.map(value => `${capitalize(key)}: ${value}`)
+            if (values == undefined) {
+                return null
+            }
+            const encodedKey = encodeEventDataValue(capitalize(key))
+            return values.map(
+                value => `${encodedKey}: ${encodeEventDataValue(value)}`
+            )
         })
         .filter(x => x != null)
         .join('. ')
+}
+
+const specialChars = [':', '.']
+
+/**
+ * Encode special characters used in TimeEdit event syntax.
+ * @param value The string to encode.
+ * @returns The string with special characters replaced with their urlencoded counterpart.
+ */
+export function encodeEventDataValue(value: string): string {
+    specialChars.forEach(char => {
+        const encoded = urlencodeChar(char)
+        value = value.replaceAll(char, encoded)
+    })
+    return value
+}
+
+/**
+ * Decode special characters used in TimeEdit event syntax.
+ * @param value The string to decode.
+ * @returns The string with urlencoded characters replaced with their unencoded counterpart.
+ */
+export function decodeEventDataValue(value: string): string {
+    return decodeURIComponent(value)
 }
 
 /**
