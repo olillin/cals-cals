@@ -34,3 +34,11 @@ it('creates an empty string for no data', () => {
     const result = serializeEventData(eventData)
     expect(result).toBe('')
 })
+
+it('encodes special characters', () => {
+    const eventData: TimeEditEventData = {
+        's:k.': ['A:B.'],
+    }
+    const result = serializeEventData(eventData)
+    expect(result).toBe('S%3Ak%2E: A%3AB%2E')
+})

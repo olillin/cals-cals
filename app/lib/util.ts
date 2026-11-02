@@ -47,3 +47,17 @@ export function isClickKey(key: string): boolean {
 export function withSuffix(s: string, suffix: string): string {
     return s.endsWith(suffix) ? s : s + suffix
 }
+
+/**
+ * URL encode a character, regardless if it is special or not.
+ * @param char The character to encode.
+ * @returns The encoded character including the percent sign.
+ * @throws If the character is a multi-byte character.
+ */
+export function urlencodeChar(char: string): string {
+    const hex = char.charCodeAt(0).toString(16).toUpperCase()
+    if (hex.length > 2) {
+        throw new Error(`Cannot encode multi-byte character '${char}'`)
+    }
+    return '%' + hex
+}

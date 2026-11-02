@@ -149,3 +149,12 @@ it('does not split values with periods', () => {
         kursnamn: ['Lorem ipsum'],
     })
 })
+
+it('decodes special characters', () => {
+    const s = 'S%3Ak%2E: A%3AB%2E'
+    const data = parseEventDataString(s)
+
+    expect(data).toStrictEqual({
+        's:k.': ['A:B.'],
+    })
+})

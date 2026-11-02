@@ -75,3 +75,10 @@ Actually fixed the metadata pointing to localhost (I hope).
 
 Fix Canvas adapter unable to load in Google Calendar because of Canvas including
 invalid duplicated property on events.
+
+### v2.3.3
+
+The TimeEdit adapter now parses events with colons and periods correctly, this
+should fix some events only having one character in the course name. Dismissing
+this update notice will now be saved locally so it stays hidden even after
+reloading the page!
