@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { UrlResponse } from './responses'
-import { TimeEditGroupByOption } from '@/app/lib/timeedit'
+import { shortenCourseCode, TimeEditGroupByOption, timeEditGroupByOptions } from '@/app/lib/timeedit'
 import { CanvasGroupByOption } from '@/app/lib/canvas'
 import { AdapterChoice } from '../ui/calendar/builder/AdapterBuilder'
 
@@ -71,6 +71,9 @@ export function parseAllowedValues(req: NextRequest): Set<string> {
             "Unable to get group index. Missing query parameter 'gi'"
         )
 
+    const groupBy = parseGroupBy(req)
+    const isCourseCode = timeEditGroupByOptions[groupBy] === 'kurskod'
+
     const values = String(serializedValues)
         .replace(/[^a-z0-9_ -]/g, '')
         .split(' ')
@@ -80,6 +83,9 @@ export function parseAllowedValues(req: NextRequest): Set<string> {
                 : value
                       .split('_')
                       .filter(v => v !== '')
+                      .map(v => {
+                          return isCourseCode ? shortenCourseCode(v) : v
+                      })
                       .sort()
                       .join('_')
         )

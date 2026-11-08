@@ -233,7 +233,7 @@ export default class TimeEditAdapter extends Adapter {
 
 /**
  * Create a slicer for a group.
- * @param groupBy The index of the property to group by in {@link groupByOptions}.
+ * @param groupBy The index of the property to group by in {@link timeEditGroupByOptions}.
  * @param allowedValues The property values to include in the slicer.
  * @returns The new slicer.
  * @throws {Error} If {@link groupBy} does not refer to a valid property.
@@ -244,6 +244,10 @@ export function createGroupSlicer(
 ): Slicer<EventGroup> {
     if (groupBy >= timeEditGroupByOptions.length) {
         throw new Error(`Unknown group by option ${groupBy}.`)
+    }
+    if (groupBy === timeEditGroupByOptions.indexOf('kurskod')) {
+        // Shorten course codes
+        allowedValues = new Set(allowedValues.values().map(shortenCourseCode))
     }
     const property = timeEditGroupByOptions[groupBy]
 
